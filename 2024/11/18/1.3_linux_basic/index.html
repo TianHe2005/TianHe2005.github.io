@@ -1,0 +1,992 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><title>操作系统(2)--Linux 基础 | 小鹤实验室</title><meta name="author" content="小鹤"><meta name="copyright" content="小鹤"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#f7f9fe"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-touch-fullscreen" content="yes"><meta name="apple-mobile-web-app-title" content="操作系统(2)--Linux 基础"><meta name="application-name" content="操作系统(2)--Linux 基础"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="#f7f9fe"><meta property="og:type" content="article"><meta property="og:title" content="操作系统(2)--Linux 基础"><meta property="og:url" content="http://example.com/2024/11/18/1.3_linux_basic/index.html"><meta property="og:site_name" content="小鹤实验室"><meta property="og:description" content="1.3 Linux 基础  常用基础命令 Bash 快捷键 根目录结构 进程管理 UID 和 GID 权限设置 字节序 输入输出 文件描述符 核心转储 调用约定 环境变量 procfs 参考资料  常用基础命令 12345678910111213141516171"><meta property="og:locale" content="zh-CN"><meta property="og:image" content="http://example.com/img/default_cover.jpg"><meta property="article:author" content="小鹤"><meta property="article:tag"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="http://example.com/img/default_cover.jpg"><meta name="description" content="1.3 Linux 基础  常用基础命令 Bash 快捷键 根目录结构 进程管理 UID 和 GID 权限设置 字节序 输入输出 文件描述符 核心转储 调用约定 环境变量 procfs 参考资料  常用基础命令 12345678910111213141516171"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="http://example.com/2024/11/18/1.3_linux_basic/"><link rel="preconnect" href="//cdn.cbd.int"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta name="google-site-verification" content="xxx"/><meta name="baidu-site-verification" content="code-xxx"/><meta name="msvalidate.01" content="xxx"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.cbd.int/@fancyapps/ui@5.0.28/dist/fancybox/fancybox.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/swiper/swiper.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  linkPageTop: {"enable":true,"title":"与数百名博主无限进步","addFriendPlaceholder":"昵称（请勿包含博客等字样）：\n网站地址（要求博客地址，请勿提交个人主页）：\n头像图片url（请提供尽可能清晰的图片，我会上传到我自己的图床）：\n描述：\n站点截图（可选）：\n"},
+  peoplecanvas: undefined,
+  postHeadAiDescription: {"enable":true,"gptName":"AnZhiYu","mode":"local","switchBtn":false,"btnLink":"https://afdian.net/item/886a79d4db6711eda42a52540025c377","randomNum":3,"basicWordCount":1000,"key":"xxxx","Referer":"https://xx.xx/"},
+  diytitle: {"enable":true,"leaveTitle":"w(ﾟДﾟ)w 不要走！再看看嘛！","backTitle":"♪(^∇^*)欢迎肥来！"},
+  LA51: undefined,
+  greetingBox: {"enable":true,"default":"晚上好👋","list":[{"greeting":"晚安😴","startTime":0,"endTime":5},{"greeting":"早上好鸭👋, 祝你一天好心情！","startTime":6,"endTime":9},{"greeting":"上午好👋, 状态很好，鼓励一下～","startTime":10,"endTime":10},{"greeting":"11点多啦, 在坚持一下就吃饭啦～","startTime":11,"endTime":11},{"greeting":"午安👋, 宝贝","startTime":12,"endTime":14},{"greeting":"🌈充实的一天辛苦啦！","startTime":14,"endTime":18},{"greeting":"19点喽, 奖励一顿丰盛的大餐吧🍔。","startTime":19,"endTime":19},{"greeting":"晚上好👋, 在属于自己的时间好好放松😌~","startTime":20,"endTime":24}]},
+  twikooEnvId: '',
+  commentBarrageConfig:{"enable":true,"maxBarrage":1,"barrageTime":4000,"accessToken":"","mailMd5":"71D1A0082222768A053ECCE774F1A5A0"},
+  music_page_default: "nav_music",
+  root: '/',
+  preloader: {"source":3},
+  friends_vue_info: {"apiurl":"https://friends.anheyu.com/"},
+  navMusic: true,
+  mainTone: undefined,
+  authorStatus: undefined,
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简","rightMenuMsgToTraditionalChinese":"转为繁体","rightMenuMsgToSimplifiedChinese":"转为简体"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":330},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    simplehomepage: true,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"copy":true,"copyrightEbable":false,"limitCount":50,"languages":{"author":"作者: 小鹤","link":"链接: ","source":"来源: 小鹤实验室","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。","copySuccess":"复制成功，复制和转载请标注本文地址"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#425AEF","bgDark":"#1f1f1f","position":"top-center"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.min.js',
+      css: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  shortcutKey: {"enable":true,"delay":100,"shiftDelay":200},
+  autoDarkmode: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  configTitle: '小鹤实验室',
+  title: '操作系统(2)--Linux 基础',
+  postAI: '',
+  pageFillDescription: '1.3 Linux 基础, 常用基础命令, Bash 快捷键, 根目录结构, 进程管理, UID 和 GID, 权限设置, 字节序, 输入输出, 文件描述符, 核心转储, 会产生核心转储的信号, 开启核心转储, 修改转储文件保存路径, 使用 gdb 调试核心转储文件, 例子, 调用约定, 内核接口, 用户接口, 环境变量, 分类, 设置方法, 常用变量, LD_PRELOAD, environ, procfs, /proc/cmdline, /proc/cpuinfo, /proc/crypto, /proc/devices, /proc/interrupts, /proc/kcore, /proc/meminfo, /proc/mounts, /proc/modules, /proc/slabinfo, /proc/[pid], /proc/[pid]/cmdline, /proc/[pid]/exe, /proc/[pid]/root, /proc/[pid]/mem, /proc/[pid]/maps, /proc/[pid]/stack, /proc/[pid]/auxv, /proc/[pid]/environ, /proc/[pid]/fd, /proc/[pid]/status, /proc/[pid]/task, /proc/[pid]/syscall, 参考资料基础常用基础命令快捷键根目录结构进程管理和权限设置字节序输入输出文件描述符核心转储调用约定环境变量参考资料常用基础命令用来显示目标列表用来切换工作目录以绝对路径的方式显示用户当前工作目录查看中的指令帮助配置文件帮助和编程帮助等信息在一些特定的包含系统命令的简短描述的数据库文件里查找关键字打印一行文本参数可激活转义字符连接文件并打印到标准输出设备上允许用户向前或向后浏览文字档案的内容用来对文件或目录重新命名或者将文件从一个目录移到另一个目录中用来将一个或多个源文件或者目录复制到指定的目的文件或目录可以删除一个目录中的一个或多个文件或目录也可以将某个目录及其下属的所有文件及其子目录均删除掉用于报告当前系统的进程状态实时查看系统的整体运行情况杀死一个进程查看或设置网络设备查看网络上的主机是否工作显示网络连接路由表和网络接口信息建立和连接并监听切换当前用户身份到其他用户身份创建新的空文件创建目录变更文件或目录的权限变更某个文件或目录的所有者和所属组字符终端的文本编辑器退出管道命令符将一个命令的标准输出作为另一个命令的标准输入使用变量给变量赋值取变量的值代换标准输出非替换字符串可替换字符串年月日星期一快捷键上下一条指令终止当前进程挂起当前进程使用可唤醒删除光标处的字符清屏移动到命令行首移动到命令行尾按单词后移向左按单词前移向右复制粘贴更多细节请查看根目录结构由于不同的发行版会有略微的不同我们这里使用的是基于的发行版以上就是根目录下的内容我们介绍几个重要的目录链接到存放一些核心的二进制文件其包含的命令可在上运行操作系统启动时要用到的程序包含了所有系统中使用的外部设备需要注意的是这里并不是存放外部设备的驱动程序而是一个访问这些设备的端口存放系统管理时要用到的各种配置文件和子目录存放启动和关闭时要用到的脚本普通用户的主目录链接到存放系统及软件需要的动态链接共享库这个目录让用户可以临时挂载其他的文件系统虚拟的目录是系统内存的映射可直接访问这个目录来获取系统信息系统管理员的主目录存放一些服务启动之后需要提取的数据该目录下安装了一个文件系统该文件系统是内核设备树的一个直观反映当一个内核对象被创建时对应的文件和目录也在内核对象子系统中被创建公用的临时文件存放目录应用程序和文件几乎都在这个目录下内核源代码的存放目录存放了很多服务的日志信息进程管理可以实时动态地查看系统的整体运行情况用于报告当前系统的进程状态可以搭配指令随时中断删除不必要的程序查看某进程的状态其中返回内容最左边的数字为进程号用来删除执行中的程序或工作删除进程某指定的进程和是一个支持多用户的操作系统每个用户都有和是对一个用户的单一身份标识而则对应多个知道某个用户的和是非常有用的一些程序可能就需要来运行可以使用命令来查看为的用户类似于系统管理员它具有系统的完全访问权我自己新建的用户其为是一个普通用户的关系存储在文件中所有用户的信息除了密码都保存在文件中而为了安全起见加密过的用户密码保存在文件中此文件只有权限可以访问由于普通用户的权限比较低这里使用命令可以让普通用户以用户的身份运行某一命令使用命令则可以切换到一个不同的用户用于打印当前有效的用户名称中普通用户以开头用户以开头在输入密码后我们已经从用户转换到用户了权限设置在中文件或目录权限的控制分别以读取写入执行种一般权限来区分另有种特殊权限可供运用使用来查看某文件或目录的信息第一栏从第二个字母开始就是权限字符串权限表示三个为一组依次是所有者权限组权限其他人权限每组的顺序均为如果有相应权限则表示成相应字母如果不具有相应权限则用表示读取权限数字代号为写入权限数字代号为执行或切换权限数字代号为通过第一栏的第一个字母可知第一行是一个链接文件第二行是个目录第三行是个普通文件用户可以使用指令去变更文件与目录的权限权限范围被指定为所有者所属组其他人和所有人递归处理将指令目录下的所有文件及子目录一并处理权限范围权限设置开启权限范围的文件或目录的该选项权限设置赋予所有用户读取权限权限范围权限设置关闭权限范围的文件或目录的该选项权限设置取消所有者写入权限权限范围权限设置指定权限范围的文件或目录的该选项权限设置指定组权限为可执行制定其他人权限为可读可写和可执行字节序目前计算机中采用两种字节存储机制大端和小端最重要的位或最重要的字节最不重要的位或最不重要的字节规定在存储时放在低地址在传输时放在流的开始存储时放在高地址在传输时放在流的末尾则相反常见的处理器使用而系列处理器则使用另外协议和虚拟机的字节序也是例如十六进制整数存入以开始的内存中我们在内存中实际地看一下在地址处有字符在地址处有字符输入输出使用命令的输出作为可执行文件的输入参数使用命令作为输入将命令行输出写入文件使用文件作为输入文件描述符在系统中一切皆可以看成是文件文件又分为普通文件目录文件链接文件和设备文件文件描述符是内核管理已被打开的文件所创建的索引使用一个非负整数来指代被打开的文件标准文件描述符如下文件描述符用途流标准输入标准输出标准错误当一个程序使用生成一个子进程后子进程会继承父进程所打开的文件表此时父子进程使用同一个文件表这可能导致一些安全问题如果使用子进程虽然运行于父进程的空间但拥有自己的进程表项核心转储当程序运行的过程中异常终止或崩溃操作系统会将程序当时的内存寄存器状态堆栈指针内存管理信息等记录下来保存在一个文件中这种行为就叫做核心转储会产生核心转储的信号开启核心转储输入命令输出结果为说明默认是关闭的输入命令即可在当前终端开启核心转储功能如果想让核心转储功能永久开启可以修改文件增加一行修改转储文件保存路径通过修改可以使生成的核心转储文件名变为的模式还可以修改来控制生成核心转储文件的保存位置和文件名格式此时生成的文件保存在目录下文件名格式为使用调试核心转储文件例子调用约定函数调用约定是对函数调用时如何传递参数的一种约定关于它的约定有许多种下面我们分别从内核接口和用户接口介绍位和位的调用约定内核接口系统调用约定系统调用使用寄存器传递参数为用于将个参数传递给系统调用返回值保存在中所有其他寄存器包括都保留在中系统调用约定内核接口使用的寄存器有系统调用通过指令完成除了和其他的寄存器都被保留系统调用的编号必须在寄存器中传递系统调用的参数限制为个不直接从堆栈上传递任何参数返回时中包含了系统调用的结果而且只有或者类型的值才会被传递给内核用户接口函数调用约定参数通过栈进行传递最后一个参数第一个被放入栈中直到所有的参数都放置完毕然后执行指令这也是上语言函数的方式函数调用约定下通过寄存器传递参数这样做比通过栈有更高的效率它避免了内存中参数的存取和额外的指令根据参数类型的不同会使用寄存器或传参方式如果参数的类型是则在栈上传递参数如果类型是则顺序使用和所以如果有多于个的参数则后面的参数在栈上传递环境变量环境变量字符串都是这样的形式大多数由大写字母加下划线组成一般把部分叫做环境变量名部分则是环境变量的值而且需要以结尾环境变量定义了该进程的运行环境分类按照生命周期划分永久环境变量修改相关配置文件永久生效临时环境变量使用命令在当前终端下生效关闭终端后失效按照作用域划分系统环境变量对该系统中所有用户生效用户环境变量对特定用户生效设置方法在文件中添加变量这种方法对所有用户永久生效如添加后执行命令使其生效在文件中添加变量这种方法对当前用户永久生效其余同上直接运行命令定义变量这种方法只对当前终端临时生效常用变量使用命令打印变量使用命令可以打印出所有环境变量使用命令可以打印出所有本地定义的变量使用命令可以清除变量变量名该环境变量可以定义在程序运行前优先加载的动态链接库在题目中我们可能需要一个特定的这时就可以定义该变量一个例子注意在加载动态链接库时需要使用进行重定位通常被符号链接到中动态链接库在编译时隐式指定的搜索路径并写入的字段中从其他发行版直接拷贝已编译的文件可能会引发搜索路径不正确的问题相似的在版本依赖高度耦合的发行版中如版本相差过大也会引发的运行失败本地同版本编译后通常不会出现问题如果有直接拷贝已编译版本的需要可以对比确定是否符合要求但是不保证不会失败上面的例子中两个是这样的都是所以可以替换而下面的例子是在上使用一个的就会出错一个在而另一个在中定义的全局变量指向环境变量表而环境变量表存在于栈上所以通过指针的值就可以泄露出栈地址文件系统是内核提供的虚拟文件系统为访问系统内核数据的操作提供接口之所以说是虚拟文件系统是因为它不占用存储空间而只是占用了内存用户可以通过查看有关系统硬件及当前正在运行进程的信息甚至可以通过修改其中的某些内容来改变内核的运行状态在启动时传递给内核的相关参数信息通常由或等启动管理工具提供记录相关的信息已安装的内核所使用的密码算法及算法的详细信息已加载的所有块设备和字符设备的信息包含主设备号和设备组与主设备号对应的设备类型名系统上每个相关的中断号列表多路处理器平台上每个对于每个设备均有自己的中断号系统使用的物理内存以核心文件格式存储系统中关于当前内存的利用状况等的信息每个进程自身挂载名称空间中的所有挂载点列表文件的符号链接当前装入内核的所有模块名称列表可以由命令使用其中第一列表示模块名第二列表示此模块占用内存空间大小第三列表示此模块有多少实例被装入第四列表示此模块依赖于其它哪些模块第五列表示此模块的装载状态已经装入正在装入和正在卸载第六列表示此模块在内核内存中的偏移量保存着监视系统中所有活动的缓存的信息在文件系统下还有一些以数字命名的目录这些数字是进程的号而这些目录是进程目录目录下的所有文件如下然后会介绍几个比较重要的启动当前进程的完整命令指向启动当前进程的可执行文件的符号链接当前进程运行根目录的符号链接当前进程所占用的内存空间由和等系统调用使用不能被用户读取但可通过下面的查看这个文件大概是最常用的用于显示进程的内存区域映射信息这个文件表示当前进程的内核调用栈信息只有在内核编译启用选项才会生成该文件该文件包含了传递给进程的解释器信息即每一项都是由一个长度的加上一个长度的值构成每个值具体是做什么的可以用下面的办法显示出来对比看一看更详细的可以查看和值得一提的是所对应的值是一个叫做的的地址在漏洞利用方法中会用到参考章节该文件包含了进程的环境变量该文件包含了进程打开文件的情况月月月月月该文件包含了进程的状态信息一个目录包含当前进程的每一个线程的相关信息每个线程的信息分别放在一个由线程号命名的目录中该文件包含了进程正在执行的系统调用第一个值是系统调用号后面跟着是六个参数最后两个值分别是堆栈指针和指令计数器的值参考资料',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-11-18 16:54:29',
+  postMainColor: '',
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#18171d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f7f9fe')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+          const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+          const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+          const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+          if (t === undefined) {
+            if (isLightMode) activateLightMode()
+            else if (isDarkMode) activateDarkMode()
+            else if (isNotSpecified || hasNoSupport) {
+              const now = new Date()
+              const hour = now.getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addListener(e => {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><script defer src="mathjax_config.js"></script><script type="text/javascript" id="MathJax-script" defer src="https://unpkg.com/mathjax@3/es5/tex-chtml.js"></script><meta name="generator" content="Hexo 7.3.0"></head><body data-type="anzhiyu"><div id="web_bg"></div><div id="an_music_bg"></div><div id="loading-box" onclick="document.getElementById(&quot;loading-box&quot;).classList.add(&quot;loaded&quot;)"><div class="loading-bg"><img class="loading-img nolazyload" alt="加载头像" src="/img/avatar.jpg"/><div class="loading-image-dot"></div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.getElementById('loading-box').classList.add("loaded");
+  },
+  initLoading: () => {
+    document.getElementById('loading-box').classList.remove("loaded")
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+setTimeout(function(){preloader.endLoading();},10000)
+
+if (true) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.10/progress_bar/progress_bar.css"/><script async="async" src="https://cdn.cbd.int/pace-js@1.2.4/pace.min.js" data-pace-options="{ &quot;restartOnRequestAfter&quot;:false,&quot;eventLag&quot;:false}"></script><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><div id="nav-group"><span id="blog_name"><div class="back-home-button"><i class="anzhiyufont anzhiyu-icon-grip-vertical"></i><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://blog.anheyu.com/" title="博客"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/favicon.ico" alt="博客"/><span class="back-menu-item-text">博客</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">项目</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://image.anheyu.com/" title="安知鱼图床"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.anheyu.com/favicon.ico" alt="安知鱼图床"/><span class="back-menu-item-text">安知鱼图床</span></a></div></div></div></div><a id="site-name" href="/" accesskey="h"><div class="title">小鹤实验室</div><i class="anzhiyufont anzhiyu-icon-house-chimney"></i></a><div id="he-plugin-simple"></div><script>var WIDGET = {
+  "CONFIG": {
+    "modules": "0124",
+    "background": "2",
+    "tmpColor": "FFFFFF",
+    "tmpSize": "16",
+    "cityColor": "FFFFFF",
+    "citySize": "16",
+    "aqiColor": "E8D87B",
+    "aqiSize": "16",
+    "weatherIconSize": "24",
+    "alertIconSize": "18",
+    "padding": "10px 10px 10px 10px",
+    "shadow": "0",
+    "language": "auto",
+    "borderRadius": "20",
+    "fixed": "true",
+    "vertical": "top",
+    "horizontal": "left",
+    "left": "20",
+    "top": "7.1",
+    "key": "df245676fb434a0691ead1c63341cd94"
+  }
+}
+</script><link rel="stylesheet" href="https://widget.qweather.net/simple/static/css/he-simple.css?v=1.4.0"/><script src="https://widget.qweather.net/simple/static/js/he-simple.js?v=1.4.0"></script></span><div class="mask-name-container"><div id="name-container"><a id="page-name" href="javascript:anzhiyu.scrollToDest(0, 500)">PAGE_NAME</a></div></div><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/categories/"><i class="anzhiyufont anzhiyu-icon-shapes faa-tada" style="font-size: 0.9em;"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags faa-tada" style="font-size: 0.9em;"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 友链</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/link/"><i class="anzhiyufont anzhiyu-icon-link faa-tada" style="font-size: 0.9em;"></i><span> 友人帐</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/fcircle/"><i class="anzhiyufont anzhiyu-icon-artstation faa-tada" style="font-size: 0.9em;"></i><span> 朋友圈</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/comments/"><i class="anzhiyufont anzhiyu-icon-envelope faa-tada" style="font-size: 0.9em;"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 我的</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/music/"><i class="anzhiyufont anzhiyu-icon-music faa-tada" style="font-size: 0.9em;"></i><span> 音乐馆</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/album/"><i class="anzhiyufont anzhiyu-icon-images faa-tada" style="font-size: 0.9em;"></i><span> 相册集</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/air-conditioner/"><i class="anzhiyufont anzhiyu-icon-fan faa-tada" style="font-size: 0.9em;"></i><span> 小空调</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/about/"><i class="anzhiyufont anzhiyu-icon-paper-plane faa-tada" style="font-size: 0.9em;"></i><span> 关于本人</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/essay/"><i class="anzhiyufont anzhiyu-icon-lightbulb faa-tada" style="font-size: 0.9em;"></i><span> 闲言碎语</span></a></li><li><a class="site-page child faa-parent animated-hover" href="javascript:toRandomPost()"><i class="anzhiyufont anzhiyu-icon-shoe-prints1 faa-tada" style="font-size: 0.9em;"></i><span> 随便逛逛</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/equipment/"><i class="anzhiyufont anzhiyu-icon-dice-d20 faa-tada" style="font-size: 0.9em;"></i><span> 我的装备</span></a></li></ul></div></div></div><div id="nav-right"><div class="nav-button" id="randomPost_button"><a class="site-page" onclick="toRandomPost()" title="随机前往一个文章" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-dice"></i></a></div><input id="center-console" type="checkbox"/><label class="widget" for="center-console" title="中控台" onclick="anzhiyu.switchConsole();"><i class="left"></i><i class="widget center"></i><i class="widget right"></i></label><div id="console"><div class="console-card-group-reward"><ul class="reward-all console-card"><li class="reward-item"><a href="/img/weixing_money.jpg" target="_blank"><img class="post-qr-code-img" alt="微信" src="/img/weixing_money.jpg"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="/img/Alipay_money.jpg" target="_blank"><img class="post-qr-code-img" alt="支付宝" src="/img/Alipay_money.jpg"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div><div class="console-card-group"><div class="console-card-group-left"><div class="console-card" id="card-newest-comments"><div class="card-content"><div class="author-content-item-tips">互动</div><span class="author-content-item-title"> 最新评论</span></div><div class="aside-list"><span>正在加载中...</span></div></div></div><div class="console-card-group-right"><div class="console-card tags"><div class="card-content"><div class="author-content-item-tips">兴趣点</div><span class="author-content-item-title">寻找你感兴趣的领域</span></div></div><div class="console-card history"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-box-archiv"></i><span>文章</span></div><div class="card-archives"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/11/"><span class="card-archive-list-date">十一月 2024</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">22</span><span>篇</span></div></a></li></ul></div><hr/></div></div></div><div class="button-group"><div class="console-btn-item"><a class="darkmode_switchbutton" title="显示模式切换" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-moon"></i></a></div><div class="console-btn-item" id="consoleHideAside" onclick="anzhiyu.hideAsideBtn()" title="边栏显示控制"><a class="asideSwitch"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></a></div><div class="console-btn-item on" id="consoleCommentBarrage" onclick="anzhiyu.switchCommentBarrage()" title="热评开关"><a class="commentBarrage"><i class="anzhiyufont anzhiyu-icon-message"></i></a></div><div class="console-btn-item" id="consoleMusic" onclick="anzhiyu.musicToggle()" title="音乐开关"><a class="music-switch"><i class="anzhiyufont anzhiyu-icon-music"></i></a></div><div class="console-btn-item" id="consoleKeyboard" onclick="anzhiyu.keyboardToggle()" title="快捷键开关"><a class="keyboard-switch"><i class="anzhiyufont anzhiyu-icon-keyboard"></i></a></div></div><div class="console-mask" onclick="anzhiyu.hideConsole()" href="javascript:void(0);"></div></div><div class="nav-button" id="nav-totop"><a class="totopbtn" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i><span id="percent" onclick="anzhiyu.scrollToDest(0,500)">0</span></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);" title="切换"><i class="anzhiyufont anzhiyu-icon-bars"></i></a></div></div></div></nav><div id="post-info"><div id="post-firstinfo"><div class="meta-firstline"><a class="post-meta-original">原创</a><span class="post-meta-categories"><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-inbox post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E5%BC%80%E5%8F%91/" itemprop="url">编程开发</a></span><span class="article-meta tags"></span></div></div><h1 class="post-title" itemprop="name headline">操作系统(2)--Linux 基础</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="anzhiyufont anzhiyu-icon-calendar-days post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" itemprop="dateCreated datePublished" datetime="2024-11-18T04:36:29.000Z" title="发表于 2024-11-18 12:36:29">2024-11-18</time><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-history post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" itemprop="dateCreated datePublished" datetime="2024-11-18T08:54:29.235Z" title="更新于 2024-11-18 16:54:29">2024-11-18</time></span></div><div class="meta-secondline"><span class="post-meta-separator"></span><span class="post-meta-pv-cv" id="" data-flag-title="操作系统(2)--Linux 基础"><i class="anzhiyufont anzhiyu-icon-fw-eye post-meta-icon"></i><span class="post-meta-label" title="阅读量">阅读量:</span><span id="busuanzi_value_page_pv"><i class="anzhiyufont anzhiyu-icon-spinner anzhiyu-spin"></i></span></span><span class="post-meta-separator">       </span><span class="post-meta-position" title="作者IP属地为南京"><i class="anzhiyufont anzhiyu-icon-location-dot"></i>南京</span></div></div></div><section class="main-hero-waves-area waves-area"><svg class="waves-svg" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M -160 44 c 30 0 58 -18 88 -18 s 58 18 88 18 s 58 -18 88 -18 s 58 18 88 18 v 44 h -352 Z"></path></defs><g class="parallax"><use href="#gentle-wave" x="48" y="0"></use><use href="#gentle-wave" x="48" y="3"></use><use href="#gentle-wave" x="48" y="5"></use><use href="#gentle-wave" x="48" y="7"></use></g></svg></section><div id="post-top-cover"><img class="nolazyload" id="post-top-bg" src="/img/default_cover.jpg"></div></header><main id="blog-container"><div class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container" itemscope itemtype="http://example.com/2024/11/18/1.3_linux_basic/"><header><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E5%BC%80%E5%8F%91/" itemprop="url">编程开发</a><h1 id="CrawlerTitle" itemprop="name headline">操作系统(2)--Linux 基础</h1><span itemprop="author" itemscope itemtype="http://schema.org/Person">小鹤</span><time itemprop="dateCreated datePublished" datetime="2024-11-18T04:36:29.000Z" title="发表于 2024-11-18 12:36:29">2024-11-18</time><time itemprop="dateCreated datePublished" datetime="2024-11-18T08:54:29.235Z" title="更新于 2024-11-18 16:54:29">2024-11-18</time></header><h1 id="13-linux-基础">1.3 Linux 基础</h1>
+<ul>
+<li><a href="#常用基础命令">常用基础命令</a></li>
+<li><a href="#bash-快捷键">Bash 快捷键</a></li>
+<li><a href="#根目录结构">根目录结构</a></li>
+<li><a href="#进程管理">进程管理</a></li>
+<li><a href="#uid-和-gid">UID 和 GID</a></li>
+<li><a href="#权限设置">权限设置</a></li>
+<li><a href="#字节序">字节序</a></li>
+<li><a href="#输入输出">输入输出</a></li>
+<li><a href="#文件描述符">文件描述符</a></li>
+<li><a href="#核心转储">核心转储</a></li>
+<li><a href="#调用约定">调用约定</a></li>
+<li><a href="#环境变量">环境变量</a></li>
+<li><a href="#procfs">procfs</a></li>
+<li><a href="#参考资料">参考资料</a></li>
+</ul>
+<h2 id="常用基础命令">常用基础命令</h2>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">ls                  用来显示目标列表</span><br><span class="line"></span><br><span class="line">cd [path]           用来切换工作目录</span><br><span class="line"></span><br><span class="line">pwd                 以绝对路径的方式显示用户当前工作目录</span><br><span class="line"></span><br><span class="line">man [command]       查看Linux中的指令帮助、配置文件帮助和编程帮助等信息</span><br><span class="line"></span><br><span class="line">apropos [whatever]  在一些特定的包含系统命令的简短描述的数据库文件里查找关键字</span><br><span class="line"></span><br><span class="line">echo [string]       打印一行文本，参数“-e”可激活转义字符</span><br><span class="line"></span><br><span class="line">cat [file]          连接文件并打印到标准输出设备上</span><br><span class="line"></span><br><span class="line">less [file]         允许用户向前或向后浏览文字档案的内容</span><br><span class="line"></span><br><span class="line">mv [file1] [file2]  用来对文件或目录重新命名，或者将文件从一个目录移到另一个目录中</span><br><span class="line"></span><br><span class="line">cp [file1] [file2]  用来将一个或多个源文件或者目录复制到指定的目的文件或目录</span><br><span class="line"></span><br><span class="line">rm [file]           可以删除一个目录中的一个或多个文件或目录，也可以将某个目录及其下属的所有文件及其子目录均删除掉</span><br><span class="line"></span><br><span class="line">ps                  用于报告当前系统的进程状态</span><br><span class="line"></span><br><span class="line">top                 实时查看系统的整体运行情况</span><br><span class="line"></span><br><span class="line">kill                杀死一个进程</span><br><span class="line"></span><br><span class="line">ifconfig            查看或设置网络设备</span><br><span class="line"></span><br><span class="line">ping                查看网络上的主机是否工作</span><br><span class="line"></span><br><span class="line">netstat             显示网络连接、路由表和网络接口信息</span><br><span class="line"></span><br><span class="line">nc(netcat)          建立 TCP 和 UDP 连接并监听</span><br><span class="line"></span><br><span class="line">su                  切换当前用户身份到其他用户身份</span><br><span class="line"></span><br><span class="line">touch [file]        创建新的空文件</span><br><span class="line"></span><br><span class="line">mkdir [dir]         创建目录</span><br><span class="line"></span><br><span class="line">chmod               变更文件或目录的权限</span><br><span class="line"></span><br><span class="line">chown               变更某个文件或目录的所有者和所属组</span><br><span class="line"></span><br><span class="line">nano / vim / emacs  字符终端的文本编辑器</span><br><span class="line"></span><br><span class="line">exit                退出 shell</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">管道命令符 &quot;|&quot;       将一个命令的标准输出作为另一个命令的标准输入</span><br></pre></td></tr></table></figure>
+
+<p>使用变量：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">var=value         给变量var赋值value</span><br><span class="line"></span><br><span class="line">$var, $&#123;var&#125;      取变量的值</span><br><span class="line"></span><br><span class="line">`cmd`, $(cmd)     代换标准输出</span><br><span class="line"></span><br><span class="line">&#x27;string&#x27;          非替换字符串</span><br><span class="line"></span><br><span class="line">&quot;string&quot;          可替换字符串</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">$ var=&quot;test&quot;;</span><br><span class="line">$ echo $var</span><br><span class="line">test</span><br><span class="line">$ echo &#x27;This is a $var&#x27;;</span><br><span class="line">This is a $var</span><br><span class="line">$ echo &quot;This is a $var&quot;;</span><br><span class="line">This is a test</span><br><span class="line"></span><br><span class="line">$ echo `date`;</span><br><span class="line">2017年 11月 06日 星期一 14:40:07 CST</span><br><span class="line">$ $(bash)</span><br><span class="line"></span><br><span class="line">$ echo $0</span><br><span class="line">/bin/bash</span><br><span class="line">$ $($0)</span><br></pre></td></tr></table></figure>
+
+<h2 id="bash-快捷键">Bash 快捷键</h2>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">Up(Down)          上（下）一条指令</span><br><span class="line"></span><br><span class="line">Ctrl + c          终止当前进程</span><br><span class="line"></span><br><span class="line">Ctrl + z          挂起当前进程，使用“fg”可唤醒</span><br><span class="line"></span><br><span class="line">Ctrl + d          删除光标处的字符</span><br><span class="line"></span><br><span class="line">Ctrl + l          清屏</span><br><span class="line"></span><br><span class="line">Ctrl + a          移动到命令行首</span><br><span class="line"></span><br><span class="line">Ctrl + e          移动到命令行尾</span><br><span class="line"></span><br><span class="line">Ctrl + b          按单词后移（向左）</span><br><span class="line"></span><br><span class="line">Ctrl + f          按单词前移（向右）</span><br><span class="line"></span><br><span class="line">Ctrl + Shift + c  复制</span><br><span class="line"></span><br><span class="line">Ctrl + Shift + v  粘贴</span><br></pre></td></tr></table></figure>
+
+<p>更多细节请查看：<a
+target="_blank" rel="noopener" href="https://ss64.com/bash/syntax-keyboard.html">Bash Keyboard
+Shortcuts</a></p>
+<h2 id="根目录结构">根目录结构</h2>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">$ uname -a</span><br><span class="line">Linux manjaro 4.11.5-1-ARCH #1 SMP PREEMPT Wed Jun 14 16:19:27 CEST 2017 x86_64 GNU/Linux</span><br><span class="line">$ ls -al /</span><br><span class="line">drwxr-xr-x  17 root root  4096 Jun 28 20:17 .</span><br><span class="line">drwxr-xr-x  17 root root  4096 Jun 28 20:17 ..</span><br><span class="line">lrwxrwxrwx   1 root root     7 Jun 21 22:44 bin -&gt; usr/bin</span><br><span class="line">drwxr-xr-x   4 root root  4096 Aug 10 22:50 boot</span><br><span class="line">drwxr-xr-x  20 root root  3140 Aug 11 11:43 dev</span><br><span class="line">drwxr-xr-x 101 root root  4096 Aug 14 13:54 etc</span><br><span class="line">drwxr-xr-x   3 root root  4096 Apr  8 19:59 home</span><br><span class="line">lrwxrwxrwx   1 root root     7 Jun 21 22:44 lib -&gt; usr/lib</span><br><span class="line">lrwxrwxrwx   1 root root     7 Jun 21 22:44 lib64 -&gt; usr/lib</span><br><span class="line">drwx------   2 root root 16384 Apr  8 19:55 lost+found</span><br><span class="line">drwxr-xr-x   2 root root  4096 Oct  1  2015 mnt</span><br><span class="line">drwxr-xr-x  15 root root  4096 Jul 15 20:10 opt</span><br><span class="line">dr-xr-xr-x 267 root root     0 Aug  3 09:41 proc</span><br><span class="line">drwxr-x---   9 root root  4096 Jul 22 22:59 root</span><br><span class="line">drwxr-xr-x  26 root root   660 Aug 14 21:08 run</span><br><span class="line">lrwxrwxrwx   1 root root     7 Jun 21 22:44 sbin -&gt; usr/bin</span><br><span class="line">drwxr-xr-x   4 root root  4096 May 28 22:07 srv</span><br><span class="line">dr-xr-xr-x  13 root root     0 Aug  3 09:41 sys</span><br><span class="line">drwxrwxrwt  36 root root  1060 Aug 14 21:27 tmp</span><br><span class="line">drwxr-xr-x  11 root root  4096 Aug 14 13:54 usr</span><br><span class="line">drwxr-xr-x  12 root root  4096 Jun 28 20:17 var</span><br></pre></td></tr></table></figure>
+
+<p>由于不同的发行版会有略微的不同，我们这里使用的是基于 Arch 的发行版
+Manjaro，以上就是根目录下的内容，我们介绍几个重要的目录：</p>
+<ul>
+<li><code>/bin</code>、<code>/sbin</code>：链接到
+<code>/usr/bin</code>，存放 Linux 一些核心的二进制文件，其包含的命令可在
+shell 上运行。</li>
+<li><code>/boot</code>：操作系统启动时要用到的程序。</li>
+<li><code>/dev</code>：包含了所有 Linux
+系统中使用的外部设备。需要注意的是这里并不是存放外部设备的驱动程序，而是一个访问这些设备的端口。</li>
+<li><code>/etc</code>：存放系统管理时要用到的各种配置文件和子目录。</li>
+<li><code>/etc/rc.d</code>：存放 Linux 启动和关闭时要用到的脚本。</li>
+<li><code>/home</code>：普通用户的主目录。</li>
+<li><code>/lib</code>、<code>/lib64</code>：链接到
+<code>/usr/lib</code>，存放系统及软件需要的动态链接共享库。</li>
+<li><code>/mnt</code>：这个目录让用户可以临时挂载其他的文件系统。</li>
+<li><code>/proc</code>：虚拟的目录，是系统内存的映射。可直接访问这个目录来获取系统信息。</li>
+<li><code>/root</code>：系统管理员的主目录。</li>
+<li><code>/srv</code>：存放一些服务启动之后需要提取的数据。</li>
+<li><code>/sys</code>：该目录下安装了一个文件系统
+sysfs。该文件系统是内核设备树的一个直观反映。当一个内核对象被创建时，对应的文件和目录也在内核对象子系统中被创建。</li>
+<li><code>/tmp</code>：公用的临时文件存放目录。</li>
+<li><code>/usr</code>：应用程序和文件几乎都在这个目录下。</li>
+<li><code>/usr/src</code>：内核源代码的存放目录。</li>
+<li><code>/var</code>：存放了很多服务的日志信息。</li>
+</ul>
+<h2 id="进程管理">进程管理</h2>
+<ul>
+<li>top
+<ul>
+<li>可以实时动态地查看系统的整体运行情况。</li>
+</ul></li>
+<li>ps
+<ul>
+<li>用于报告当前系统的进程状态。可以搭配 kill
+指令随时中断、删除不必要的程序。</li>
+<li>查看某进程的状态：<code>$ ps -aux | grep [file]</code>，其中返回内容最左边的数字为进程号（PID）。</li>
+</ul></li>
+<li>kill
+<ul>
+<li>用来删除执行中的程序或工作。</li>
+<li>删除进程某 PID 指定的进程：<code>$ kill [PID]</code></li>
+</ul></li>
+</ul>
+<h2 id="uid-和-gid">UID 和 GID</h2>
+<p>Linux 是一个支持多用户的操作系统，每个用户都有 User ID(UID) 和 Group
+ID(GID)，UID 是对一个用户的单一身份标识，而 GID 则对应多个
+UID。知道某个用户的 UID 和 GID 是非常有用的，一些程序可能就需要 UID/GID
+来运行。可以使用 <code>id</code> 命令来查看：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ id root</span><br><span class="line">uid=0(root) gid=0(root) groups=0(root),1(bin),2(daemon),3(sys),4(adm),6(disk),10(wheel),19(log)</span><br><span class="line">$ id firmy</span><br><span class="line">uid=1000(firmy) gid=1000(firmy) groups=1000(firmy),3(sys),7(lp),10(wheel),90(network),91(video),93(optical),95(storage),96(scanner),98(power),56(bumblebee)</span><br></pre></td></tr></table></figure>
+
+<p>UID 为 0 的 root
+用户类似于系统管理员，它具有系统的完全访问权。我自己新建的用户 firmy，其
+UID 为 1000，是一个普通用户。GID 的关系存储在 <code>/etc/group</code>
+文件中：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ cat /etc/group</span><br><span class="line">root:x:0:root</span><br><span class="line">bin:x:1:root,bin,daemon</span><br><span class="line">daemon:x:2:root,bin,daemon</span><br><span class="line">sys:x:3:root,bin,firmy</span><br><span class="line">......</span><br></pre></td></tr></table></figure>
+
+<p>所有用户的信息（除了密码）都保存在 <code>/etc/passwd</code>
+文件中，而为了安全起见，加密过的用户密码保存在 <code>/etc/shadow</code>
+文件中，此文件只有 root 权限可以访问。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ sudo cat /etc/shadow</span><br><span class="line">root:$6$root$wvK.pRXFEH80GYkpiu1tEWYMOueo4tZtq7mYnldiyJBZDMe.mKwt.WIJnehb4bhZchL/93Oe1ok9UwxYf79yR1:17264::::::</span><br><span class="line">firmy:$6$firmy$dhGT.WP91lnpG5/10GfGdj5L1fFVSoYlxwYHQn.llc5eKOvr7J8nqqGdVFKykMUSDNxix5Vh8zbXIapt0oPd8.:17264:0:99999:7:::</span><br></pre></td></tr></table></figure>
+
+<p>由于普通用户的权限比较低，这里使用 <code>sudo</code>
+命令可以让普通用户以 root 用户的身份运行某一命令。使用 <code>su</code>
+命令则可以切换到一个不同的用户：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ whoami</span><br><span class="line">firmy</span><br><span class="line">$ su root</span><br><span class="line"># whoami</span><br><span class="line">root</span><br></pre></td></tr></table></figure>
+
+<p><code>whoami</code> 用于打印当前有效的用户名称，shell 中普通用户以
+<code>$</code> 开头，root 用户以 <code>#</code>
+开头。在输入密码后，我们已经从 firmy 用户转换到 root 用户了。</p>
+<h2 id="权限设置">权限设置</h2>
+<p>在　Linux 中，文件或目录权限的控制分别以读取、写入、执行 3
+种一般权限来区分，另有 3 种特殊权限可供运用。</p>
+<p>使用 <code>ls -l [file]</code> 来查看某文件或目录的信息：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ ls -l /</span><br><span class="line">lrwxrwxrwx   1 root root     7 Jun 21 22:44 bin -&gt; usr/bin</span><br><span class="line">drwxr-xr-x   4 root root  4096 Jul 28 08:48 boot</span><br><span class="line">-rw-r--r--   1 root root 18561 Apr  2 22:48 desktopfs-pkgs.txt</span><br></pre></td></tr></table></figure>
+
+<p>第一栏从第二个字母开始就是权限字符串，权限表示三个为一组，依次是所有者权限、组权限、其他人权限。每组的顺序均为
+<code>rwx</code>，如果有相应权限，则表示成相应字母，如果不具有相应权限，则用
+<code>-</code> 表示。</p>
+<ul>
+<li><code>r</code>：读取权限，数字代号为 “4”</li>
+<li><code>w</code>：写入权限，数字代号为 “2”</li>
+<li><code>x</code>：执行或切换权限，数字代号为 “1”</li>
+</ul>
+<p>通过第一栏的第一个字母可知，第一行是一个链接文件
+（<code>l</code>），第二行是个目录（<code>d</code>），第三行是个普通文件（<code>-</code>）。</p>
+<p>用户可以使用 <code>chmod</code>
+指令去变更文件与目录的权限。权限范围被指定为所有者（<code>u</code>）、所属组（<code>g</code>）、其他人（<code>o</code>）和所有人（<code>a</code>）。</p>
+<ul>
+<li>-R：递归处理，将指令目录下的所有文件及子目录一并处理；</li>
+<li>&lt;权限范围&gt;+&lt;权限设置&gt;：开启权限范围的文件或目录的该选项权限设置
+<ul>
+<li><code>$ chmod a+r [file]</code>：赋予所有用户读取权限</li>
+</ul></li>
+<li>&lt;权限范围&gt;-&lt;权限设置&gt;：关闭权限范围的文件或目录的该选项权限设置
+<ul>
+<li><code>$ chmod u-w [file]</code>：取消所有者写入权限</li>
+</ul></li>
+<li>&lt;权限范围&gt;=&lt;权限设置&gt;：指定权限范围的文件或目录的该选项权限设置；
+<ul>
+<li><code>$ chmod g=x [file]</code>：指定组权限为可执行</li>
+<li><code>$ chmod o=rwx [file]</code>：制定其他人权限为可读、可写和可执行</li>
+</ul></li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://postimg.cc/T52Vx6yn"><img
+src="https://i.postimg.cc/T1gCr2fN/1-3-file.png"
+alt="1-3-file.png" /></a></p>
+<h2 id="字节序">字节序</h2>
+<p>目前计算机中采用两种字节存储机制：大端（Big-endian）和小端（Little-endian）。</p>
+<blockquote>
+<p>MSB (Most Significan Bit/Byte)：最重要的位或最重要的字节。</p>
+<p>LSB (Least Significan Bit/Byte)：最不重要的位或最不重要的字节。</p>
+</blockquote>
+<p>Big-endian 规定 MSB 在存储时放在低地址，在传输时放在流的开始；LSB
+存储时放在高地址，在传输时放在流的末尾。Little-endian 则相反。常见的
+Intel 处理器使用 Little-endian，而 PowerPC 系列处理器则使用
+Big-endian，另外 TCP/IP 协议和 Java 虚拟机的字节序也是 Big-endian。</p>
+<p>例如十六进制整数 0x12345678 存入以 1000H 开始的内存中：</p>
+<p><a target="_blank" rel="noopener" href="https://postimg.cc/Q9JQvtMX"><img
+src="https://i.postimg.cc/C1WcBnTf/1-3-byte-order.png"
+alt="1-3-byte-order.png" /></a></p>
+<p>我们在内存中实际地看一下，在地址 <code>0xffffd584</code> 处有字符
+<code>1234</code>，在地址 <code>0xffffd588</code> 处有字符
+<code>5678</code>。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">gdb-peda$ x/w 0xffffd584</span><br><span class="line">0xffffd584:     0x34333231</span><br><span class="line">gdb-peda$ x/4wb 0xffffd584</span><br><span class="line">0xffffd584:     0x31    0x32    0x33    0x34</span><br><span class="line">gdb-peda$ python print(&#x27;\x31\x32\x33\x34&#x27;)</span><br><span class="line">1234</span><br><span class="line"></span><br><span class="line">gdb-peda$ x/w 0xffffd588</span><br><span class="line">0xffffd588:     0x38373635</span><br><span class="line">gdb-peda$ x/4wb 0xffffd588</span><br><span class="line">0xffffd588:     0x35    0x36    0x37    0x38</span><br><span class="line">gdb-peda$ python print(&#x27;\x35\x36\x37\x38&#x27;)</span><br><span class="line">5678</span><br><span class="line"></span><br><span class="line">gdb-peda$ x/2w 0xffffd584</span><br><span class="line">0xffffd584:     0x34333231      0x38373635</span><br><span class="line">gdb-peda$ x/8wb 0xffffd584</span><br><span class="line">0xffffd584:     0x31    0x32    0x33    0x34    0x35    0x36    0x37    0x38</span><br><span class="line">gdb-peda$ python print(&#x27;\x31\x32\x33\x34\x35\x35\x36\x37\x38&#x27;)</span><br><span class="line">123455678</span><br><span class="line">db-peda$ x/s 0xffffd584</span><br><span class="line">0xffffd584:     &quot;12345678&quot;</span><br></pre></td></tr></table></figure>
+
+<h2 id="输入输出">输入输出</h2>
+<ul>
+<li>使用命令的输出作为可执行文件的输入参数
+<ul>
+<li><code>$ ./vulnerable `your_command_here`</code></li>
+<li><code>$ ./vulnerable $(your_command_here)</code></li>
+</ul></li>
+<li>使用命令作为输入
+<ul>
+<li><code>$ your_command_here | ./vulnerable</code></li>
+</ul></li>
+<li>将命令行输出写入文件
+<ul>
+<li><code>$ your_command_here &gt; filename</code></li>
+</ul></li>
+<li>使用文件作为输入
+<ul>
+<li><code>$ ./vulnerable &lt; filename</code></li>
+</ul></li>
+</ul>
+<h2 id="文件描述符">文件描述符</h2>
+<p>在 Linux
+系统中一切皆可以看成是文件，文件又分为：普通文件、目录文件、链接文件和设备文件。文件描述符（file
+descriptor）是内核管理已被打开的文件所创建的索引，使用一个非负整数来指代被打开的文件。</p>
+<p>标准文件描述符如下：</p>
+<table>
+<thead>
+<tr>
+<th>文件描述符</th>
+<th>用途</th>
+<th>stdio 流</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>标准输入</td>
+<td>stdin</td>
+</tr>
+<tr>
+<td>1</td>
+<td>标准输出</td>
+<td>stdout</td>
+</tr>
+<tr>
+<td>2</td>
+<td>标准错误</td>
+<td>stderr</td>
+</tr>
+</tbody>
+</table>
+<p>当一个程序使用 <code>fork()</code>
+生成一个子进程后，子进程会继承父进程所打开的文件表，此时，父子进程使用同一个文件表，这可能导致一些安全问题。如果使用
+<code>vfork()</code>，子进程虽然运行于父进程的空间，但拥有自己的进程表项。</p>
+<h2 id="核心转储">核心转储</h2>
+<p>当程序运行的过程中异常终止或崩溃，操作系统会将程序当时的内存、寄存器状态、堆栈指针、内存管理信息等记录下来，保存在一个文件中，这种行为就叫做核心转储（Core
+Dump）。</p>
+<h3 id="会产生核心转储的信号">会产生核心转储的信号</h3>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>Action</th>
+<th>Comment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SIGQUIT</td>
+<td>Core</td>
+<td>Quit from keyboard</td>
+</tr>
+<tr>
+<td>SIGILL</td>
+<td>Core</td>
+<td>Illegal Instruction</td>
+</tr>
+<tr>
+<td>SIGABRT</td>
+<td>Core</td>
+<td>Abort signal from abort</td>
+</tr>
+<tr>
+<td>SIGSEGV</td>
+<td>Core</td>
+<td>Invalid memory reference</td>
+</tr>
+<tr>
+<td>SIGTRAP</td>
+<td>Core</td>
+<td>Trace/breakpoint trap</td>
+</tr>
+</tbody>
+</table>
+<h3 id="开启核心转储">开启核心转储</h3>
+<ul>
+<li><p>输入命令 <code>ulimit -c</code>，输出结果为
+<code>0</code>，说明默认是关闭的。</p></li>
+<li><p>输入命令 <code>ulimit -c unlimited</code>
+即可在当前终端开启核心转储功能。</p></li>
+<li><p>如果想让核心转储功能永久开启，可以修改文件
+<code>/etc/security/limits.conf</code>，增加一行：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#&lt;domain&gt;      &lt;type&gt;  &lt;item&gt;         &lt;value&gt;</span><br><span class="line">*               soft    core            unlimited</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="修改转储文件保存路径">修改转储文件保存路径</h3>
+<ul>
+<li><p>通过修改
+<code>/proc/sys/kernel/core_uses_pid</code>，可以使生成的核心转储文件名变为
+<code>core.[pid]</code> 的模式。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># echo 1 &gt; /proc/sys/kernel/core_uses_pid</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>还可以修改 <code>/proc/sys/kernel/core_pattern</code>
+来控制生成核心转储文件的保存位置和文件名格式。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># echo /tmp/core-%e-%p-%t &gt; /proc/sys/kernel/core_pattern</span><br></pre></td></tr></table></figure>
+
+<p>此时生成的文件保存在 <code>/tmp/</code> 目录下，文件名格式为
+<code>core-[filename]-[pid]-[time]</code>。</p></li>
+</ul>
+<h3 id="使用-gdb-调试核心转储文件">使用 gdb 调试核心转储文件</h3>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gdb [filename] [core file]</span><br></pre></td></tr></table></figure>
+
+<h3 id="例子">例子</h3>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">$ cat core.c</span><br><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">void main(int argc, char **argv) &#123;</span><br><span class="line">    char buf[5];</span><br><span class="line">    scanf(&quot;%s&quot;, buf);</span><br><span class="line">&#125;</span><br><span class="line">$ gcc -m32 -fno-stack-protector core.c</span><br><span class="line">$ ./a.out</span><br><span class="line">AAAAAAAAAAAAAAAAAAAA</span><br><span class="line">Segmentation fault (core dumped)</span><br><span class="line">$ file /tmp/core-a.out-12444-1503198911</span><br><span class="line">/tmp/core-a.out-12444-1503198911: ELF 32-bit LSB core file Intel 80386, version 1 (SYSV), SVR4-style, from &#x27;./a.out&#x27;, real uid: 1000, effective uid: 1000, real gid: 1000, effective gid: 1000, execfn: &#x27;./a.out&#x27;, platform: &#x27;i686&#x27;</span><br><span class="line">$ gdb a.out /tmp/core-a.out-12444-1503198911 -q</span><br><span class="line">Reading symbols from a.out...(no debugging symbols found)...done.</span><br><span class="line">[New LWP 12444]</span><br><span class="line">Core was generated by `./a.out&#x27;.</span><br><span class="line">Program terminated with signal SIGSEGV, Segmentation fault.</span><br><span class="line">#0  0x5655559b in main ()</span><br><span class="line">gdb-peda$ info frame</span><br><span class="line">Stack level 0, frame at 0x41414141:</span><br><span class="line"> eip = 0x5655559b in main; saved eip = &lt;not saved&gt;</span><br><span class="line"> Outermost frame: Cannot access memory at address 0x4141413d</span><br><span class="line"> Arglist at 0x41414141, args:</span><br><span class="line"> Locals at 0x41414141, Previous frame&#x27;s sp is 0x41414141</span><br><span class="line">Cannot access memory at address 0x4141413d</span><br></pre></td></tr></table></figure>
+
+<h2 id="调用约定">调用约定</h2>
+<p>函数调用约定是对函数调用时如何传递参数的一种约定。关于它的约定有许多种，下面我们分别从内核接口和用户接口介绍
+32 位和 64 位 Linux 的调用约定。</p>
+<h3 id="内核接口">内核接口</h3>
+<p><strong>x86-32 系统调用约定</strong>：Linux
+系统调用使用寄存器传递参数。<code>eax</code> 为
+syscall_number，<code>ebx</code>、<code>ecx</code>、<code>edx</code>、<code>esi</code>、<code>ebp</code>
+用于将 6 个参数传递给系统调用。返回值保存在 <code>eax</code>
+中。所有其他寄存器（包括 EFLAGS）都保留在 <code>int 0x80</code> 中。</p>
+<p><strong>x86-64
+系统调用约定</strong>：内核接口使用的寄存器有：<code>rdi</code>、<code>rsi</code>、<code>rdx</code>、<code>r10</code>、<code>r8</code>、<code>r9</code>。系统调用通过
+<code>syscall</code> 指令完成。除了 <code>rcx</code>、<code>r11</code>
+和 <code>rax</code>，其他的寄存器都被保留。系统调用的编号必须在寄存器
+<code>rax</code> 中传递。系统调用的参数限制为 6
+个，不直接从堆栈上传递任何参数。返回时，<code>rax</code>
+中包含了系统调用的结果。而且只有 INTEGER 或者 MEMORY
+类型的值才会被传递给内核。</p>
+<h3 id="用户接口">用户接口</h3>
+<p><strong>x86-32
+函数调用约定</strong>：参数通过栈进行传递。最后一个参数第一个被放入栈中，直到所有的参数都放置完毕，然后执行
+call 指令。这也是 Linux 上 C 语言函数的方式。</p>
+<p><strong>x86-64 函数调用约定</strong>：x86-64
+下通过寄存器传递参数，这样做比通过栈有更高的效率。它避免了内存中参数的存取和额外的指令。根据参数类型的不同，会使用寄存器或传参方式。如果参数的类型是
+MEMORY，则在栈上传递参数。如果类型是 INTEGER，则顺序使用
+<code>rdi</code>、<code>rsi</code>、<code>rdx</code>、<code>rcx</code>、<code>r8</code>
+和 <code>r9</code>。所以如果有多于 6 个的 INTEGER
+参数，则后面的参数在栈上传递。</p>
+<h2 id="环境变量">环境变量</h2>
+<p>环境变量字符串都是 <code>name=value</code> 这样的形式。大多数 name
+由大写字母加下划线组成，一般把 name 部分叫做环境变量名，value
+部分则是环境变量的值，而且 value 需要以 <code>'\0'</code> 结尾。</p>
+<p>环境变量定义了该进程的运行环境。</p>
+<h3 id="分类">分类</h3>
+<ul>
+<li>按照生命周期划分
+<ul>
+<li>永久环境变量：修改相关配置文件，永久生效。</li>
+<li>临时环境变量：使用 <code>export</code>
+命令，在当前终端下生效，关闭终端后失效。</li>
+</ul></li>
+<li>按照作用域划分
+<ul>
+<li>系统环境变量：对该系统中所有用户生效。</li>
+<li>用户环境变量：对特定用户生效。</li>
+</ul></li>
+</ul>
+<h3 id="设置方法">设置方法</h3>
+<ul>
+<li><p>在文件 <code>/etc/profile</code>
+中添加变量，这种方法对所有用户永久生效。如：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># Set our default path</span><br><span class="line">PATH=&quot;/usr/local/sbin:/usr/local/bin:/usr/bin&quot;</span><br><span class="line">export PATH</span><br></pre></td></tr></table></figure>
+
+<p>添加后执行命令 <code>source /etc/profile</code> 使其生效。</p></li>
+<li><p>在文件 <code>~/.bash_profile</code>
+中添加变量，这种方法对当前用户永久生效。其余同上。</p></li>
+<li><p>直接运行命令 <code>export</code>
+定义变量，这种方法只对当前终端临时生效。</p></li>
+</ul>
+<h3 id="常用变量">常用变量</h3>
+<p>使用命令 <code>echo</code> 打印变量：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$ echo $PATH</span><br><span class="line">/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl</span><br><span class="line">$ echo $HOME</span><br><span class="line">/home/firmy</span><br><span class="line">$ echo $LOGNAME</span><br><span class="line">firmy</span><br><span class="line">$ echo $HOSTNAME</span><br><span class="line">firmy-pc</span><br><span class="line">$ echo $SHELL</span><br><span class="line">/bin/bash</span><br><span class="line">$ echo $LANG</span><br><span class="line">en_US.UTF-8</span><br></pre></td></tr></table></figure>
+
+<p>使用命令 <code>env</code> 可以打印出所有环境变量：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ env</span><br><span class="line">COLORFGBG=15;0</span><br><span class="line">COLORTERM=truecolor</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>使用命令 <code>set</code> 可以打印出所有本地定义的 shell 变量：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ set</span><br><span class="line">&#x27;!&#x27;=0</span><br><span class="line">&#x27;#&#x27;=0</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>使用命令 <code>unset</code> 可以清除变量：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">unset $变量名</span><br></pre></td></tr></table></figure>
+
+<h3 id="ld_preload">LD_PRELOAD</h3>
+<p>该环境变量可以定义在程序运行前优先加载的动态链接库。在 pwn
+题目中，我们可能需要一个特定的 libc，这时就可以定义该变量：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LD_PRELOAD=/path/to/libc.so ./binary</span><br></pre></td></tr></table></figure>
+
+<p>一个例子：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ ldd /bin/true</span><br><span class="line">  linux-vdso.so.1 =&gt;  (0x00007fff9a9fe000)</span><br><span class="line">  libc.so.6 =&gt; /lib/x86_64-linux-gnu/libc.so.6 (0x00007f1c083d9000)</span><br><span class="line">  /lib64/ld-linux-x86-64.so.2 (0x0000557bcce6c000)</span><br><span class="line">$ LD_PRELOAD=~/libc.so.6 ldd /bin/true</span><br><span class="line">  linux-vdso.so.1 =&gt;  (0x00007ffee55e9000)</span><br><span class="line">  /home/firmy/libc.so.6 (0x00007f4a28cfc000)</span><br><span class="line">  /lib64/ld-linux-x86-64.so.2 (0x000055f33bc50000)</span><br></pre></td></tr></table></figure>
+
+<p>注意，在加载动态链接库时需要使用 <code>ld.so</code>
+进行重定位，通常被符号链接到 <code>/lib64/ld-linux-x86-64.so</code>
+中。动态链接库在编译时隐式指定 <code>ld.so</code> 的搜索路径，并写入 ELF
+Header 的 INTERP 字段中。从其他发行版直接拷贝已编译的 <code>.so</code>
+文件可能会引发 <code>ld.so</code>
+搜索路径不正确的问题。相似的，在版本依赖高度耦合的发行版中(如
+ArchLinux)，版本相差过大也会引发 <code>ld.so</code> 的运行失败。</p>
+<p>本地同版本编译后通常不会出现问题。如果有直接拷贝已编译版本的需要，可以对比
+<code>interpreter</code> 确定是否符合要求，但是不保证不会失败。</p>
+<p>上面的例子中两个 libc 是这样的：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ file /lib/x86_64-linux-gnu/libc-2.23.so</span><br><span class="line">/lib/x86_64-linux-gnu/libc-2.23.so: ELF 64-bit LSB shared object, x86-64, version 1 (GNU/Linux), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=088a6e00a1814622219f346b41e775b8dd46c518, for GNU/Linux 2.6.32, stripped</span><br><span class="line">$ file ~/libc.so.6</span><br><span class="line">/home/firmy/libc.so.6: ELF 64-bit LSB shared object, x86-64, version 1 (GNU/Linux), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=088a6e00a1814622219f346b41e775b8dd46c518, for GNU/Linux 2.6.32, stripped</span><br></pre></td></tr></table></figure>
+
+<p>都是
+<code>interpreter /lib64/ld-linux-x86-64.so.2</code>，所以可以替换。</p>
+<p>而下面的例子是在 Arch Linux 上使用一个 Ubuntu 的 libc，就会出错：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ ldd /bin/true</span><br><span class="line">        linux-vdso.so.1 (0x00007ffc969df000)</span><br><span class="line">        libc.so.6 =&gt; /usr/lib/libc.so.6 (0x00007f7ddde17000)</span><br><span class="line">        /lib64/ld-linux-x86-64.so.2 =&gt; /usr/lib64/ld-linux-x86-64.so.2 (0x00007f7dde3d7000)</span><br><span class="line">$ LD_PRELOAD=~/libc.so.6 ldd /bin/true</span><br><span class="line">Illegal instruction (core dumped)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ file /usr/lib/libc-2.26.so</span><br><span class="line">/usr/lib/libc-2.26.so: ELF 64-bit LSB shared object, x86-64, version 1 (GNU/Linux), dynamically linked, interpreter /usr/lib/ld-linux-x86-64.so.2, BuildID[sha1]=458fd9997a454786f071cfe2beb234542c1e871f, for GNU/Linux 3.2.0, not stripped</span><br><span class="line">$ file ~/libc.so.6</span><br><span class="line">/home/firmy/libc.so.6: ELF 64-bit LSB shared object, x86-64, version 1 (GNU/Linux), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=088a6e00a1814622219f346b41e775b8dd46c518, for GNU/Linux 2.6.32, stripped</span><br></pre></td></tr></table></figure>
+
+<p>一个在
+<code>interpreter /usr/lib/ld-linux-x86-64.so.2</code>，而另一个在
+<code>interpreter /lib64/ld-linux-x86-64.so.2</code>。</p>
+<h3 id="environ">environ</h3>
+<p>libc 中定义的全局变量 <code>environ</code>
+指向环境变量表。而环境变量表存在于栈上，所以通过 <code>environ</code>
+指针的值就可以泄露出栈地址。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">gdb-peda$ vmmap libc</span><br><span class="line">Start              End                Perm      Name</span><br><span class="line">0x00007ffff7a1c000 0x00007ffff7bcf000 r-xp      /usr/lib/libc-2.27.so</span><br><span class="line">0x00007ffff7bcf000 0x00007ffff7dce000 ---p      /usr/lib/libc-2.27.so</span><br><span class="line">0x00007ffff7dce000 0x00007ffff7dd2000 r--p      /usr/lib/libc-2.27.so</span><br><span class="line">0x00007ffff7dd2000 0x00007ffff7dd4000 rw-p      /usr/lib/libc-2.27.so</span><br><span class="line">gdb-peda$ vmmap stack</span><br><span class="line">Start              End                Perm      Name</span><br><span class="line">0x00007ffffffde000 0x00007ffffffff000 rw-p      [stack]</span><br><span class="line">gdb-peda$ shell nm -D /usr/lib/libc-2.27.so | grep environ</span><br><span class="line">00000000003b8ee0 V environ</span><br><span class="line">00000000003b8ee0 V _environ</span><br><span class="line">00000000003b8ee0 B __environ</span><br><span class="line">gdb-peda$ x/gx 0x00007ffff7a1c000 + 0x00000000003b8ee0</span><br><span class="line">0x7ffff7dd4ee0 &lt;environ&gt;:       0x00007fffffffde48</span><br><span class="line">gdb-peda$ x/5gx 0x00007fffffffde48</span><br><span class="line">0x7fffffffde48: 0x00007fffffffe1da      0x00007fffffffe1e9</span><br><span class="line">0x7fffffffde58: 0x00007fffffffe1fd      0x00007fffffffe233</span><br><span class="line">0x7fffffffde68: 0x00007fffffffe25f</span><br><span class="line">gdb-peda$ x/5s 0x00007fffffffe1da</span><br><span class="line">0x7fffffffe1da: &quot;COLORFGBG=15;0&quot;</span><br><span class="line">0x7fffffffe1e9: &quot;COLORTERM=truecolor&quot;</span><br><span class="line">0x7fffffffe1fd: &quot;DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus&quot;</span><br><span class="line">0x7fffffffe233: &quot;DESKTOP_SESSION=/usr/share/xsessions/plasma&quot;</span><br><span class="line">0x7fffffffe25f: &quot;DISPLAY=:0&quot;</span><br></pre></td></tr></table></figure>
+
+<h2 id="procfs">procfs</h2>
+<p>procfs 文件系统是 Linux
+内核提供的虚拟文件系统，为访问系统内核数据的操作提供接口。之所以说是虚拟文件系统，是因为它不占用存储空间，而只是占用了内存。用户可以通过
+procfs
+查看有关系统硬件及当前正在运行进程的信息，甚至可以通过修改其中的某些内容来改变内核的运行状态。</p>
+<h3 id="proccmdline">/proc/cmdline</h3>
+<p>在启动时传递给内核的相关参数信息，通常由 lilo 或 grub
+等启动管理工具提供：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cat /proc/cmdline</span><br><span class="line">BOOT_IMAGE=/boot/vmlinuz-4.14-x86_64 root=UUID=8e79a67d-af1b-4203-8c1c-3b670f0ec052 rw quiet resume=UUID=a220ecb1-7fde-4032-87bf-413057e9c06f</span><br></pre></td></tr></table></figure>
+
+<h3 id="proccpuinfo">/proc/cpuinfo</h3>
+<p>记录 CPU 相关的信息：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">$ cat /proc/cpuinfo</span><br><span class="line">processor       : 0</span><br><span class="line">vendor_id       : GenuineIntel</span><br><span class="line">cpu family      : 6</span><br><span class="line">model           : 60</span><br><span class="line">model name      : Intel(R) Core(TM) i5-4210H CPU @ 2.90GHz</span><br><span class="line">stepping        : 3</span><br><span class="line">microcode       : 0x24</span><br><span class="line">cpu MHz         : 1511.087</span><br><span class="line">cache size      : 3072 KB</span><br><span class="line">physical id     : 0</span><br><span class="line">siblings        : 4</span><br><span class="line">core id         : 0</span><br><span class="line">cpu cores       : 2</span><br><span class="line">apicid          : 0</span><br><span class="line">initial apicid  : 0</span><br><span class="line">fpu             : yes</span><br><span class="line">fpu_exception   : yes</span><br><span class="line">cpuid level     : 13</span><br><span class="line">wp              : yes</span><br><span class="line">flags           : fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc cpuid aperfmperf pni pclmulqdq dtes64 monitor ds_cpl vmx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm cpuid_fault epb invpcid_single pti ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid xsaveopt dtherm ida arat pln pts</span><br><span class="line">bugs            : cpu_meltdown spectre_v1 spectre_v2 spec_store_bypass</span><br><span class="line">bogomips        : 5788.66</span><br><span class="line">clflush size    : 64</span><br><span class="line">cache_alignment : 64</span><br><span class="line">address sizes   : 39 bits physical, 48 bits virtual</span><br><span class="line">power management:</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<h3 id="proccrypto">/proc/crypto</h3>
+<p>已安装的内核所使用的密码算法及算法的详细信息：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">$ cat /proc/crypto</span><br><span class="line">name         : ccm(aes)</span><br><span class="line">driver       : ccm_base(ctr(aes-aesni),cbcmac(aes-aesni))</span><br><span class="line">module       : ccm</span><br><span class="line">priority     : 300</span><br><span class="line">refcnt       : 2</span><br><span class="line">selftest     : passed</span><br><span class="line">internal     : no</span><br><span class="line">type         : aead</span><br><span class="line">async        : no</span><br><span class="line">blocksize    : 1</span><br><span class="line">ivsize       : 16</span><br><span class="line">maxauthsize  : 16</span><br><span class="line">geniv        : &lt;none&gt;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<h3 id="procdevices">/proc/devices</h3>
+<p>已加载的所有块设备和字符设备的信息，包含主设备号和设备组（与主设备号对应的设备类型）名：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ cat /proc/devices</span><br><span class="line">Character devices:</span><br><span class="line">  1 mem</span><br><span class="line">  4 /dev/vc/0</span><br><span class="line">  4 tty</span><br><span class="line">  4 ttyS</span><br><span class="line">  5 /dev/tty</span><br><span class="line">  5 /dev/console</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<h3 id="procinterrupts">/proc/interrupts</h3>
+<p>X86/X86_64 系统上每个 IRQ 相关的中断号列表，多路处理器平台上每个 CPU
+对于每个 I/O 设备均有自己的中断号：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ cat /proc/interrupts</span><br><span class="line">           CPU0       CPU1       CPU2       CPU3</span><br><span class="line">  0:         15          0          0          0  IR-IO-APIC   2-edge      timer</span><br><span class="line">  1:      46235       1277        325        156  IR-IO-APIC   1-edge      i8042</span><br><span class="line">  8:          0          1          0          0  IR-IO-APIC   8-edge      rtc0</span><br><span class="line">...</span><br><span class="line">NMI:          0          0          0          0   Non-maskable interrupts</span><br><span class="line">LOC:    7363806    5569019    6138317    5442200   Local timer interrupts</span><br><span class="line">SPU:          0          0          0          0   Spurious interrupts</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<h3 id="prockcore">/proc/kcore</h3>
+<p>系统使用的物理内存，以 ELF 核心文件（core file）格式存储：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo file /proc/kcore</span><br><span class="line">/proc/kcore: ELF 64-bit LSB core file x86-64, version 1 (SYSV), SVR4-style, from &#x27;BOOT_IMAGE=/boot/vmlinuz-4.14-x86_64 root=UUID=8e79a67d-af1b-4203-8c1c-3b670f0e&#x27;</span><br></pre></td></tr></table></figure>
+
+<h3 id="procmeminfo">/proc/meminfo</h3>
+<p>系统中关于当前内存的利用状况等的信息：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ cat /proc/meminfo</span><br><span class="line">MemTotal:       12226252 kB</span><br><span class="line">MemFree:         4909444 kB</span><br><span class="line">MemAvailable:    8776048 kB</span><br><span class="line">Buffers:          288236 kB</span><br><span class="line">Cached:          3953616 kB</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<h3 id="procmounts">/proc/mounts</h3>
+<p>每个进程自身挂载名称空间中的所有挂载点列表文件的符号链接：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ cat /proc/mounts</span><br><span class="line">proc /proc proc rw,nosuid,nodev,noexec,relatime 0 0</span><br><span class="line">sys /sys sysfs rw,nosuid,nodev,noexec,relatime 0 0</span><br><span class="line">dev /dev devtmpfs rw,nosuid,relatime,size=6106264k,nr_inodes=1526566,mode=755 0 0</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<h3 id="procmodules">/proc/modules</h3>
+<p>当前装入内核的所有模块名称列表，可以由 lsmod
+命令使用。其中第一列表示模块名，第二列表示此模块占用内存空间大小，第三列表示此模块有多少实例被装入，第四列表示此模块依赖于其它哪些模块，第五列表示此模块的装载状态：Live（已经装入）、Loading（正在装入）和
+Unloading（正在卸载），第六列表示此模块在内核内存（kernel
+memory）中的偏移量：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ cat /proc/modules</span><br><span class="line">fuse 118784 3 - Live 0xffffffffc0d9b000</span><br><span class="line">ccm 20480 3 - Live 0xffffffffc0d95000</span><br><span class="line">rfcomm 86016 4 - Live 0xffffffffc0d7f000</span><br><span class="line">bnep 24576 2 - Live 0xffffffffc0d78000</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<h3 id="procslabinfo">/proc/slabinfo</h3>
+<p>保存着监视系统中所有活动的 slab 缓存的信息：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ sudo cat /proc/slabinfo</span><br><span class="line">slabinfo - version: 2.1</span><br><span class="line"># name            &lt;active_objs&gt; &lt;num_objs&gt; &lt;objsize&gt; &lt;objperslab&gt; &lt;pagesperslab&gt; : tunables &lt;limit&gt; &lt;batchcount&gt; &lt;sharedfactor&gt; : slabdata &lt;active_slabs&gt; &lt;num_slabs&gt; &lt;sharedavail&gt;</span><br><span class="line">fuse_request           0     20    400   20    2 : tunables    0    0    0 : slabdata      1      1      0</span><br><span class="line">fuse_inode             1     39    832   39    8 : tunables    0    0    0 : slabdata      1      1      0</span><br><span class="line">drm_i915_gem_request    765   1036    576   28    4 : tunables    0    0    0 : slabdata     37     37      0</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<h3 id="procpid">/proc/[pid]</h3>
+<p>在 /proc 文件系统下，还有一些以数字命名的目录，这些数字是进程的 PID
+号，而这些目录是进程目录。目录下的所有文件如下，然后会介绍几个比较重要的：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ cat - &amp;</span><br><span class="line">[1] 1060</span><br><span class="line">$ ls /proc/1060/</span><br><span class="line">attr        comm             fd         maps        ns             personality  smaps         syscall</span><br><span class="line">autogroup   coredump_filter  fdinfo     mem         numa_maps      projid_map   smaps_rollup  task</span><br><span class="line">auxv        cpuset           gid_map    mountinfo   oom_adj        root         stack         timers</span><br><span class="line">cgroup      cwd              io         mounts      oom_score      sched        stat          timerslack_ns</span><br><span class="line">clear_refs  environ          limits     mountstats  oom_score_adj  schedstat    statm         uid_map</span><br><span class="line">cmdline     exe              map_files  net         pagemap        setgroups    status        wchan</span><br></pre></td></tr></table></figure>
+
+<h3 id="procpidcmdline">/proc/[pid]/cmdline</h3>
+<p>启动当前进程的完整命令：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cat /proc/1060/cmdline</span><br><span class="line">cat-</span><br></pre></td></tr></table></figure>
+
+<h3 id="procpidexe">/proc/[pid]/exe</h3>
+<p>指向启动当前进程的可执行文件的符号链接：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ file /proc/1060/exe</span><br><span class="line">/proc/1060/exe: symbolic link to /usr/bin/cat</span><br></pre></td></tr></table></figure>
+
+<h3 id="procpidroot">/proc/[pid]/root</h3>
+<p>当前进程运行根目录的符号链接：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ file /proc/1060/root</span><br><span class="line">/proc/1060/root: symbolic link to /</span><br></pre></td></tr></table></figure>
+
+<h3 id="procpidmem">/proc/[pid]/mem</h3>
+<p>当前进程所占用的内存空间，由open、read和lseek等系统调用使用，不能被用户读取。但可通过下面的
+/proc/[pid]/maps 查看。</p>
+<h3 id="procpidmaps">/proc/[pid]/maps</h3>
+<p>这个文件大概是最常用的，用于显示进程的内存区域映射信息：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">$ cat /proc/1060/maps</span><br><span class="line">56271b3a5000-56271b3ad000 r-xp 00000000 08:01 24904069                   /usr/bin/cat</span><br><span class="line">56271b5ac000-56271b5ad000 r--p 00007000 08:01 24904069                   /usr/bin/cat</span><br><span class="line">56271b5ad000-56271b5ae000 rw-p 00008000 08:01 24904069                   /usr/bin/cat</span><br><span class="line">56271b864000-56271b885000 rw-p 00000000 00:00 0                          [heap]</span><br><span class="line">7fefb66cd000-7fefb6a1e000 r--p 00000000 08:01 24912207                   /usr/lib/locale/locale-archive</span><br><span class="line">7fefb6a1e000-7fefb6bd1000 r-xp 00000000 08:01 24905238                   /usr/lib/libc-2.27.so</span><br><span class="line">7fefb6bd1000-7fefb6dd0000 ---p 001b3000 08:01 24905238                   /usr/lib/libc-2.27.so</span><br><span class="line">7fefb6dd0000-7fefb6dd4000 r--p 001b2000 08:01 24905238                   /usr/lib/libc-2.27.so</span><br><span class="line">7fefb6dd4000-7fefb6dd6000 rw-p 001b6000 08:01 24905238                   /usr/lib/libc-2.27.so</span><br><span class="line">7fefb6dd6000-7fefb6dda000 rw-p 00000000 00:00 0</span><br><span class="line">7fefb6dda000-7fefb6dff000 r-xp 00000000 08:01 24905239                   /usr/lib/ld-2.27.so</span><br><span class="line">7fefb6fbd000-7fefb6fbf000 rw-p 00000000 00:00 0</span><br><span class="line">7fefb6fdc000-7fefb6ffe000 rw-p 00000000 00:00 0</span><br><span class="line">7fefb6ffe000-7fefb6fff000 r--p 00024000 08:01 24905239                   /usr/lib/ld-2.27.so</span><br><span class="line">7fefb6fff000-7fefb7000000 rw-p 00025000 08:01 24905239                   /usr/lib/ld-2.27.so</span><br><span class="line">7fefb7000000-7fefb7001000 rw-p 00000000 00:00 0</span><br><span class="line">7ffde5659000-7ffde567a000 rw-p 00000000 00:00 0                          [stack]</span><br><span class="line">7ffde5748000-7ffde574b000 r--p 00000000 00:00 0                          [vvar]</span><br><span class="line">7ffde574b000-7ffde574d000 r-xp 00000000 00:00 0                          [vdso]</span><br><span class="line">ffffffffff600000-ffffffffff601000 r-xp 00000000 00:00 0                  [vsyscall]</span><br></pre></td></tr></table></figure>
+
+<h3 id="procpidstack">/proc/[pid]/stack</h3>
+<p>这个文件表示当前进程的内核调用栈信息，只有在内核编译启用
+<code>CONFIG_STACKTRACE</code> 选项，才会生成该文件：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ sudo cat /proc/1060/stack</span><br><span class="line">[&lt;ffffffff8e08fa2e&gt;] do_signal_stop+0xae/0x1f0</span><br><span class="line">[&lt;ffffffff8e090ec1&gt;] get_signal+0x191/0x580</span><br><span class="line">[&lt;ffffffff8e02ae56&gt;] do_signal+0x36/0x610</span><br><span class="line">[&lt;ffffffff8e003669&gt;] exit_to_usermode_loop+0x69/0xa0</span><br><span class="line">[&lt;ffffffff8e0039d1&gt;] do_syscall_64+0xf1/0x100</span><br><span class="line">[&lt;ffffffff8e800081&gt;] entry_SYSCALL_64_after_hwframe+0x3d/0xa2</span><br><span class="line">[&lt;ffffffffffffffff&gt;] 0xffffffffffffffff</span><br></pre></td></tr></table></figure>
+
+<h3 id="procpidauxv">/proc/[pid]/auxv</h3>
+<p>该文件包含了传递给进程的解释器信息，即 auxv(AUXiliary
+Vector)，每一项都是由一个 unsigned long 长度的 ID 加上一个 unsigned long
+长度的值构成：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">$ xxd -E -g8 /proc/1060/auxv</span><br><span class="line">00000000: 0000000000000021 00007ffde574b000  !.........t.....</span><br><span class="line">00000010: 0000000000000010 00000000bfebfbff  ................</span><br><span class="line">00000020: 0000000000000006 0000000000001000  ................</span><br><span class="line">00000030: 0000000000000011 0000000000000064  ........d.......</span><br><span class="line">00000040: 0000000000000003 000056271b3a5040  ........@P:.&#x27;V..</span><br><span class="line">00000050: 0000000000000004 0000000000000038  ........8.......</span><br><span class="line">00000060: 0000000000000005 0000000000000009  ................</span><br><span class="line">00000070: 0000000000000007 00007fefb6dda000  ................</span><br><span class="line">00000080: 0000000000000008 0000000000000000  ................</span><br><span class="line">00000090: 0000000000000009 000056271b3a7260  ........`r:.&#x27;V..</span><br><span class="line">000000a0: 000000000000000b 00000000000003e8  ................</span><br><span class="line">000000b0: 000000000000000c 00000000000003e8  ................</span><br><span class="line">000000c0: 000000000000000d 00000000000003e8  ................</span><br><span class="line">000000d0: 000000000000000e 00000000000003e8  ................</span><br><span class="line">000000e0: 0000000000000017 0000000000000000  ................</span><br><span class="line">000000f0: 0000000000000019 00007ffde5678349  ........I.g.....</span><br><span class="line">00000100: 000000000000001a 0000000000000000  ................</span><br><span class="line">00000110: 000000000000001f 00007ffde5679fef  ..........g.....</span><br><span class="line">00000120: 000000000000000f 00007ffde5678359  ........Y.g.....</span><br><span class="line">00000130: 0000000000000000 0000000000000000  ................</span><br></pre></td></tr></table></figure>
+
+<p>每个值具体是做什么的，可以用下面的办法显示出来，对比看一看，更详细的可以查看
+<code>/usr/include/elf.h</code> 和 <code>man ld.so</code>：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">$ LD_SHOW_AUXV=1 cat -</span><br><span class="line">AT_SYSINFO_EHDR: 0x7ffd16be5000</span><br><span class="line">AT_HWCAP:        bfebfbff</span><br><span class="line">AT_PAGESZ:       4096</span><br><span class="line">AT_CLKTCK:       100</span><br><span class="line">AT_PHDR:         0x55eb4c59a040</span><br><span class="line">AT_PHENT:        56</span><br><span class="line">AT_PHNUM:        9</span><br><span class="line">AT_BASE:         0x7f61506e8000</span><br><span class="line">AT_FLAGS:        0x0</span><br><span class="line">AT_ENTRY:        0x55eb4c59c260</span><br><span class="line">AT_UID:          1000</span><br><span class="line">AT_EUID:         1000</span><br><span class="line">AT_GID:          1000</span><br><span class="line">AT_EGID:         1000</span><br><span class="line">AT_SECURE:       0</span><br><span class="line">AT_RANDOM:       0x7ffd16bd0ce9</span><br><span class="line">AT_HWCAP2:       0x0</span><br><span class="line">AT_EXECFN:       /bin/cat</span><br><span class="line">AT_PLATFORM:     x86_64</span><br></pre></td></tr></table></figure>
+
+<p>值得一提的是，<code>AT_SYSINFO_EHDR</code> 所对应的值是一个叫做的
+VDSO(Virtual Dynamic Shared Object) 的地址。在 ret2vdso
+漏洞利用方法中会用到（参考章节6.1.6）。</p>
+<h3 id="procpidenviron">/proc/[pid]/environ</h3>
+<p>该文件包含了进程的环境变量：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ strings /proc/1060/environ</span><br><span class="line">GS_LIB=/home/firmy/.fonts</span><br><span class="line">KDE_FULL_SESSION=true</span><br><span class="line">VIRTUALENVWRAPPER_WORKON_CD=1</span><br><span class="line">VIRTUALENVWRAPPER_HOOK_DIR=/home/firmy/.virtualenvs</span><br><span class="line">LANG=zh_CN.UTF-8</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<h3 id="procpidfd">/proc/[pid]/fd</h3>
+<p>该文件包含了进程打开文件的情况：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ ls -al /proc/1060/fd</span><br><span class="line">total 0</span><br><span class="line">dr-x------ 2 firmy firmy  0 6月   7 23:37 .</span><br><span class="line">dr-xr-xr-x 9 firmy firmy  0 6月   7 23:37 ..</span><br><span class="line">lrwx------ 1 firmy firmy 64 6月   7 23:44 0 -&gt; /dev/pts/3</span><br><span class="line">lrwx------ 1 firmy firmy 64 6月   7 23:44 1 -&gt; /dev/pts/3</span><br><span class="line">lrwx------ 1 firmy firmy 64 6月   7 23:44 2 -&gt; /dev/pts/3</span><br></pre></td></tr></table></figure>
+
+<h3 id="procpidstatus">/proc/[pid]/status</h3>
+<p>该文件包含了进程的状态信息：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$ cat /proc/1060/status</span><br><span class="line">Name:   cat</span><br><span class="line">Umask:  0022</span><br><span class="line">State:  T (stopped)</span><br><span class="line">Tgid:   1060</span><br><span class="line">Ngid:   0</span><br><span class="line">Pid:    1060</span><br><span class="line">PPid:   1035</span><br><span class="line">TracerPid:      0</span><br><span class="line">Uid:    1000    1000    1000    1000</span><br><span class="line">Gid:    1000    1000    1000    1000</span><br><span class="line">FDSize: 256</span><br><span class="line">Groups: 3 7 10 56 90 91 93 95 96 98 1000</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<h3 id="procpidtask">/proc/[pid]/task</h3>
+<p>一个目录，包含当前进程的每一个线程的相关信息，每个线程的信息分别放在一个由线程号（tid）命名的目录中：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ ls /proc/1060/task/</span><br><span class="line">1060</span><br><span class="line">$ ls /proc/1060/task/1060/</span><br><span class="line">attr      clear_refs  cwd      fdinfo   maps       net        oom_score      projid_map  setgroups     stat     uid_map</span><br><span class="line">auxv      cmdline     environ  gid_map  mem        ns         oom_score_adj  root        smaps         statm    wchan</span><br><span class="line">cgroup    comm        exe      io       mountinfo  numa_maps  pagemap        sched       smaps_rollup  status</span><br><span class="line">children  cpuset      fd       limits   mounts     oom_adj    personality    schedstat   stack         syscall</span><br></pre></td></tr></table></figure>
+
+<h3 id="procpidsyscall">/proc/[pid]/syscall</h3>
+<p>该文件包含了进程正在执行的系统调用：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo cat /proc/1060/syscall</span><br><span class="line">0 0x0 0x7fefb6fdd000 0x20000 0x22 0xffffffff 0x0 0x7ffde5677d48 0x7fefb6b07901</span><br></pre></td></tr></table></figure>
+
+<p>第一个值是系统调用号，后面跟着是六个参数，最后两个值分别是堆栈指针和指令计数器的值。</p>
+<h2 id="参考资料">参考资料</h2>
+<ul>
+<li><a
+target="_blank" rel="noopener" href="http://tldp.org/LDP/Linux-Filesystem-Hierarchy/html/proc.html">Linux
+Filesystem Hierarchy</a></li>
+</ul>
+</article><div class="post-copyright"><div class="copyright-cc-box"><i class="anzhiyufont anzhiyu-icon-copyright"></i></div><div class="post-copyright__author_box"><a class="post-copyright__author_img" href="/" title="头像"><img class="post-copyright__author_img_back" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/avatar.jpg" title="头像" alt="头像"><img class="post-copyright__author_img_front" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/avatar.jpg" title="头像" alt="头像"></a><div class="post-copyright__author_name">小鹤</div><div class="post-copyright__author_desc">小鹤博客</div></div><div class="post-copyright__post__info"><a class="post-copyright__original" title="该文章为原创文章，注意版权协议" href="http://example.com/2024/11/18/1.3_linux_basic/">原创</a><a class="post-copyright-title"><span onclick="rm.copyPageUrl('http://example.com/2024/11/18/1.3_linux_basic/')">操作系统(2)--Linux 基础</span></a></div><div class="post-tools" id="post-tools"><div class="post-tools-left"><div class="rewardLeftButton"><div class="post-reward" onclick="anzhiyu.addRewardMask()"><div class="reward-button button--animated" title="赞赏作者"><i class="anzhiyufont anzhiyu-icon-hand-heart-fill"></i>打赏作者</div><div class="reward-main"><div class="reward-all"><span class="reward-title">感谢你赐予我前进的力量</span><ul class="reward-group"><li class="reward-item"><a href="/img/weixing_money.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/weixing_money.jpg" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="/img/Alipay_money.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/Alipay_money.jpg" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul><a class="reward-main-btn" href="/about/#about-reward" target="_blank"><div class="reward-text">赞赏者名单</div><div class="reward-dec">因为你们的支持让我意识到写文章的价值🙏</div></a></div></div></div><div id="quit-box" onclick="anzhiyu.removeRewardMask()" style="display: none"></div></div><div class="shareRight"><div class="share-link mobile"><div class="share-qrcode"><div class="share-button" title="使用手机访问这篇文章"><i class="anzhiyufont anzhiyu-icon-qrcode"></i></div><div class="share-main"><div class="share-main-all"><div id="qrcode" title="http://example.com/2024/11/18/1.3_linux_basic/"></div><div class="reward-dec">使用手机访问这篇文章</div></div></div></div></div><div class="share-link weibo"><a class="share-button" target="_blank" href="https://service.weibo.com/share/share.php?title=操作系统(2)--Linux 基础&amp;url=http://example.com/2024/11/18/1.3_linux_basic/&amp;pic=/img/default_cover.jpg" rel="external nofollow noreferrer noopener"><i class="anzhiyufont anzhiyu-icon-weibo"></i></a></div><script>function copyCurrentPageUrl() {
+  var currentPageUrl = window.location.href;
+  var input = document.createElement("input");
+  input.setAttribute("value", currentPageUrl);
+  document.body.appendChild(input);
+  input.select();
+  input.setSelectionRange(0, 99999);
+  document.execCommand("copy");
+  document.body.removeChild(input);
+}</script><div class="share-link copyurl"><div class="share-button" id="post-share-url" title="复制链接" onclick="copyCurrentPageUrl()"><i class="anzhiyufont anzhiyu-icon-link"></i></div></div></div></div></div><div class="post-copyright__notice"><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">小鹤实验室</a>！</span></div></div><div class="post-tools-right"><div class="tag_share"><div class="post-meta__box"><div class="post-meta__box__tag-list"></div></div></div><div class="post_share"><div class="social-share" data-image="/img/default_cover.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.cbd.int/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"/><script src="https://cdn.cbd.int/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer="defer"></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/2024/11/18/1.5.2_assembly/"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/default_cover.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">汇编语言</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-content"><div class="author-info-avatar"><img class="avatar-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__description">小鹤博客——专注机器学习，深度学习，计算机视觉，自然语言处理，图像识别</div></div></div><div class="card-widget anzhiyu-right-widget" id="card-wechat" onclick="null"><div id="flip-wrapper"><div id="flip-content"><div class="face" style="background: url(https://bu.dusays.com/2023/01/13/63c02edf44033.png) center center / 100% no-repeat"></div><div class="back face" style="background: url(/img/weixing_PublicAccount.png) center center / 100% no-repeat"></div></div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-bars"></i><span>文章目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#13-linux-%E5%9F%BA%E7%A1%80"><span class="toc-number">1.</span> <span class="toc-text">1.3 Linux 基础</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4"><span class="toc-number">1.1.</span> <span class="toc-text">常用基础命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#bash-%E5%BF%AB%E6%8D%B7%E9%94%AE"><span class="toc-number">1.2.</span> <span class="toc-text">Bash 快捷键</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%B9%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="toc-number">1.3.</span> <span class="toc-text">根目录结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86"><span class="toc-number">1.4.</span> <span class="toc-text">进程管理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#uid-%E5%92%8C-gid"><span class="toc-number">1.5.</span> <span class="toc-text">UID 和 GID</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9D%83%E9%99%90%E8%AE%BE%E7%BD%AE"><span class="toc-number">1.6.</span> <span class="toc-text">权限设置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E8%8A%82%E5%BA%8F"><span class="toc-number">1.7.</span> <span class="toc-text">字节序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA"><span class="toc-number">1.8.</span> <span class="toc-text">输入输出</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6"><span class="toc-number">1.9.</span> <span class="toc-text">文件描述符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E8%BD%AC%E5%82%A8"><span class="toc-number">1.10.</span> <span class="toc-text">核心转储</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%9A%E4%BA%A7%E7%94%9F%E6%A0%B8%E5%BF%83%E8%BD%AC%E5%82%A8%E7%9A%84%E4%BF%A1%E5%8F%B7"><span class="toc-number">1.10.1.</span> <span class="toc-text">会产生核心转储的信号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%80%E5%90%AF%E6%A0%B8%E5%BF%83%E8%BD%AC%E5%82%A8"><span class="toc-number">1.10.2.</span> <span class="toc-text">开启核心转储</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E8%BD%AC%E5%82%A8%E6%96%87%E4%BB%B6%E4%BF%9D%E5%AD%98%E8%B7%AF%E5%BE%84"><span class="toc-number">1.10.3.</span> <span class="toc-text">修改转储文件保存路径</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-gdb-%E8%B0%83%E8%AF%95%E6%A0%B8%E5%BF%83%E8%BD%AC%E5%82%A8%E6%96%87%E4%BB%B6"><span class="toc-number">1.10.4.</span> <span class="toc-text">使用 gdb 调试核心转储文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BE%8B%E5%AD%90"><span class="toc-number">1.10.5.</span> <span class="toc-text">例子</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B0%83%E7%94%A8%E7%BA%A6%E5%AE%9A"><span class="toc-number">1.11.</span> <span class="toc-text">调用约定</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E6%A0%B8%E6%8E%A5%E5%8F%A3"><span class="toc-number">1.11.1.</span> <span class="toc-text">内核接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E6%8E%A5%E5%8F%A3"><span class="toc-number">1.11.2.</span> <span class="toc-text">用户接口</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="toc-number">1.12.</span> <span class="toc-text">环境变量</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E7%B1%BB"><span class="toc-number">1.12.1.</span> <span class="toc-text">分类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE%E6%96%B9%E6%B3%95"><span class="toc-number">1.12.2.</span> <span class="toc-text">设置方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%98%E9%87%8F"><span class="toc-number">1.12.3.</span> <span class="toc-text">常用变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ld_preload"><span class="toc-number">1.12.4.</span> <span class="toc-text">LD_PRELOAD</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#environ"><span class="toc-number">1.12.5.</span> <span class="toc-text">environ</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#procfs"><span class="toc-number">1.13.</span> <span class="toc-text">procfs</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#proccmdline"><span class="toc-number">1.13.1.</span> <span class="toc-text">&#x2F;proc&#x2F;cmdline</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#proccpuinfo"><span class="toc-number">1.13.2.</span> <span class="toc-text">&#x2F;proc&#x2F;cpuinfo</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#proccrypto"><span class="toc-number">1.13.3.</span> <span class="toc-text">&#x2F;proc&#x2F;crypto</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#procdevices"><span class="toc-number">1.13.4.</span> <span class="toc-text">&#x2F;proc&#x2F;devices</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#procinterrupts"><span class="toc-number">1.13.5.</span> <span class="toc-text">&#x2F;proc&#x2F;interrupts</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#prockcore"><span class="toc-number">1.13.6.</span> <span class="toc-text">&#x2F;proc&#x2F;kcore</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#procmeminfo"><span class="toc-number">1.13.7.</span> <span class="toc-text">&#x2F;proc&#x2F;meminfo</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#procmounts"><span class="toc-number">1.13.8.</span> <span class="toc-text">&#x2F;proc&#x2F;mounts</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#procmodules"><span class="toc-number">1.13.9.</span> <span class="toc-text">&#x2F;proc&#x2F;modules</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#procslabinfo"><span class="toc-number">1.13.10.</span> <span class="toc-text">&#x2F;proc&#x2F;slabinfo</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#procpid"><span class="toc-number">1.13.11.</span> <span class="toc-text">&#x2F;proc&#x2F;[pid]</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#procpidcmdline"><span class="toc-number">1.13.12.</span> <span class="toc-text">&#x2F;proc&#x2F;[pid]&#x2F;cmdline</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#procpidexe"><span class="toc-number">1.13.13.</span> <span class="toc-text">&#x2F;proc&#x2F;[pid]&#x2F;exe</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#procpidroot"><span class="toc-number">1.13.14.</span> <span class="toc-text">&#x2F;proc&#x2F;[pid]&#x2F;root</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#procpidmem"><span class="toc-number">1.13.15.</span> <span class="toc-text">&#x2F;proc&#x2F;[pid]&#x2F;mem</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#procpidmaps"><span class="toc-number">1.13.16.</span> <span class="toc-text">&#x2F;proc&#x2F;[pid]&#x2F;maps</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#procpidstack"><span class="toc-number">1.13.17.</span> <span class="toc-text">&#x2F;proc&#x2F;[pid]&#x2F;stack</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#procpidauxv"><span class="toc-number">1.13.18.</span> <span class="toc-text">&#x2F;proc&#x2F;[pid]&#x2F;auxv</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#procpidenviron"><span class="toc-number">1.13.19.</span> <span class="toc-text">&#x2F;proc&#x2F;[pid]&#x2F;environ</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#procpidfd"><span class="toc-number">1.13.20.</span> <span class="toc-text">&#x2F;proc&#x2F;[pid]&#x2F;fd</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#procpidstatus"><span class="toc-number">1.13.21.</span> <span class="toc-text">&#x2F;proc&#x2F;[pid]&#x2F;status</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#procpidtask"><span class="toc-number">1.13.22.</span> <span class="toc-text">&#x2F;proc&#x2F;[pid]&#x2F;task</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#procpidsyscall"><span class="toc-number">1.13.23.</span> <span class="toc-text">&#x2F;proc&#x2F;[pid]&#x2F;syscall</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">1.14.</span> <span class="toc-text">参考资料</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-history"></i><span>最近发布</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/11/18/1.3_linux_basic/" title="操作系统(2)--Linux 基础"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/default_cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="操作系统(2)--Linux 基础"/></a><div class="content"><a class="title" href="/2024/11/18/1.3_linux_basic/" title="操作系统(2)--Linux 基础">操作系统(2)--Linux 基础</a><time datetime="2024-11-18T04:36:29.000Z" title="发表于 2024-11-18 12:36:29">2024-11-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/11/18/1.5.2_assembly/" title="汇编语言"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/default_cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="汇编语言"/></a><div class="content"><a class="title" href="/2024/11/18/1.5.2_assembly/" title="汇编语言">汇编语言</a><time datetime="2024-11-18T04:36:29.000Z" title="发表于 2024-11-18 12:36:29">2024-11-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/11/18/html+css+js%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/" title="无题"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/default_cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="无题"/></a><div class="content"><a class="title" href="/2024/11/18/html+css+js%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/" title="无题">无题</a><time datetime="2024-11-18T04:14:25.609Z" title="发表于 2024-11-18 12:14:25">2024-11-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/11/17/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%EF%BC%886%EF%BC%89/" title="数据结构与算法（6）"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://pic4.zhimg.com/v2-2d666d57cb8f9959e367bc94eeaa46c0_1440w.jpg?source=172ae18b" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数据结构与算法（6）"/></a><div class="content"><a class="title" href="/2024/11/17/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%EF%BC%886%EF%BC%89/" title="数据结构与算法（6）">数据结构与算法（6）</a><time datetime="2024-11-17T07:36:29.000Z" title="发表于 2024-11-17 15:36:29">2024-11-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/11/17/Web%20%E5%AE%89%E5%85%A8%20PHP%20%E4%BB%A3%E7%A0%81%E5%AE%A1%E6%9F%A5%E4%B9%8B%E5%B8%B8%E8%A7%84%E6%BC%8F%E6%B4%9E/" title="无题"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/default_cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="无题"/></a><div class="content"><a class="title" href="/2024/11/17/Web%20%E5%AE%89%E5%85%A8%20PHP%20%E4%BB%A3%E7%A0%81%E5%AE%A1%E6%9F%A5%E4%B9%8B%E5%B8%B8%E8%A7%84%E6%BC%8F%E6%B4%9E/" title="无题">无题</a><time datetime="2024-11-17T05:43:18.864Z" title="发表于 2024-11-17 13:43:18">2024-11-17</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div id="workboard"><img class="workSituationImg boardsign" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://npm.elemecdn.com/anzhiyu-blog@2.0.4/img/badge/安知鱼-上班摸鱼中.svg" alt="距离月入25k也就还差一个大佬带我~" title="距离月入25k也就还差一个大佬带我~"/><div id="runtimeTextTip"></div></div></div><div id="footer-bar"><div class="footer-bar-links"><div class="footer-bar-left"><div id="footer-bar-tips"><div class="copyright">&copy;2023 - 2024 By <a class="footer-bar-link" href="/" title="小鹤" target="_blank">小鹤</a></div></div><div id="footer-type-tips"></div></div><div class="footer-bar-right"><a class="footer-bar-link" target="_blank" rel="noopener" href="https://github.com/TianHe2005" title="主题">主题</a></div></div></div></footer></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="sidebar-site-data site-data is-center"><a href="/archives/" title="archive"><div class="headline">文章</div><div class="length-num">22</div></a><a href="/tags/" title="tag"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/" title="category"><div class="headline">分类</div><div class="length-num">3</div></a></div><span class="sidebar-menu-item-title">功能</span><div class="sidebar-menu-item"><a class="darkmode_switchbutton menu-child" href="javascript:void(0);" title="显示模式"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span>显示模式</span></a></div><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://blog.anheyu.com/" title="博客"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/favicon.ico" alt="博客"/><span class="back-menu-item-text">博客</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">项目</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://image.anheyu.com/" title="安知鱼图床"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.anheyu.com/favicon.ico" alt="安知鱼图床"/><span class="back-menu-item-text">安知鱼图床</span></a></div></div></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/categories/"><i class="anzhiyufont anzhiyu-icon-shapes faa-tada" style="font-size: 0.9em;"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags faa-tada" style="font-size: 0.9em;"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 友链</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/link/"><i class="anzhiyufont anzhiyu-icon-link faa-tada" style="font-size: 0.9em;"></i><span> 友人帐</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/fcircle/"><i class="anzhiyufont anzhiyu-icon-artstation faa-tada" style="font-size: 0.9em;"></i><span> 朋友圈</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/comments/"><i class="anzhiyufont anzhiyu-icon-envelope faa-tada" style="font-size: 0.9em;"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 我的</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/music/"><i class="anzhiyufont anzhiyu-icon-music faa-tada" style="font-size: 0.9em;"></i><span> 音乐馆</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/album/"><i class="anzhiyufont anzhiyu-icon-images faa-tada" style="font-size: 0.9em;"></i><span> 相册集</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/air-conditioner/"><i class="anzhiyufont anzhiyu-icon-fan faa-tada" style="font-size: 0.9em;"></i><span> 小空调</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/about/"><i class="anzhiyufont anzhiyu-icon-paper-plane faa-tada" style="font-size: 0.9em;"></i><span> 关于本人</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/essay/"><i class="anzhiyufont anzhiyu-icon-lightbulb faa-tada" style="font-size: 0.9em;"></i><span> 闲言碎语</span></a></li><li><a class="site-page child faa-parent animated-hover" href="javascript:toRandomPost()"><i class="anzhiyufont anzhiyu-icon-shoe-prints1 faa-tada" style="font-size: 0.9em;"></i><span> 随便逛逛</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/equipment/"><i class="anzhiyufont anzhiyu-icon-dice-d20 faa-tada" style="font-size: 0.9em;"></i><span> 我的装备</span></a></li></ul></div></div><span class="sidebar-menu-item-title">标签</span></div></div><div id="keyboard-tips"><div class="keyboardTitle">博客快捷键</div><div class="keybordList"><div class="keybordItem"><div class="keyGroup"><div class="key">shift K</div></div><div class="keyContent"><div class="content">关闭快捷键功能</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift A</div></div><div class="keyContent"><div class="content">打开/关闭中控台</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift M</div></div><div class="keyContent"><div class="content">播放/暂停音乐</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift D</div></div><div class="keyContent"><div class="content">深色/浅色显示模式</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift S</div></div><div class="keyContent"><div class="content">站内搜索</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift R</div></div><div class="keyContent"><div class="content">随机访问</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift H</div></div><div class="keyContent"><div class="content">返回首页</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift F</div></div><div class="keyContent"><div class="content">友链鱼塘</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift L</div></div><div class="keyContent"><div class="content">友链页面</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift P</div></div><div class="keyContent"><div class="content">关于本站</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift I</div></div><div class="keyContent"><div class="content">原版/本站右键菜单</div></div></div></div></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="anzhiyufont anzhiyu-icon-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="anzhiyufont anzhiyu-icon-gear"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="anzhiyufont anzhiyu-icon-list-ul"></i></button><button id="chat-btn" type="button" title="聊天"><i class="anzhiyufont anzhiyu-icon-comment-sms"></i></button><a id="switch-commentBarrage" href="javascript:anzhiyu.switchCommentBarrage();" title="开关弹幕"><i class="anzhiyufont anzhiyu-icon-danmu"></i></a><button id="go-up" type="button" title="回到顶部"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></button></div></div><div id="nav-music"><a id="nav-music-hoverTips" onclick="anzhiyu.musicToggle()" accesskey="m">播放音乐</a><div id="console-music-bg"></div><meting-js id="8152976493" server="netease" type="playlist" mutex="true" preload="none" theme="var(--anzhiyu-main)" data-lrctype="0" order="random" volume="0.7"></meting-js></div><div id="rightMenu"><div class="rightMenu-group rightMenu-small"><div class="rightMenu-item" id="menu-backward"><i class="anzhiyufont anzhiyu-icon-arrow-left"></i></div><div class="rightMenu-item" id="menu-forward"><i class="anzhiyufont anzhiyu-icon-arrow-right"></i></div><div class="rightMenu-item" id="menu-refresh"><i class="anzhiyufont anzhiyu-icon-arrow-rotate-right" style="font-size: 1rem;"></i></div><div class="rightMenu-item" id="menu-top"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></div></div><div class="rightMenu-group rightMenu-line rightMenuPlugin"><div class="rightMenu-item" id="menu-copytext"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制选中文本</span></div><div class="rightMenu-item" id="menu-pastetext"><i class="anzhiyufont anzhiyu-icon-paste"></i><span>粘贴文本</span></div><a class="rightMenu-item" id="menu-commenttext"><i class="anzhiyufont anzhiyu-icon-comment-medical"></i><span>引用到评论</span></a><div class="rightMenu-item" id="menu-newwindow"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开</span></div><div class="rightMenu-item" id="menu-copylink"><i class="anzhiyufont anzhiyu-icon-link"></i><span>复制链接地址</span></div><div class="rightMenu-item" id="menu-copyimg"><i class="anzhiyufont anzhiyu-icon-images"></i><span>复制此图片</span></div><div class="rightMenu-item" id="menu-downloadimg"><i class="anzhiyufont anzhiyu-icon-download"></i><span>下载此图片</span></div><div class="rightMenu-item" id="menu-newwindowimg"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开图片</span></div><div class="rightMenu-item" id="menu-search"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>站内搜索</span></div><div class="rightMenu-item" id="menu-searchBaidu"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>百度搜索</span></div><div class="rightMenu-item" id="menu-music-toggle"><i class="anzhiyufont anzhiyu-icon-play"></i><span>播放音乐</span></div><div class="rightMenu-item" id="menu-music-back"><i class="anzhiyufont anzhiyu-icon-backward"></i><span>切换到上一首</span></div><div class="rightMenu-item" id="menu-music-forward"><i class="anzhiyufont anzhiyu-icon-forward"></i><span>切换到下一首</span></div><div class="rightMenu-item" id="menu-music-playlist" onclick="window.open(&quot;https://y.qq.com/n/ryqq/playlist/8802438608&quot;, &quot;_blank&quot;);" style="display: none;"><i class="anzhiyufont anzhiyu-icon-radio"></i><span>查看所有歌曲</span></div><div class="rightMenu-item" id="menu-music-copyMusicName"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制歌名</span></div></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item menu-link" id="menu-randomPost"><i class="anzhiyufont anzhiyu-icon-shuffle"></i><span>随便逛逛</span></a><a class="rightMenu-item menu-link" href="/categories/"><i class="anzhiyufont anzhiyu-icon-cube"></i><span>博客分类</span></a><a class="rightMenu-item menu-link" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags"></i><span>文章标签</span></a></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item" id="menu-copy" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制地址</span></a><a class="rightMenu-item" id="menu-commentBarrage" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-message"></i><span class="menu-commentBarrage-text">关闭热评</span></a><a class="rightMenu-item" id="menu-darkmode" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span class="menu-darkmode-text">深色模式</span></a><a class="rightMenu-item" id="menu-translate" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-language"></i><span>轉為繁體</span></a></div></div><div id="rightmenu-mask"></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.cbd.int/@fancyapps/ui@5.0.28/dist/fancybox/fancybox.umd.js"></script><script src="https://cdn.cbd.int/instant.page@5.2.0/instantpage.js" type="module"></script><script src="https://cdn.cbd.int/vanilla-lazyload@17.8.5/dist/lazyload.iife.min.js"></script><script src="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.js"></script><canvas id="universe"></canvas><script async src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/dark/dark.js"></script><script>// 消除控制台打印
+var HoldLog = console.log;
+console.log = function () {};
+let now1 = new Date();
+queueMicrotask(() => {
+  const Log = function () {
+    HoldLog.apply(console, arguments);
+  }; //在恢复前输出日志
+  const grt = new Date("06/01/2023 00:00:00"); //此处修改你的建站时间或者网站上线时间
+  now1.setTime(now1.getTime() + 250);
+  const days = (now1 - grt) / 1000 / 60 / 60 / 24;
+  const dnum = Math.floor(days);
+  const ascll = [
+    `欢迎使用安知鱼!`,
+    `生活明朗, 万物可爱`,
+    `
+        
+       █████╗ ███╗   ██╗███████╗██╗  ██╗██╗██╗   ██╗██╗   ██╗
+      ██╔══██╗████╗  ██║╚══███╔╝██║  ██║██║╚██╗ ██╔╝██║   ██║
+      ███████║██╔██╗ ██║  ███╔╝ ███████║██║ ╚████╔╝ ██║   ██║
+      ██╔══██║██║╚██╗██║ ███╔╝  ██╔══██║██║  ╚██╔╝  ██║   ██║
+      ██║  ██║██║ ╚████║███████╗██║  ██║██║   ██║   ╚██████╔╝
+      ╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝╚═╝   ╚═╝    ╚═════╝
+        
+        `,
+    "已上线",
+    dnum,
+    "天",
+    "©2023 By 安知鱼 V1.6.14",
+  ];
+  const ascll2 = [`NCC2-036`, `调用前置摄像头拍照成功，识别为【小笨蛋】.`, `Photo captured: `, `🤪`];
+
+  setTimeout(
+    Log.bind(
+      console,
+      `\n%c${ascll[0]} %c ${ascll[1]} %c ${ascll[2]} %c${ascll[3]}%c ${ascll[4]}%c ${ascll[5]}\n\n%c ${ascll[6]}\n`,
+      "color:#425AEF",
+      "",
+      "color:#425AEF",
+      "color:#425AEF",
+      "",
+      "color:#425AEF",
+      ""
+    )
+  );
+  setTimeout(
+    Log.bind(
+      console,
+      `%c ${ascll2[0]} %c ${ascll2[1]} %c \n${ascll2[2]} %c\n${ascll2[3]}\n`,
+      "color:white; background-color:#4fd953",
+      "",
+      "",
+      'background:url("https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/tinggge.gif") no-repeat;font-size:450%'
+    )
+  );
+
+  setTimeout(Log.bind(console, "%c WELCOME %c 你好，小笨蛋.", "color:white; background-color:#4f90d9", ""));
+
+  setTimeout(
+    console.warn.bind(
+      console,
+      "%c ⚡ Powered by 安知鱼 %c 你正在访问 小鹤 的博客.",
+      "color:white; background-color:#f0ad4e",
+      ""
+    )
+  );
+
+  setTimeout(Log.bind(console, "%c W23-12 %c 你已打开控制台.", "color:white; background-color:#4f90d9", ""));
+
+  setTimeout(
+    console.warn.bind(console, "%c S013-782 %c 你现在正处于监控中.", "color:white; background-color:#d9534f", "")
+  );
+});</script><script async src="/anzhiyu/random.js"></script><script async="async">(function () {
+  var grt = new Date("06/01/2023 00:00:00"); //设置网站上线时间
+  var now = new Date();
+  var dnum;
+  var hnum;
+  var mnum;
+  var snum;
+  var nowHour;
+
+  // 计算并更新天数、小时数、分钟数和秒数
+  function updateTime() {
+    now = new Date(); // 更新 now 的值
+    nowHour = now.getHours(); // 更新 nowHour 的值
+    var days = (now - grt) / 1000 / 60 / 60 / 24;
+    dnum = Math.floor(days);
+    var hours = (now - grt) / 1000 / 60 / 60 - 24 * dnum;
+    hnum = Math.floor(hours);
+    if (String(hnum).length == 1) {
+      hnum = "0" + hnum;
+    }
+    var minutes = (now - grt) / 1000 / 60 - 24 * 60 * dnum - 60 * hnum;
+    mnum = Math.floor(minutes);
+    if (String(mnum).length == 1) {
+      mnum = "0" + mnum;
+    }
+    var seconds = (now - grt) / 1000 - 24 * 60 * 60 * dnum - 60 * 60 * hnum - 60 * mnum;
+    snum = Math.round(seconds);
+    if (String(snum).length == 1) {
+      snum = "0" + snum;
+    }
+  }
+
+  // 更新网页中显示的网站运行时间
+  function updateHtml() {
+    const footer = document.getElementById("footer");
+    if (!footer) return
+    let currentTimeHtml = "";
+    if (nowHour < 18 && nowHour >= 9) {
+      // 如果是上班时间，默认就是"安知鱼-上班摸鱼中.svg"图片，不需要更改
+      currentTimeHtml = `本站居然运行了 ${dnum} 天<span id='runtime'> ${hnum} 小时 ${mnum} 分 ${snum} 秒 </span><i class='anzhiyufont anzhiyu-icon-heartbeat' style='color:red'></i>`;
+    } else {
+      // 如果是下班时间，插入"安知鱼-下班啦.svg"图片
+      let img = document.querySelector("#workboard .workSituationImg");
+      if (img != null) {
+        img.src = "https://npm.elemecdn.com/anzhiyu-blog@2.0.4/img/badge/安知鱼-下班啦.svg";
+        img.title = "下班了就该开开心心的玩耍，嘿嘿~";
+        img.alt = "下班了就该开开心心的玩耍，嘿嘿~";
+      }
+
+      currentTimeHtml = `本站居然运行了 ${dnum} 天<span id='runtime'> ${hnum} 小时 ${mnum} 分 ${snum} 秒 </span><i class='anzhiyufont anzhiyu-icon-heartbeat' style='color:red'></i>`;
+    }
+
+    if (document.getElementById("runtimeTextTip")) {
+      document.getElementById("runtimeTextTip").innerHTML = currentTimeHtml;
+    }
+  }
+
+  setInterval(() => {
+    updateTime();
+    updateHtml();
+  }, 1000);
+})();</script><div class="js-pjax"><input type="hidden" name="page-type" id="page-type" value="post"></div><script>var visitorMail = "";
+</script><script async data-pjax src="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/waterfall/waterfall.js"></script><script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/qrcodejs/1.0.0/qrcode.min.js"></script><script src="/js/anzhiyu/right_click_menu.js"></script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.9/icon/ali_iconfont_css.css"><script>(() => {
+  const isChatBtn = true
+  const isChatHideShow = true
+
+  if (isChatBtn) {
+    const close = () => {
+      Chatra('minimizeWidget')
+      Chatra('hide')
+    }
+
+    const open = () => {
+      Chatra('openChat', true)
+      Chatra('show')
+    }
+
+    window.ChatraSetup = {
+      startHidden: true
+    }
+  
+    window.chatBtnFn = () => {
+      const isShow = document.getElementById('chatra').classList.contains('chatra--expanded')
+      isShow ? close() : open()
+    }
+  } else if (isChatHideShow) {
+    window.chatBtn = {
+      hide: () => {
+        Chatra('hide')
+      },
+      show: () => {
+        Chatra('show')
+      }
+    }
+  }
+
+  (function(d, w, c) {
+    w.ChatraID = ''
+    var s = d.createElement('script')
+    w[c] = w[c] || function() {
+        (w[c].q = w[c].q || []).push(arguments)
+    }
+    s.async = true
+    s.src = 'https://call.chatra.io/chatra.js'
+    if (d.head) d.head.appendChild(s)
+  })(document, window, 'Chatra')
+
+})()</script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/aplayer/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.cbd.int/anzhiyu-blog-static@1.0.1/js/APlayer.min.js"></script><script src="https://cdn.cbd.int/hexo-anzhiyu-music@1.0.1/assets/js/Meting2.min.js"></script><script src="https://cdn.cbd.int/pjax@0.2.8/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+  // removeEventListener scroll 
+  anzhiyu.removeGlobalFnEvent('pjax')
+  anzhiyu.removeGlobalFnEvent('themeChange')
+
+  document.getElementById('rightside').classList.remove('rightside-show')
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', e => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script charset="UTF-8" src="https://cdn.cbd.int/anzhiyu-theme-static@1.1.5/accesskey/accesskey.js"></script></div><div id="popup-window"><div class="popup-window-title">通知</div><div class="popup-window-divider"></div><div class="popup-window-content"><div class="popup-tip">你好呀</div><div class="popup-link"><i class="anzhiyufont anzhiyu-icon-arrow-circle-right"></i></div></div></div></body></html>

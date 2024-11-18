@@ -1,0 +1,2156 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><title>汇编语言 | 小鹤实验室</title><meta name="author" content="小鹤"><meta name="copyright" content="小鹤"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#f7f9fe"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-touch-fullscreen" content="yes"><meta name="apple-mobile-web-app-title" content="汇编语言"><meta name="application-name" content="汇编语言"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="#f7f9fe"><meta property="og:type" content="article"><meta property="og:title" content="汇编语言"><meta property="og:url" content="http://example.com/2024/11/18/1.5.2_assembly/index.html"><meta property="og:site_name" content="小鹤实验室"><meta property="og:description" content="汇编语言    汇编语言  3.3 X86 汇编基础  3.3.2 寄存器 Registers 3.3.3 内存和寻址模式 Memory and Addressing Modes  3.3.3.1 声明静态数据区域 3.3.3.2 内存寻址 3.3.3.3 操作后缀"><meta property="og:locale" content="zh-CN"><meta property="og:image" content="http://example.com/img/default_cover.jpg"><meta property="article:author" content="小鹤"><meta property="article:tag"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="http://example.com/img/default_cover.jpg"><meta name="description" content="汇编语言    汇编语言  3.3 X86 汇编基础  3.3.2 寄存器 Registers 3.3.3 内存和寻址模式 Memory and Addressing Modes  3.3.3.1 声明静态数据区域 3.3.3.2 内存寻址 3.3.3.3 操作后缀"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="http://example.com/2024/11/18/1.5.2_assembly/"><link rel="preconnect" href="//cdn.cbd.int"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta name="google-site-verification" content="xxx"/><meta name="baidu-site-verification" content="code-xxx"/><meta name="msvalidate.01" content="xxx"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.cbd.int/@fancyapps/ui@5.0.28/dist/fancybox/fancybox.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/swiper/swiper.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  linkPageTop: {"enable":true,"title":"与数百名博主无限进步","addFriendPlaceholder":"昵称（请勿包含博客等字样）：\n网站地址（要求博客地址，请勿提交个人主页）：\n头像图片url（请提供尽可能清晰的图片，我会上传到我自己的图床）：\n描述：\n站点截图（可选）：\n"},
+  peoplecanvas: undefined,
+  postHeadAiDescription: {"enable":true,"gptName":"AnZhiYu","mode":"local","switchBtn":false,"btnLink":"https://afdian.net/item/886a79d4db6711eda42a52540025c377","randomNum":3,"basicWordCount":1000,"key":"xxxx","Referer":"https://xx.xx/"},
+  diytitle: {"enable":true,"leaveTitle":"w(ﾟДﾟ)w 不要走！再看看嘛！","backTitle":"♪(^∇^*)欢迎肥来！"},
+  LA51: undefined,
+  greetingBox: {"enable":true,"default":"晚上好👋","list":[{"greeting":"晚安😴","startTime":0,"endTime":5},{"greeting":"早上好鸭👋, 祝你一天好心情！","startTime":6,"endTime":9},{"greeting":"上午好👋, 状态很好，鼓励一下～","startTime":10,"endTime":10},{"greeting":"11点多啦, 在坚持一下就吃饭啦～","startTime":11,"endTime":11},{"greeting":"午安👋, 宝贝","startTime":12,"endTime":14},{"greeting":"🌈充实的一天辛苦啦！","startTime":14,"endTime":18},{"greeting":"19点喽, 奖励一顿丰盛的大餐吧🍔。","startTime":19,"endTime":19},{"greeting":"晚上好👋, 在属于自己的时间好好放松😌~","startTime":20,"endTime":24}]},
+  twikooEnvId: '',
+  commentBarrageConfig:{"enable":true,"maxBarrage":1,"barrageTime":4000,"accessToken":"","mailMd5":"71D1A0082222768A053ECCE774F1A5A0"},
+  music_page_default: "nav_music",
+  root: '/',
+  preloader: {"source":3},
+  friends_vue_info: {"apiurl":"https://friends.anheyu.com/"},
+  navMusic: true,
+  mainTone: undefined,
+  authorStatus: undefined,
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简","rightMenuMsgToTraditionalChinese":"转为繁体","rightMenuMsgToSimplifiedChinese":"转为简体"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":330},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    simplehomepage: true,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"copy":true,"copyrightEbable":false,"limitCount":50,"languages":{"author":"作者: 小鹤","link":"链接: ","source":"来源: 小鹤实验室","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。","copySuccess":"复制成功，复制和转载请标注本文地址"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#425AEF","bgDark":"#1f1f1f","position":"top-center"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.min.js',
+      css: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  shortcutKey: {"enable":true,"delay":100,"shiftDelay":200},
+  autoDarkmode: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  configTitle: '小鹤实验室',
+  title: '汇编语言',
+  postAI: '',
+  pageFillDescription: '汇编语言, 3.3 X86 汇编基础, 3.3.2 寄存器 Registers, 3.3.3.1 声明静态数据区域, 3.3.3.2 内存寻址, 3.3.3.3 操作后缀, 3.3.4 指令 Instructions, 3.3.4.1 数据移动指令, 3.3.4.2 逻辑运算指令, 3.3.4.3 流程控制指令, 3.4 x64 汇编基础, 3.4.1 导语, 3.4.2 寄存器 Registers, mov 和 lea 指令, 算术和位运算, 流程控制指令, setx 和 cmovx, 函数调用与栈, 3.4.5 汇编和 gdb, 3.5 ARM汇编基础, 3.5.1 引言, 3.5.3 寄存器名称, 3.5.4 汇编程序特殊字符/语法, 3.5.5 arm程序调用标准, 3.5.6 寻址模式, 3.5.7 机器相关指令, 3.6 MIPS汇编基础, 数据类型和常量, 寄存器, 程序结构, 数据声明, 代码, 注释, 变量声明, 读取/写入 ( Load/Store )指令, 间接和立即寻址, 算术指令, 流程控制, 补充  MIPS 指令格式, 补充  MIPS 常用指令集, 参考资料, 更多资料汇编语言汇编语言汇编基础寄存器内存和寻址模式声明静态数据区域内存寻址操作后缀指令数据移动指令逻辑运算指令流程控制指令调用约定调用者约定被调用者约定汇编基础导语寄存器寻址模式通用指令和指令算术和位运算流程控制指令和函数调用与栈汇编和汇编基础引言的汇编程序指令表寄存器名称汇编程序特殊字符语法程序调用标准寻址模式机器相关指令汇编基础数据类型和常量寄存器程序结构数据声明代码注释变量声明读取写入指令间接和立即寻址算术指令流程控制系统调用和针对模拟器补充指令格式补充常用指令集参考资料更多资料汇编基础寄存器现代及以上的机器处理器有个位通用寄存器如图所示这些寄存器的名字都是有点历史的例如过去被称为累加器因为它被用来作很多算术运算还有被称为计数器因为它被用来保存循环的索引就是循环次数尽管大多数寄存器在现代指令集中已经失去了它们的特殊用途但是按照惯例其中有两个寄存器还是有它们的特殊用途和对于还有寄存器它们可以被分段开来使用例如可以将的最低的位字节视为位寄存器还可以将的最低位的个字节看成位寄存器来用当然的高位的个字节也可以看成是一个位寄存器这些名称有它们相对应的物理寄存器当两个字节大小的数据被放到的时候原本和的数据会受到影响被覆盖之类的这些子寄存器主要来自于比较久远的位版本指令集然而姜还是老的辣在处理小于位的数据的时候比如个字节的字符它们有时会很方便内存和寻址模式声明静态数据区域你可以用特殊的汇编指令在内存中声明静态数据区域类似于全局变量指令用来声明数据根据这条指令和可以分别用来声明个字节个字节和个字节的数据我们可以给它们打个标签用来引用创建的数据的地址标签在汇编语言中是非常有用的它们给内存地址命名然后编译器和链接器将其翻译成计算机理解的机器代码这个跟用名称来声明变量很类似但是它遵守一些较低级别的规则例如按顺序声明的位置将彼此相邻地存储在内存中这话也许有点绕就是按照顺序打的标签这些标签对应的数据也会按照顺序被放到内存中一些例子声明一个字节型变量其所对应的数据是声明一个数据这个数据没有所谓的标签它的内存地址就是声明一个大小为个字节的数据这个数据有个标签声明一个大小为个字节的数据这个数据标签是的值被初始化为与高级语言不同高级语言的数组可以具有多个维度并且可以通过索引来访问汇编语言的数组只是在内存中连续的单元格你只需要把数值列出来就可以声明一个数组比如下面的第一个例子对于一些字节型数组的特殊情况我们可以使用字符串如果要在大多数的内存填充你可以使用指令例子声明个大小为字节的数据内存中这个标签所对应的数据就是从这个标签的位置开始声明个字节的数据这些数据被初始化为从这个标签的位置开始声明个字节的数据即对应的值这最后还跟有一个字节内存寻址现代兼容处理器能够寻址高达字节的内存内存地址为位宽在上面的示例中我们使用标签来引用内存区域这些标签实际上被位数据的汇编程序替换这些数据指定了内存中的地址除了支持通过标签即常数值引用存储区域之外提供了一种灵活的计算和引用内存地址的方案最多可将两个位寄存器和一个位有符号常量相加以计算存储器地址其中一个寄存器可以选择预先乘以或寻址模式可以和许多指令一起使用我们将在下一节对它们进行讲解这里我们用指令在寄存器和内存中移动数据当作例子这个指令有两个参数第一个是数据的来源第二个是数据的去向一些的例子从中的内存地址加载个字节的数据到就是把中的内容当作标签这个标签在内存中对应的数据放到中后面如果没有说明的话就表示寄存器中存储的内容将中的个字节大小的数据移动的内存中标签为的地方去是一个位常数将内存中标签为所对应的个字节大小的数据移动到中一些错误的例子这个只能把寄存器中的值加上一遍在地址计算中最多只能出现个寄存器这里却有个寄存器操作后缀通常给定内存地址的数据类型可以从引用它的汇编指令推断出来例如在上面的指令中你可以从寄存器操作数的大小来推出其所占的内存大小当我们加载一个位的寄存器的时候编译器就可以推断出我们用到的内存大小是个字节宽当我们将个字节宽的寄存器的值保存到内存中时编译器可以推断出我们想要在内存中弄个字节大小的坑来保存我们的数据然而在某些情况下我们用到的内存中坑的大小是不明确的比如说这条指令这条指令是否应该将这个值移动到中的值所代表的地址坑的单个字节中也许它表示的是将位整数表示的移动到从地址开始的字节既然这两个解释都有道理但计算机汇编程序必须明确哪个解释才是正确的计算机很单纯的要么是错的要么是对的后缀和就是来解决这个问题的它们分别表示和个字节的大小举几个例子将移入到中的值所表示的地址单元中将位整数移动到从中的值所表示的地址单元开始的个字节中这话有点绕所以我故意在里面加了点空格方便大家理解将位整数移动到从中的值表示的地址单元开始的个字节中指令机器指令通常分为类数据移动指令逻辑运算指令和流程控制指令在本节中我们将讲解每一种类型的指令以及它们的重要示例当然我们不可能把所有指令讲得特别详细毕竟篇幅和水平有限完整的指令列表请参阅的指令集参考手册我们将使用以下符号任意的位寄存器或者任意的位寄存器或者任意的位寄存器任意的寄存器一个内存地址例如位常数位常数位常数任意位位或者位常数在汇编语言中用作立即操作数的所有标签和数字常量即不在诸如这样的地址计算中总是以美元符号为前缀需要的时候前缀表示十六进制数例如如果没有前缀则默认该数字为十进制数就是所有的常数数字前面都会加上一个符号数据移动指令移动指令将数据从它的第一个参数即寄存器中的内容内存单元中的内容或者一个常数值复制到它的第二个参数即寄存器或者内存单元当寄存器到寄存器之间的数据移动是可行的时候直接地从内存单元中将数据移动到另一内存单元中是不行的在这种需要在内存单元中传递数据的情况下它数据来源的那个内存单元必须首先把那个内存单元中的数据加载到一个寄存器中然后才可以通过这个寄存器来把数据移动到目标内存单元中语法例子将中的值复制到中将数字存到字节型内存单元入栈指令将它的参数移动到硬件支持的栈内存顶端特别地首先将中的值减少然后将它的参数移动到一个位的地址单元栈指针会随着不断入栈从而持续递减即栈内存是从高地址单元到低地址单元增长语法例子将送入栈将对应的字节大小的数据送入栈中出栈指令从硬件支持的栈内存顶端移除字节的数据并把这个数据放到该指令指定的参数中即寄存器或者内存单元其首先将内存中的字节数据放到指定的寄存器或者内存单元中然后让语法例子将栈顶的元素移除并放入到寄存器中将栈顶的元素移除并放入从开始的个字节大小的内存单元中重点内容栈栈是一种特殊的存储空间特殊在它的访问形式上它的访问形式就是最后进入这个空间的数据最先出去也就是先进后出后进先出加载有效地址指令将其第一个参数指定的内存单元放入到第二个参数指定的寄存器中注意该指令不加载内存单元中的内容只是计算有效地址并将其放入寄存器这对于获得指向存储器区域的指针或者执行简单的算术运算非常有用也许这里你会看得一头雾水不过你不必担心这里有更为通俗易懂的解释汇编语言中指令和指令的区别这里的代码是位汇编的格式和我们现在用的汇编有一些细微区别不过不影响我们的理解指令的功能是传送数据例如作用是将作为偏移地址寻址找到内存单元将该内存单元中的数据送至指令的功能是取偏移地址例如作用是将源操作数的偏移地址送至理解时可直接将去掉等同于再如等同于等同于但有时不能直接使用代替比如不能直接替换成但可替换为两步完成参考链接语法例子的值被移入到了的值被移入到了逻辑运算指令整数相加指令将两个参数相加然后将结果存放到第二个参数中注意参数可以是寄存器但参数中最多只有一个内存单元这话有点绕我们直接看语法语法例子中的值被设置为了往中的值所代表的内存单元地址加上个字节的数字整数相减指令将第二个参数的值与第一个相减就是后面那个减去前面那个然后把结果存储到第二个参数和一样两个参数都可以是寄存器但两个参数中最多只能有一个是内存单元语法例子被设置成将中的值减去自增自减指令让它的参数加指令则是让它的参数减去语法例子中的值减去将所代表的位整数加上整数相乘指令有两种基本格式第一种是个参数的看下面语法开始两条第二种格式是个参数的看下面语法最后两条个参数的这种格式先是将两个参数相乘然后把结果存到第二个参数中运算结果即第二个参数必须是一个寄存器个参数的这种格式先是将它的第个参数和第个参数相乘然后把结果存到第个参数中当然第个参数必须是一个寄存器此外第个参数必须是一个常数语法例子将中的位整数与中的内容所指的内存单元相乘然后把结果存到中被设置为整数相除只有一个操作数此操作数为除数而被除数则为中的内容一个位的整数除法结果商存在中而所得的余数存在中语法例子用的值除以的值商存放在中余数存放在中将的值除以存储在所对应内存单元的位值商存放在中余数存放在中按位逻辑与或异或运算这些指令分别对它们的参数进行相应的逻辑运算运算结果存到第一个参数中语法例子只留下中最后位数字二进制位将的值全部设置成逻辑位运算非对参数进行逻辑非运算即翻转参数中所有位的值语法例子将的所有值翻转取负指令取参数的二进制补码负数直接看例子也许会更好懂语法例子按位左移或者右移这两个指令对第二个参数进行位运算移动的位数由第一个参数决定移动过后的空位拿补上被移的参数最多可以被移位第一个参数可以是位常数或者寄存器在任意情况下大于的移位都默认是与取模语法例子将的值乘以如果最高有效位是的话将的值除以其中为中的值运算最终结果存到中你也许会想明明只是把数字二进制移了位结果却是等于这个数字乘以什么情况这几个位运算的结果和计算机表示数字的原理有关请看本章附录的计算机数字表示流程控制指令处理器有一个指令指针寄存器该寄存器为位寄存器它用来在内存中指示我们输入汇编指令的位置就是说这个寄存器指向哪个内存单元那个单元存储的机器码就是程序执行的指令通常它是指向我们程序要执行的下一条指令但是你不能直接操作寄存器你需要流程控制指令来隐式地给它赋值我们使用符号来当作程序中的标签通过输入标签名称后跟冒号可以将标签插入汇编代码文本中的任何位置例如该代码片段中的第二段被套上了这个标签在代码的其它地方我们可以用这个标签从而更方便地来引用这段指令在内存中的位置这个标签只是用来更方便地表示位置的它并不是用来代表某个位值跳转指令将程序跳转到参数指定的内存地址然后执行该内存地址的指令语法例子跳转到打了这个标签的地方有条件的跳转这些指令是条件跳转指令它们基于一组条件代码的状态这些条件代码的状态存放在称为机器状态字的特殊寄存器中机器状态字的内容包括关于最后执行的算术运算的信息例如这个字的一个位表示最后的结果是否为另一个位表示最后结果是否为负数基于这些条件代码可以执行许多条件跳转例如如果最后一次算术运算结果为则指令就是跳转到指定参数标签否则程序就按照流程进入下一条指令许多条件分支的名称都是很直观的这些指令的运行都和一个特殊的比较指令有关见下文例如像和这种指令它们首先对参数进行操作语法当相等的时候跳转当不相等的时候跳转当最后结果为的时候跳转当大于的时候跳转当大于等于的时候跳转当小于的时候跳转当小于等于的时候跳转例子如果的值小于等于的值就跳转到标签否则就继续执行下一条指令比较指令比较两个参数的值适当地设置机器状态字中的条件代码此指令与指令类似但是不用将计算结果保存在操作数中语法例子如果的值等于整数常量则跳转到标签的位置子程序调用与返回这两个指令实现子程序的调用和返回指令首先将当前代码位置推到内存中硬件支持的栈内存上请看指令然后无条件跳转到标签参数指定的代码位置与简单的指令不同指令保存了子程序完成时返回的位置就是指令结束后返回到调用之前的地址指令实现子程序的返回该指令首先从栈中取出代码类似于指令然后它无条件跳转到检索到的代码位置语法调用约定为了方便不同的程序员去分享代码和运行库并简化一般子程序的使用程序员们通常会遵守一定的约定调用约定是关于如何从例程调用和返回的协议例如给定一组调用约定规则程序员不需要检查子程序的定义来确定如何将参数传递给该子程序此外给定一组调用约定规则可以使高级语言编译器遵循规则从而允许手动编码的汇编语言例程和高级语言例程相互调用我们将讲解被广泛使用的语言调用约定遵循此约定将允许您编写可从和代码安全地调用的汇编语言子程序并且还允许您从汇编语言代码调用函数库调用约定很大程度上取决于使用硬件支持的栈内存它基于和指令子程序的参数在栈上传递寄存器保存在栈中子程序使用的局部变量放在栈中在大多数处理器上实现的高级过程语言都使用了类似的调用约定调用约定分为两组第一组规则是面向子程序的调用者的第二组规则面向子程序的编写者即被调用者应该强调的是错误地遵守这些规则会导致程序的致命错误因为栈将处于不一致的状态因此在你自己的子程序中实现调用约定的时候务必当心将调用约定可视化的一种好方法是在子程序执行期间画一个栈内存附近的图图描绘了在执行具有三个参数和三个局部变量的子程序期间栈的内容栈中描绘的单元都是位内存单元因此这些单元的内存地址相隔个字节第一个参数位于距基指针个字节的偏移处在栈参数的上方和基指针下方指令在这儿放了返回地址从而导致从基指针到第一个参数有额外个字节的偏移量当指令用于从子程序返回时它将跳转到栈中的返回地址调用者约定要进行子程序调用调用者应该在调用子程序之前调用者应该保存指定调用者保存的某些寄存器的内容调用者保存的寄存器是由于被调用的子程序可以修改这些寄存器所以如果调用者在子程序返回后依赖这些寄存器的值调用者必须将这些寄存器的值入栈然后就可以在子程序返回后恢复它们要把参数传递给子程序你可以在调用之前把参数入栈参数的入栈顺序应该是反着的就是最后一个参数应该最先入栈随着栈顶内存地址减小第一个参数将存储在最低的地址在历史上这种参数的反转用于允许函数传递可变数量的参数要调用子程序请使用指令该指令将返回地址存到栈上并跳转到子程序的代码这个会调用子程序这个子程序应该遵循下面的被调用者约定子程序返回后紧跟调用指令后调用者可以期望在寄存器中找到子程序的返回值要恢复机器状态调用者应该从栈中删除参数这会把栈恢复到调用之前的状态把之前入栈的内容给出栈调用者可以假设子程序没有修改其它寄存器例子下面的代码就是个活生生的例子它展示了遵循约定的函数调用调用者正在调用一个带有个整数参数的函数第一个参数是第二个参数是常数第三个参数位于的值所代表的内存地址最后一个参数最先入栈把第二个参数入栈第一个参数最后入栈调用这个函数假设以语言的模式命名注意在调用返回后调用者使用指令来清理栈内存我们栈内存中有个字节个参数每个参数个字节然后栈顶内存地址减小因此为了摆脱掉这些参数我们可以直接往栈寄存器加个返回的结果现在可以查看寄存器调用者保存的寄存器的值可能已经被修改如果调用者在调用之后使用它们则需要在调用之前将它们保存在堆栈中并在调用之后恢复它们说白了就是把栈这个玩意当作临时存放点被调用者约定子程序的定义应该遵循子程序开头的以下规则将的值入栈然后把的值复制到中这个初始操作保留了基指针按照约定基指针作为栈上找到参数和变量的参考点当子程序正在执行的时候基指针保存了从子程序开始执行时的栈指针值的副本参数和局部变量将始终位于远离基指针值的已知常量偏移处我们在子程序的开头将旧的基指针值入栈以便稍后在子程序返回时为调用者恢复适当的基指针值记住调用者不希望子程序修改基指针的值然后我们把栈指针复制到中以获取访问参数和局部变量的参考点接下来通过在栈中创建空间来分配局部变量回想一下栈会向下增长因此要在栈顶部创建空间栈指针应该递减栈指针递减的数量取决于所需局部变量的数量和大小例如如果需要个局部整数每个字节则需要将堆栈指针递减从而为这些局部变量腾出空间即和参数一样局部变量将位于基指针的已知偏移处再然后保存将由函数使用的被调用者保存的寄存器的值要存储寄存器请把它们入栈被调用者保存的寄存器是和和也将由调用约定保留但在这个步骤中不需要入栈在完成这步之后子程序的主体可以继续返回子程序的时候必须遵循以下步骤将返回值保存在中恢复已经被修改的任何被调用者保存的寄存器和的旧值通过出栈来恢复它们当然应该按照相反的顺序把它们出栈释放局部变量显而易见的法子是把相应的值添加到栈指针因为空间是通过栈指针减去所需的数量来分配的事实上呢避免变量释放出错的方法是将基指针中的值复制到栈指针这个法子有效是因为基指针始终包含栈指针在分配局部变量之前包含的值在返回之前立即通过把出栈来恢复调用者的基指针值回想一下我们在进入子程序的时候做的第一件事是将基指针入栈以保存它的旧值最后通过执行指令返回这个指令将从栈中删除相应的返回地址并跳转到该地址指令保存的那个请注意被调用者的约定完全被分成了两半简直是彼此的镜像约定的前半部分适用于函数开头并且通常被称为定义函数的序言这个约定的后半部分适用于函数结尾因此通常被称为定义函数的结尾例子这是一个遵循被调用者约定的例子启动代码部分将定义为全局导出函数子程序序言保存基指针旧值设置基指针新值为一个字节的变量腾出位置这个函数会修改和所以先给它们入栈不需要保存和子程序主体把参数的值移到中把参数的值移到中把参数的值移到中把移给局部变量把添加给局部变量将局部变量的内容添加到最终结果中子程序结尾恢复寄存器的值释放局部变量恢复调用者的基指针值子程序序言执行标准操作即在基指针中保存栈指针的副本通过递减栈指针来分配局部变量并在栈上保存寄存器的值在子程序的主体中我们可以看到基指针的使用在子程序执行期间参数和局部变量都位于基指针的常量偏移处特别地我们注意到由于参数在调用子程序之前被放在栈中因此它们总是位于栈基指针即更高的地址之下子程序的第一个参数总是可以在内存地址找到第二个参数在第三个参数在类似地由于在设置基指针后分配局部变量因此它们总是位于栈上基指针即较低地址之上特别是第一个局部变量总是位于第二个位于以此类推这种基指针的常规使用让我们可以快速识别函数内部局部变量和参数的使用函数结尾基本上是函数序言的镜像从栈中恢复调用者的寄存器值通过重置栈指针来释放局部变量恢复调用者的基指针值并用指令返回调用者中的相应代码位置从哪来回哪去维基百科调用约定汇编基础导语也被称为或者是位版本的指令集以下是我们关于相关功能的概述寄存器下图列出了常用的个通用寄存器每个寄存器都是宽它们的低位都可以看成相应的位寄存器并且都有其特殊名称一些寄存器被设计用来完成某些特殊目的比如被用来作为栈指针作为一个函数的返回值其他寄存器则都是通用的但是一般在使用的时候还是要取决于调用者或者被调用者如果函数调用了我们称为调用者为被调用者例如用于前个参数和返回值的寄存器都是被调用者所有的被调用者可以任意使用这些寄存器不用任何预防措施就可以随意覆盖里面的内容如果存着调用者想要保留的值则调用者必须在调用之前将这个的值复制到一个安全的位置被调用者拥有的寄存器非常适合一些临时性的使用相反如果被调用者打算使用调用者所拥有的寄存器那么被调用者必须首先把这个寄存器的值存起来然后在退出调用之前把它恢复调用者拥有的寄存器用于保存调用者的本地状态所以这个寄存器需要在进一步的函数调用中被保留下来寻址模式正由于它的特性支持各种寻址模式寻址模式是计算要读或写的内存地址的表达式这些表达式用作指令和访问内存的其它指令的来源和去路下面的代码演示了如何在每个可用的寻址模式中将立即数写入各种内存位置直接写入内存地址是一个常数间接写入内存地址存在寄存器中使用偏移量的间接写入公式间接写入用到了偏移量和按比例放大的索引公式特殊情况用到了按比例放大的索引假设偏移量为特殊情况用到了按比例放大的索引假设基数为特殊情况用到了按比例放大的索引假设比例为通用指令先说下指令后缀之前讲过这里就重温一遍许多指令都有个后缀后缀指明了这个指令代码所操纵参数数据的位宽分别为或个字节当然如果可以从参数确定位宽的时候后缀可以被省略例如呢如果目标寄存器是则它必须是字节宽如果是寄存器则必须是个字节而将是个字节还有些指令比如和有两个后缀第一个是来源参数长度第二个是目的参数长度这话乍一看让人摸不着头脑且听我分析例如这个指令把个字节的来源参数值移动到个字节的去路当目标是子寄存器时只有子寄存器的特定字节被写入但有一个例外位指令将目标寄存器的高位设置为和指令到目前为止我们遇到的最频繁的指令就是而它有很多变种关于指令就不多说了和之前位的没什么区别指令其实也没什么好说的上一节都有这里就不废话了这里写几个比较有意思的例子从地址读取的值在把较小位宽的数据移动复制到较大位宽的情况下和这两个变种指令用于指定怎么样去填充字节因为你是一个小东西被移到了一个大空间肯定还有地方是空的所以空的地方要填起来拿或者符号扩展来填充把个字节的符号扩展复制到字节的把个字节的零扩展复制到字节的有个特殊情况要注意默认情况下将位值写入寄存器的指令也会将寄存器的高位归零即隐式零扩展到位宽这个解释了诸如这种指令这些指令看起来很奇怪但实际上这是用于从位扩展到位因为这个是默认的所以我们不用指令来特地把它扩展到位当然有一个指令也是从位符号扩展到位指令是一个在上运行的专用移动指令这个没有参数的指令在上进行符号扩展源位宽为目标位宽为在上运行将字节符号扩展为字节用于算术和位运算二进制的运算一般是两个参数其中第二个参数既是我们指令运算的来源也是运算结果的去路就是说我们把运算结果存在第二个参数里我们的第一个参数可以是立即数常数寄存器或者内存单元第二个参数必须是寄存器或者内存这两个参数中最多只有一个参数是内存单元当然也有的指令只有一个参数这个参数既是我们运算数据的来源也是我们运算数据的去路它可以是寄存器或者内存这个我们上一节讲了这里回顾一下许多算术指令用于有符号和无符号类型也就是带符号加法和无符号加法都使用相同的指令当需要的时候参数设置的条件代码可以用来检测不同类型的溢出算术取反按位取反按的值来左移跟这个相同的是指令按的值来算术右移按的值来逻辑右移某些指令有特殊情况变体这些变体有不同的参数一个参数的指令假定中其他参数计算位的结果在中存储高位在中存储低位后面没有参数的时候默认是移动位指令也是一样这些指令上一节都讲过这里稍微提一下流程控制指令有一个特殊的寄存器它存着一组被称为条件代码的布尔标志大多数的算术运算会更新这些条件代码条件跳转指令读取这些条件代码之后再确定是否执行相应的分支指令条件代码包括零标志符号标志溢出标志有符号和进位标志无符号例如如果结果为则设置如果操作溢出进入符号位则设置这些指令一般是先执行或操作来设置标志位然后紧跟条件跳转指令该指令读取标志位来确定是否跳转或的参数可以是立即数寄存器或者内存单元最多只有一个内存参数条件跳转有种变体其中几种效果是一样的下面是一些分支指令运算结果丢弃结果然后设置条件代码运算结果丢弃结果然后设置条件代码无条件跳转等于时跳转和它相同的还有即不相等时跳转和它相同的还有即小于时跳转和它相同的还有即小于等于时跳转和它相同的还有即大于时跳转和它相同的还有即大于等于时跳转和它相同的还有即跳转到上面和它相同的还有即跳转到下面和它相同的还有即时跳转时跳转其实你也会发现这里大部分上一节都讲过这里我们可以再来一遍巩固一下和还有两个指令家族可以读取响应当前的条件代码指令根据条件的状态将目标寄存器设置为或指令根据条件是否成立来有条件地执行是任何条件变量的占位符就是说可以用这些来代替它们的意思上面也都说过了根据零相等条件来把设置成或根据大于相等条件来把设置成或如果条件成立则继续执行如果条件成立则继续执行对于指令其目标必须是单字节寄存器例如用于的低字节对于指令其来源和去路都必须是寄存器函数调用与栈寄存器用作栈指针和用于添加或者删除栈内存中的值指令只有一个参数这个参数可以是立即数寄存器或内存单元指令先把的值递减然后将参数复制到栈内存顶部指令也只有一个参数即目标寄存器先把栈内存最顶层的值复制到目标寄存器然后把递增直接调整以通过单个参数添加或删除整个数组或变量集合也是可以的但注意栈内存是朝下增长即朝向较低地址把入栈把立即数入栈调整栈指针以空出字节把栈中最顶层的值出栈到寄存器中调整栈指针以删除最顶层的个字节函数之间是通过互相调用返回来互相控制的指令有一个参数即被调用的函数的地址它将要返回到的地址入栈这个要返回的地址就是当前的值也即调用函数指令之后的下一条指令然后这个指令让程序跳转到被调用的函数的地址指令把刚才入栈的地址给出栈让它回到中从而让程序在保存的返回地址处重新开始就是说你中途跳到别的地方去你回来的时候要从你跳的那个地方重新开始当然你如果要设置这种函数间的互相调用调用者需要将前六个参数放入寄存器和任何其它参数都入栈然后再执行调用指令第一个参数在中第二个参数在中把程序交给控制当被调用函数结束的时候这个函数将返回值如果有的话写入然后清理栈内存并使用指令把程序控制权交还给调用者将返回值写入清理栈内存交还控制权跳回去这些分支跳转指令的目标通常是在编译时确定的绝对地址但是有些情况下直到运行程序的时候我们才知道目标的绝对内存地址例如编译为跳转表的语句或调用函数指针时对于这些我们先计算目标地址然后把地址存到寄存器中然后用分支调用变量或从指定寄存器中读取目标地址当然还有更简单的方法就是上一节讲的打标签汇编和调试器的下载与安装就不在这里说了调试器有许多功能可以让你在程序中追踪和调试代码你可以通过在其名称上加个来打印寄存器中的值或者使用命令显示所有寄存器的值命令按照名称打印函数的反汇编命令支持格式这个格式把内存地址的内容解释为编码指令解码反汇编然后打印所有函数的指令反汇编然后打印开始的条指令你可以通过在函数中的直接地址或偏移量为特定汇编指令设置断点在个字节这里设置断点你可以用和命令来让程序通过指令而不是源代码往前执行汇编基础引言本章所讲述的是在汇编程序下的汇编快速指南而所有的代码示例都会采用下面的结构标签指令注释在程序中不需要缩进指令程序的标签是由冒号识别而与所处的位置无关就通过一个简单的程序来介绍给符号添加外部链接添加输入参数从子程序返回程序结束它定义的是一个返回总和函数允许两个输入参数通过了解这个程序实例想必接下来这类程序的理解我们也能够很好的的掌握的汇编程序指令表在汇编程序下的指令集涵括如下汇编程序指令描述将字符串作为数据插入到程序中与类似但跟随字符串的零字节将地址与字节对齐汇编程序通过添加值的字节或合适的默认值来对齐如果需要超过这个数字来填充字节则不会发生对齐类似于中的将一个字节值列表作为数据插入到程序中以位为单位设置指令宽度使用表示表示程序类似于中的和与和一起使用类似于中的标记程序文件的结尾通常省略结束条件编译代码块参见类似于中的结束宏定义请参阅类似于中的结束重复循环参见和类似于中的该指令设置符号的值类似于中的这个会导致程序停止并出现错误中途退出一个宏参见类似于中的该指令给出符号外部链接类似于中的将位值列表作为数据插入到程序中类似于中的把一段代码变成前提条件使用结束代码块类似于中的另见如果定义了则包含一段代码结束代码块用这就是个条件判断嘛很简单的如果未定义则包含一段代码结束代码块用同上包括指定的源文件类似于中的或中的为值列表中的每个值重复一次代码块使用指令标记块的结尾在里面重复代码块使用替换关联的代码块值列表中的值使用个参数定义名为的汇编程序宏宏定义必须以结尾要在较早的时候从宏中逃脱请使用这些指令是类似于中的和你必须在虚拟宏参数前面加重复给定次数的代码块以结束该指令命名一个寄存器它与中的指令类似不同之处在于您必须在右侧提供名称而不是数字例如启动新的代码或数据部分中有这些部分代码部分初始化数据部分和未初始化数据部分这些部分有默认值和链接器理解默认名称与指令类似的指令以下是格式文件允许的标志表示表示表示该指令设置变量的值它类似于保留给定的字节数如果指定了字节则填充零或类似于中的将位字值列表作为数据插入到程序集中类似于中的寄存器名称通用寄存器寄存器临时寄存器保存寄存器堆栈寄存器帧寄存器链接寄存器程序计数器状态寄存器状态标志寄存器汇编程序特殊字符语法内联注释字符行注释字符语句分隔符立即操作数前缀或程序调用标准参数寄存器别名为返回值别名为寻址模式绝对寻址模式寄存器直接寻址寄存器间接寻址或索引基于寄存器的偏移量上述指任意寄存器但不包括控制寄存器机器相关指令指令描述使用模式进行装配使用模式进行装配使用模式进行装配使用模式进行组装模式即使不支持将输入点标记为编码强制条目启动一个新的文字池汇编基础数据类型和常量数据类型指令全是位字节位半字字节字字节一个字符需要个字节的存储空间整数需要个字个字节的存储空间常量按原样输入的数字例如用单引号括起来的字符例如用双引号括起来的字符串例如寄存器个通用寄存器寄存器前面有两种格式用于寻址使用寄存器号码例如到使用别名例如特殊寄存器和用于存储乘法和除法的结果不能直接寻址使用特殊指令从移动和从移动访问的内容栈从高到低增长寄存器别名用途常量保留给汇编器函数调用返回值函数调用参数暂时的或随便用的保存的或如果用需要的暂时的或随便用的保留供中断陷阱处理程序使用全局指针堆栈指针帧指针返回地址再来说一说这些寄存器它一般作为源寄存器读它永远返回也可以将它作为目的寄存器写数据但效果等于白写为什么单独拉一个寄存器出来返回一个数字呢答案是为了效率的设计者只允许在寄存器内执行算术操作而不允许直接操作立即数所以对最常用的数字单独留了一个寄存器以提高效率该寄存器为给编译器保留用于处理在加载位以上的大常数时使用编译器或汇编程序需要把大常数拆开然后重新组合到寄存器里系统程序员也可以显式的使用这个寄存器有一个汇编可被用来禁止汇编器在之后再使用寄存器这两个很简单用做函数的返回值大部分时候使用就够了如果返回值的大小超过字节那就需要分配使用堆栈调用者在堆栈里分配一个匿名的结构设置一个指向该参数的指针返回时指向这个对应的结构这些都是由编译器自动完成用来传递函数入参给子函数看一下这个例子参数少于字节可以放入寄存器中在的函数里存放的是这个字符串所在的只读区地址是的地址是临时寄存器保留寄存器这两种寄存器需要放在一起说它们是汇编里面代码里见到的最多的两种寄存器它们的作用都是存取数据做计算移位比较加载存储等等区别在于在子程序中可以使用其中的值并不必存储它们它们很适合用来存放计算表达式时使用的临时变量这些变量的使用要在跳转到子函数之前完成因为子函数里很可能会使用相同的寄存器而且不会有任何保护如果子程序里不会调用其它函数那么建议尽量多地使用这样可以避免函数入口处的保存和结束时的恢复相反的在子程序的执行过程中需要将它们存储在堆栈里并在子程序结束前恢复从而在调用函数看来这些寄存器的值没有变化这两个寄存器是专门预留给异常处理流程中使用异常处理流程中有什么特别的地方吗当然当在任务里运行的时候一旦有外部中断或者异常发生就会立刻跳转到一个固定地址的异常函数执行并同时将异常结束后返回到任务的指令地址记录在寄存器里习惯性地异常函数开头总是会保持现场即寄存器到中断栈空间里而在异常返回前再把这些寄存器的值恢复回去那就存在一个问题这个里的值存放在哪里异常函数的最后肯定是一句是一个寄存器如果存放在前面提到的等等寄存器中那么跳回任务执行现场时这个寄存器里的值就不再是异常发生之前的值所以必要时就可以一句指令返回了是另外一个专为异常而生的寄存器它可以用来记录中断嵌套的深度在执行任务空间的代码时就可以置为进入到中断空间每进入一次就加退出一次相应减这样就可以记录中断嵌套的深度这个深度在调试问题的时候经常会用到同时应用程序在执行的时候可能会需要知道当前是在任务还是中断上下文这时也可以通过寄存器是否为来判断指向当前正在操作的堆栈顶部它指向堆栈中的下一个可写入的单元如果从栈顶获取一个字节是地址的内容在有的系统里每个都有自己的一个堆栈空间和实时副本中断也有自己的堆栈空间和副本它们会在上下文切换的过程中进行保存和恢复这是一个辅助型的寄存器其含义较为模糊官方为该寄存器提供了两个用法建议一种是指向应用中位置无关代码之外的数据引用的全局偏移量表在运行的小型嵌入式系统中它可以指向一块访问较为频繁的全局数据区域由于汇编指令长度都是指令内部的为且为有符号数所以能用一条指令以为基地址访问正负的地址空间提高效率那么编译器怎么知道初始化的值呢只要在文件中添加符号连接器就会认为这是的值我们在上电时将的值赋给寄存器就行了话说回来这都是设计者的建议不是强制楼主还见过一种寄存器的用法来在中断和任务切换时做的存储过渡也是可以的这个寄存器不同的编译器对其解释不同编译器使用其作为帧指针指向堆栈里的过程帧一个子函数的第一个字子函数可以用其做一个偏移访问栈帧里的局部变量也可以较为灵活的移动因为在函数退出之前可以使用来恢复还有一种编译器会将这个寄存器直接作为扩展了一个保留寄存器给编译器使用在函数调用过程中保持子函数返回后的指令地址汇编语句里函数调用的形式为这条指令跳转并链接指令会将当前执行指令的地址存储到寄存器里然后跳转到的地址处相应地子函数返回时最常见的一条指令就是是一个对于调试很有用的寄存器系统的运行的任何时刻都可以查看它的值以获取的运行轨迹最后如果纯写汇编语句的话这些寄存器当中除了之外其它的基本上都可以做普通寄存器存取数据使用这也是它们为什么会定义为通用寄存器而不像其它的协处理器或者外设的都是专用寄存器其在出厂时所有的功能都是定死的那为什么有这么多规则呢开发者们为了让自己的处理器可以运行像这样的高级语言以及让汇编语言和高级语言可以安全的混合编程而设计的一套应用编程接口不同的编译器的设计者们就会有据可依系统程序员们在阅读修改汇编程序的时候也能根据这些约定而更为顺畅地理解汇编代码的含义程序结构本质上只是带有数据声明的纯文本文件程序代码文件名应以后缀结尾或者数据声明部分后跟程序代码部分数据声明数据以为标识声明变量后即在内存中分配空间代码放在用汇编指令标识的文本部分中包含程序代码指令给定标签代码执行的起点和语言一样程序结束标志见下面的系统调用注释表示单行注释后面的任何内容都会被视为注释汇编语言程序的模板给出程序名称和功能描述的注释汇编语言程序的概述变量声明紧跟这一行指令紧跟这一行表示代码的开始执行的第一条指令程序结束之后留空以符合要求变量声明声明格式使用给定名称和指定值为指定类型的变量创建空间通常给出初始值对于则给出要分配的字节数注意标签后面跟冒号例如创建一个初始值为的整数变量创建一个元素经过初始化的元素字符数组数组成员分别为字符和字符分配个连续字节未初始化的空间可以用作个元素的字符数组或者是个元素的整数数组读取写入指令对的访问仅允许使用加载和存储指令即或者所有其他指令都使用寄存器参数将源内存地址的字个字节复制到目标寄存器中的意为即该数据大小为个字节将源内存地址的字节复制到目标寄存器的低位字节并将符号映射到高位字节同上意为将源寄存器的字存储到目标内存中将源寄存器中的低位字节存储到目标内存中立即加载把立即数加载到目标寄存器中顾名思义这里的意为即立即加载例子给变量在内存中开辟空间变量初始值为将内存单元中的内容加载到寄存器中立即加载把寄存器的内容存到内存中间接和立即寻址仅用于读取和写入指令直接给地址将的内存地址可能是程序中定义的标签复制到寄存器中间接寻址地址是寄存器的内容类似指针将中包含的地址加载到将寄存器中的字存储到中包含的地址的中基于偏移量的寻址将内存地址的字加载到寄存器中给出了地址基于寄存器值的偏移量将寄存器中的字放到内存地址负偏移也是可以的反向漂移方不方注意基于偏移量的寻址特别适用于数组访问元素作为与基址的偏移量栈易于访问偏离栈指针或帧指针的元素例子定义一个字节长度的数组容纳个整型让数组首地址数组第一个元素设置为用的间接寻址数组第二个元素设置为该数组中每个元素地址相距长度就是自身数据类型长度即字节所以对于就是第三个元素设置为算术指令最多使用个参数所有操作数都是寄存器不能有内存地址的存在操作数大小是字个字节位和为有符号的补码整数按无符号数相加按无符号数相减运算结果存储在保存高位数据保存低位数据整数商求余数商数存放在余数存放在把特殊寄存器的值移动到把特殊寄存器的值移动到不能直接获取或中的值需要通过指令传值给寄存器流程控制分支条件分支的比较内置于指令中无条件分支直接跳转到标签就跳转到就跳转到就跳转到就跳转到就跳转到就跳转到跳转看到就跳不用考虑任何条件类似相对寻址跳到该寄存器给出的地址处子程序调用子程序调用跳转和链接指令跳转和链接将当前的程序计数器保存到中跳转到的程序语句子程序返回跳转寄存器指令跳转寄存器跳转到中的地址由指令存储注意寄存地址存储在寄存器中如果子程序将调用其他子程序或者会递归调用自身则应该从复制到栈以保留返回地址因为总是将返回地址放在该寄存器中再次调用子程序将覆盖之前的值系统调用和针对模拟器通过系统调用实现从输入输出窗口读取或打印值或字符串并指示程序结束首先在寄存器和中提供适当的值寄存器中存储返回的结果值如果有的话下表列出了可能的系统调用服务服务对应功能的调用码所需参数返回值一个整型数要打印的整型数一个浮点数要打印的浮点数双精度数要打印的双精度数字符串要打印的字符串的地址读取整型数读取的整型数读取浮点数读取的浮点数读取双精度数读取的双精度读取字符串将读取的字符串地址赋值给将读取的字符串长度赋值给这个应该和语言的函数一样需要分配的空间大小单位目测是字节将分配好的空间首地址给这个还要说吗即字符串服务期望以结尾的字符串指令创建一个以结尾的字符串和服务读取整行输入包括换行符服务与库例程具有相同的语义它将最多个字符读入缓冲区并以空字符终止字符串如果当前行中少于个字符则它会读取并包含换行符并使用空字符终止该字符串就是输入过长就截断过短就保持原样最后都要加一个终止符服务将返回包含个字节的内存块首地址这将用于动态内存分配服务使程序停止运行例子打印一个存储在的整型数声明需要调用的操作代码为然后赋值给把这个要打印的整型数赋值给让操作系统执行我们的操作例子读取一个数并且存储到内存中的变量中声明需要调用的操作代码为然后赋值给让操作系统执行我们的操作然后通过写入指令将的值存入内存中例子打印一个字符串这是完整的其实上面例子都可以直接替换部分都能直接运行字符串变量声明指令使字符串被终止将适当的系统调用代码加载到寄存器中打印字符串赋值对应的操作代码将要打印的字符串地址赋值让操作系统执行打印操作要指示程序结束应该退出系统调用所以最后一行代码应该是这个对着上面的表不用说了吧让操作系统结束这一切吧补充指令格式格式用处寄存器寄存器操作读写专用寄存器格式立即数操作用处加载存储字节半字字双字条件分支跳转跳转并链接寄存器格式跳转地址用处跳转跳转并链接陷阱和从异常中返回各字段含义指令基本操作称为操作码第一个源操作数寄存器第二个源操作数寄存器存放操作结果的目的操作数位移量函数这个字段选择操作的某个特定变体例表示即号寄存器的内容和号寄存器的内容相加结果放到号寄存器指令各字段的十进制表示为和表示这是加法表示第一个源操作数在号寄存器里表示第二个源操作数在号寄存器里表示目的操作数在号寄存器里把各字段写成二进制为这就是上述指令的机器码可以看出是很有规则性的补充常用指令集从存储器中读取一个的数据到寄存器中如把一个的数据从寄存器存储到存储器中如把两个定点寄存器的内容相加为不带符号加把一个寄存器的内容加上一个立即数为不带符号加把两个定点寄存器的内容相减两个定点寄存器的内容相除两个定点寄存器的内容相乘与运算两个寄存器中的内容相与为立即数或运算异或运算条件转移相等零不等直接跳转使用寄存器跳转把一个位的立即数填入到寄存器的高位低位补零逻辑左移右移如果的值小于那么设置的值为否则设置的值为复制为负为零为零则复制到根据地址向量转入管态从异常中返回到用户态参考资料参考资料更多资料汇编语言',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-11-18 16:51:04',
+  postMainColor: '',
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#18171d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f7f9fe')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+          const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+          const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+          const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+          if (t === undefined) {
+            if (isLightMode) activateLightMode()
+            else if (isDarkMode) activateDarkMode()
+            else if (isNotSpecified || hasNoSupport) {
+              const now = new Date()
+              const hour = now.getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addListener(e => {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><script defer src="mathjax_config.js"></script><script type="text/javascript" id="MathJax-script" defer src="https://unpkg.com/mathjax@3/es5/tex-chtml.js"></script><meta name="generator" content="Hexo 7.3.0"></head><body data-type="anzhiyu"><div id="web_bg"></div><div id="an_music_bg"></div><div id="loading-box" onclick="document.getElementById(&quot;loading-box&quot;).classList.add(&quot;loaded&quot;)"><div class="loading-bg"><img class="loading-img nolazyload" alt="加载头像" src="/img/avatar.jpg"/><div class="loading-image-dot"></div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.getElementById('loading-box').classList.add("loaded");
+  },
+  initLoading: () => {
+    document.getElementById('loading-box').classList.remove("loaded")
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+setTimeout(function(){preloader.endLoading();},10000)
+
+if (true) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.10/progress_bar/progress_bar.css"/><script async="async" src="https://cdn.cbd.int/pace-js@1.2.4/pace.min.js" data-pace-options="{ &quot;restartOnRequestAfter&quot;:false,&quot;eventLag&quot;:false}"></script><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><div id="nav-group"><span id="blog_name"><div class="back-home-button"><i class="anzhiyufont anzhiyu-icon-grip-vertical"></i><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://blog.anheyu.com/" title="博客"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/favicon.ico" alt="博客"/><span class="back-menu-item-text">博客</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">项目</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://image.anheyu.com/" title="安知鱼图床"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.anheyu.com/favicon.ico" alt="安知鱼图床"/><span class="back-menu-item-text">安知鱼图床</span></a></div></div></div></div><a id="site-name" href="/" accesskey="h"><div class="title">小鹤实验室</div><i class="anzhiyufont anzhiyu-icon-house-chimney"></i></a><div id="he-plugin-simple"></div><script>var WIDGET = {
+  "CONFIG": {
+    "modules": "0124",
+    "background": "2",
+    "tmpColor": "FFFFFF",
+    "tmpSize": "16",
+    "cityColor": "FFFFFF",
+    "citySize": "16",
+    "aqiColor": "E8D87B",
+    "aqiSize": "16",
+    "weatherIconSize": "24",
+    "alertIconSize": "18",
+    "padding": "10px 10px 10px 10px",
+    "shadow": "0",
+    "language": "auto",
+    "borderRadius": "20",
+    "fixed": "true",
+    "vertical": "top",
+    "horizontal": "left",
+    "left": "20",
+    "top": "7.1",
+    "key": "df245676fb434a0691ead1c63341cd94"
+  }
+}
+</script><link rel="stylesheet" href="https://widget.qweather.net/simple/static/css/he-simple.css?v=1.4.0"/><script src="https://widget.qweather.net/simple/static/js/he-simple.js?v=1.4.0"></script></span><div class="mask-name-container"><div id="name-container"><a id="page-name" href="javascript:anzhiyu.scrollToDest(0, 500)">PAGE_NAME</a></div></div><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/categories/"><i class="anzhiyufont anzhiyu-icon-shapes faa-tada" style="font-size: 0.9em;"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags faa-tada" style="font-size: 0.9em;"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 友链</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/link/"><i class="anzhiyufont anzhiyu-icon-link faa-tada" style="font-size: 0.9em;"></i><span> 友人帐</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/fcircle/"><i class="anzhiyufont anzhiyu-icon-artstation faa-tada" style="font-size: 0.9em;"></i><span> 朋友圈</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/comments/"><i class="anzhiyufont anzhiyu-icon-envelope faa-tada" style="font-size: 0.9em;"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 我的</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/music/"><i class="anzhiyufont anzhiyu-icon-music faa-tada" style="font-size: 0.9em;"></i><span> 音乐馆</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/album/"><i class="anzhiyufont anzhiyu-icon-images faa-tada" style="font-size: 0.9em;"></i><span> 相册集</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/air-conditioner/"><i class="anzhiyufont anzhiyu-icon-fan faa-tada" style="font-size: 0.9em;"></i><span> 小空调</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/about/"><i class="anzhiyufont anzhiyu-icon-paper-plane faa-tada" style="font-size: 0.9em;"></i><span> 关于本人</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/essay/"><i class="anzhiyufont anzhiyu-icon-lightbulb faa-tada" style="font-size: 0.9em;"></i><span> 闲言碎语</span></a></li><li><a class="site-page child faa-parent animated-hover" href="javascript:toRandomPost()"><i class="anzhiyufont anzhiyu-icon-shoe-prints1 faa-tada" style="font-size: 0.9em;"></i><span> 随便逛逛</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/equipment/"><i class="anzhiyufont anzhiyu-icon-dice-d20 faa-tada" style="font-size: 0.9em;"></i><span> 我的装备</span></a></li></ul></div></div></div><div id="nav-right"><div class="nav-button" id="randomPost_button"><a class="site-page" onclick="toRandomPost()" title="随机前往一个文章" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-dice"></i></a></div><input id="center-console" type="checkbox"/><label class="widget" for="center-console" title="中控台" onclick="anzhiyu.switchConsole();"><i class="left"></i><i class="widget center"></i><i class="widget right"></i></label><div id="console"><div class="console-card-group-reward"><ul class="reward-all console-card"><li class="reward-item"><a href="/img/weixing_money.jpg" target="_blank"><img class="post-qr-code-img" alt="微信" src="/img/weixing_money.jpg"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="/img/Alipay_money.jpg" target="_blank"><img class="post-qr-code-img" alt="支付宝" src="/img/Alipay_money.jpg"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div><div class="console-card-group"><div class="console-card-group-left"><div class="console-card" id="card-newest-comments"><div class="card-content"><div class="author-content-item-tips">互动</div><span class="author-content-item-title"> 最新评论</span></div><div class="aside-list"><span>正在加载中...</span></div></div></div><div class="console-card-group-right"><div class="console-card tags"><div class="card-content"><div class="author-content-item-tips">兴趣点</div><span class="author-content-item-title">寻找你感兴趣的领域</span></div></div><div class="console-card history"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-box-archiv"></i><span>文章</span></div><div class="card-archives"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/11/"><span class="card-archive-list-date">十一月 2024</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">22</span><span>篇</span></div></a></li></ul></div><hr/></div></div></div><div class="button-group"><div class="console-btn-item"><a class="darkmode_switchbutton" title="显示模式切换" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-moon"></i></a></div><div class="console-btn-item" id="consoleHideAside" onclick="anzhiyu.hideAsideBtn()" title="边栏显示控制"><a class="asideSwitch"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></a></div><div class="console-btn-item on" id="consoleCommentBarrage" onclick="anzhiyu.switchCommentBarrage()" title="热评开关"><a class="commentBarrage"><i class="anzhiyufont anzhiyu-icon-message"></i></a></div><div class="console-btn-item" id="consoleMusic" onclick="anzhiyu.musicToggle()" title="音乐开关"><a class="music-switch"><i class="anzhiyufont anzhiyu-icon-music"></i></a></div><div class="console-btn-item" id="consoleKeyboard" onclick="anzhiyu.keyboardToggle()" title="快捷键开关"><a class="keyboard-switch"><i class="anzhiyufont anzhiyu-icon-keyboard"></i></a></div></div><div class="console-mask" onclick="anzhiyu.hideConsole()" href="javascript:void(0);"></div></div><div class="nav-button" id="nav-totop"><a class="totopbtn" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i><span id="percent" onclick="anzhiyu.scrollToDest(0,500)">0</span></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);" title="切换"><i class="anzhiyufont anzhiyu-icon-bars"></i></a></div></div></div></nav><div id="post-info"><div id="post-firstinfo"><div class="meta-firstline"><a class="post-meta-original">原创</a><span class="post-meta-categories"><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-inbox post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E5%BC%80%E5%8F%91/" itemprop="url">编程开发</a></span><span class="article-meta tags"></span></div></div><h1 class="post-title" itemprop="name headline">汇编语言</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="anzhiyufont anzhiyu-icon-calendar-days post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" itemprop="dateCreated datePublished" datetime="2024-11-18T04:36:29.000Z" title="发表于 2024-11-18 12:36:29">2024-11-18</time><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-history post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" itemprop="dateCreated datePublished" datetime="2024-11-18T08:51:04.593Z" title="更新于 2024-11-18 16:51:04">2024-11-18</time></span></div><div class="meta-secondline"><span class="post-meta-separator"></span><span class="post-meta-pv-cv" id="" data-flag-title="汇编语言"><i class="anzhiyufont anzhiyu-icon-fw-eye post-meta-icon"></i><span class="post-meta-label" title="阅读量">阅读量:</span><span id="busuanzi_value_page_pv"><i class="anzhiyufont anzhiyu-icon-spinner anzhiyu-spin"></i></span></span><span class="post-meta-separator">       </span><span class="post-meta-position" title="作者IP属地为南京"><i class="anzhiyufont anzhiyu-icon-location-dot"></i>南京</span></div></div></div><section class="main-hero-waves-area waves-area"><svg class="waves-svg" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M -160 44 c 30 0 58 -18 88 -18 s 58 18 88 18 s 58 -18 88 -18 s 58 18 88 18 v 44 h -352 Z"></path></defs><g class="parallax"><use href="#gentle-wave" x="48" y="0"></use><use href="#gentle-wave" x="48" y="3"></use><use href="#gentle-wave" x="48" y="5"></use><use href="#gentle-wave" x="48" y="7"></use></g></svg></section><div id="post-top-cover"><img class="nolazyload" id="post-top-bg" src="/img/default_cover.jpg"></div></header><main id="blog-container"><div class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container" itemscope itemtype="http://example.com/2024/11/18/1.5.2_assembly/"><header><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E5%BC%80%E5%8F%91/" itemprop="url">编程开发</a><h1 id="CrawlerTitle" itemprop="name headline">汇编语言</h1><span itemprop="author" itemscope itemtype="http://schema.org/Person">小鹤</span><time itemprop="dateCreated datePublished" datetime="2024-11-18T04:36:29.000Z" title="发表于 2024-11-18 12:36:29">2024-11-18</time><time itemprop="dateCreated datePublished" datetime="2024-11-18T08:51:04.593Z" title="更新于 2024-11-18 16:51:04">2024-11-18</time></header><h1 id="汇编语言">汇编语言</h1>
+<!-- TOC -->
+
+<ul>
+<li><a href="#汇编语言">汇编语言</a>
+<ul>
+<li><a href="#33-x86-汇编基础">3.3 X86 汇编基础</a>
+<ul>
+<li><a href="#332-寄存器-registers">3.3.2 寄存器 Registers</a></li>
+<li><a href="#333-内存和寻址模式-memory-and-addressing-modes">3.3.3
+内存和寻址模式 Memory and Addressing Modes</a>
+<ul>
+<li><a href="#3331-声明静态数据区域">3.3.3.1 声明静态数据区域</a></li>
+<li><a href="#3332-内存寻址">3.3.3.2 内存寻址</a></li>
+<li><a href="#3333-操作后缀">3.3.3.3 操作后缀</a></li>
+</ul></li>
+<li><a href="#334-指令-instructions">3.3.4 指令 Instructions</a>
+<ul>
+<li><a href="#3341-数据移动指令">3.3.4.1 数据移动指令</a></li>
+<li><a href="#3342-逻辑运算指令">3.3.4.2 逻辑运算指令</a></li>
+<li><a href="#3343-流程控制指令">3.3.4.3 流程控制指令</a></li>
+</ul></li>
+<li><a href="#335-调用约定-calling-convention">3.3.5 调用约定 Calling
+Convention</a>
+<ul>
+<li><a href="#3351-调用者约定-caller-rules">3.3.5.1 调用者约定 Caller
+Rules</a></li>
+<li><a href="#3352-被调用者约定-callee-rules">3.3.5.2 被调用者约定
+Callee Rules</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#34-x64-汇编基础">3.4 x64 汇编基础</a>
+<ul>
+<li><a href="#341-导语">3.4.1 导语</a></li>
+<li><a href="#342-寄存器-registers">3.4.2 寄存器 Registers</a></li>
+<li><a href="#343-寻址模式-addressing-modes">3.4.3 寻址模式 Addressing
+modes</a></li>
+<li><a href="#344-通用指令-common-instructions">3.4.4 通用指令 Common
+instructions</a>
+<ul>
+<li><a href="#mov-和-lea-指令"><code>mov</code> 和 <code>lea</code>
+指令</a></li>
+<li><a href="#算术和位运算">算术和位运算</a></li>
+<li><a href="#流程控制指令">流程控制指令</a></li>
+<li><a href="#setx-和-cmovx"><code>setx</code> 和
+<code>cmovx</code></a></li>
+<li><a href="#函数调用与栈">函数调用与栈</a></li>
+</ul></li>
+<li><a href="#345-汇编和-gdb">3.4.5 汇编和 gdb</a></li>
+</ul></li>
+<li><a href="#35-arm汇编基础">3.5 ARM汇编基础</a>
+<ul>
+<li><a href="#351-引言">3.5.1 引言</a></li>
+<li><a href="#352-arm-的-gnu-汇编程序指令表">3.5.2 ARM 的 GNU
+汇编程序指令表</a></li>
+<li><a href="#353-寄存器名称">3.5.3 寄存器名称</a></li>
+<li><a href="#354-汇编程序特殊字符语法">3.5.4
+汇编程序特殊字符/语法</a></li>
+<li><a href="#355-arm程序调用标准">3.5.5 arm程序调用标准</a></li>
+<li><a href="#356-寻址模式">3.5.6 寻址模式</a></li>
+<li><a href="#357-机器相关指令">3.5.7 机器相关指令</a></li>
+</ul></li>
+<li><a href="#36-mips汇编基础">3.6 MIPS汇编基础</a>
+<ul>
+<li><a href="#数据类型和常量">数据类型和常量</a></li>
+<li><a href="#寄存器">寄存器</a></li>
+<li><a href="#程序结构">程序结构</a>
+<ul>
+<li><a href="#数据声明">数据声明</a></li>
+<li><a href="#代码">代码</a></li>
+<li><a href="#注释">注释</a></li>
+<li><a href="#变量声明">变量声明</a></li>
+<li><a href="#读取写入--loadstore-指令">读取/写入 ( Load/Store
+)指令</a></li>
+<li><a href="#间接和立即寻址">间接和立即寻址</a></li>
+<li><a href="#算术指令">算术指令</a></li>
+<li><a href="#流程控制">流程控制</a></li>
+<li><a href="#系统调用和-i--o--针对-spim-模拟器-">系统调用和 I / O (
+针对 SPIM 模拟器 )</a></li>
+<li><a href="#补充--mips-指令格式">补充 : MIPS 指令格式</a></li>
+<li><a href="#补充--mips-常用指令集">补充 : MIPS 常用指令集</a></li>
+</ul></li>
+<li><a href="#参考资料">参考资料</a></li>
+</ul></li>
+<li><a href="#更多资料">更多资料</a></li>
+</ul></li>
+</ul>
+<!-- /TOC -->
+
+<h2 id="33-x86-汇编基础">3.3 X86 汇编基础</h2>
+<hr />
+<h3 id="332-寄存器-registers">3.3.2 寄存器 Registers</h3>
+<p>​现代 ( 386及以上的机器 )x86 处理器有 8 个 32 位通用寄存器, 如图 1
+所示. <a target="_blank" rel="noopener" href="https://postimg.cc/Y4fMFK94"><img
+src="https://i.postimg.cc/3wzRP3QZ/1-5-2-x86-registers.png"
+alt="1-5-2-x86-registers.png" /></a></p>
+<p>​这些寄存器的名字都是有点历史的, 例如 EAX 过去被称为 <em>累加器</em>,
+因为它被用来作很多算术运算, 还有 <code>ECX</code> 被称为 <em>计数器</em>
+, 因为它被用来保存循环的索引 ( 就是循环次数 ).</p>
+<p>尽管大多数寄存器在现代指令集中已经失去了它们的特殊用途, 但是按照惯例,
+其中有两个寄存器还是有它们的特殊用途 —<code>ESP</code> 和
+<code>EBP</code>.</p>
+<p>​对于 <code>EAX</code>, <code>EBX</code>, <code>ECX</code> 还有
+<code>EDX</code> 寄存器, 它们可以被分段开来使用.</p>
+<p>例如, 可以将 <code>EAX</code> 的最低的 2 位字节视为 16 位寄存器 (
+<code>AX</code> ). 还可以将 <code>AX</code> 的最低位的 1 个字节看成 8
+位寄存器来用 ( <code>AL</code> ), 当然 <code>AX</code> 的高位的 1
+个字节也可以看成是一个 8 位寄存器 ( <code>AH</code> ).</p>
+<p>这些名称有它们相对应的物理寄存器.</p>
+<p>当两个字节大小的数据被放到 <code>DX</code> 的时候, 原本
+<code>DH</code>, <code>DL</code> 和 <code>EDX</code> 的数据会受到影响 (
+被覆盖之类的 ).</p>
+<p>这些 “ 子寄存器 “ 主要来自于比较久远的 16 位版本指令集. 然而,
+姜还是老的辣, 在处理小于 32 位的数据的时候, 比如 1 个字节的 ASCII 字符,
+它们有时会很方便.</p>
+<h3 id="333-内存和寻址模式-memory-and-addressing-modes">3.3.3
+内存和寻址模式 Memory and Addressing Modes</h3>
+<h4 id="3331-声明静态数据区域">3.3.3.1 声明静态数据区域</h4>
+<p>​你可以用特殊的 x86 汇编指令在内存中声明静态数据区域 ( 类似于全局变量
+).</p>
+<p><code>.data</code>指令用来声明数据. 根据这条指令, <code>.byte</code>,
+<code>.short</code> 和 <code>.long</code> 可以分别用来声明 1 个字节, 2
+个字节和 4 个字节的数据. 我们可以给它们打个标签,
+用来引用创建的数据的地址. 标签在汇编语言中是非常有用的,
+它们给内存地址命名, 然后 <em>编译器</em> 和 <em>链接器</em> 将其 “ 翻译
+“ 成计算机理解的机器代码. 这个跟用名称来声明变量很类似,
+但是它遵守一些较低级别的规则. 例如,
+按顺序声明的位置将彼此相邻地存储在内存中. 这话也许有点绕,
+就是按照顺序打的标签, 这些标签对应的数据也会按照顺序被放到内存中.</p>
+<p>一些例子 :</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">.data</span><br><span class="line">var :</span><br><span class="line">       .byte 64 #声明一个字节型变量 var, 其所对应的数据是64</span><br><span class="line">       .byte 10 #声明一个数据 10, 这个数据没有所谓的 &quot; 标签 &quot;, 它的内存地址就是 var+1.</span><br><span class="line"></span><br><span class="line">x :</span><br><span class="line">       .short 42 #声明一个大小为 2 个字节的数据, 这个数据有个标签 &quot; x &quot;</span><br><span class="line"></span><br><span class="line">y :</span><br><span class="line">       .long 30000 #声明一个大小为 4 个字节的数据, 这个数据标签是 &quot; y &quot;,  y 的值被初始化为 30000</span><br></pre></td></tr></table></figure>
+
+<p>​与高级语言不同, 高级语言的数组可以具有多个维度并且可以通过索引来访问,
+x86 汇编语言的数组只是在内存中连续的“ 单元格 “.
+你只需要把数值列出来就可以声明一个数组, 比如下面的第一个例子.
+对于一些字节型数组的特殊情况, 我们可以使用字符串.
+如果要在大多数的内存填充 0, 你可以使用<code>.zero</code>指令.</p>
+<p>​例子 :</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">s :</span><br><span class="line">       .long 1, 2, 3 #声明 3 个大小为 4 字节的数据 1, 2, 3. 内存中 s+8 这个标签所对应的数据就是 3.</span><br><span class="line"></span><br><span class="line">barr:</span><br><span class="line">       .zero 10 #从 barr 这个标签的位置开始, 声明 10 个字节的数据, 这些数据被初始化为 0.</span><br><span class="line"></span><br><span class="line">str :</span><br><span class="line">       .string &quot;hello&quot; #从 str 这个标签的位置开始, 声明 6 个字节的数据, 即 hello 对应的 ASCII 值, 这最后还跟有一个 nul(0) 字节.</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://postimg.cc/qgBM8R2p"><img
+src="https://i.postimg.cc/y6cgC3d3/1-5-2-label-s.png"
+alt="1-5-2-label-s.png" /></a></p>
+<p><a target="_blank" rel="noopener" href="https://postimg.cc/47PfDkRC"><img
+src="https://i.postimg.cc/brcZ2p6v/1-5-2-label-barr.png"
+alt="1-5-2-label-barr.png" /></a></p>
+<p><a target="_blank" rel="noopener" href="https://postimg.cc/dDWQnY9r"><img
+src="https://i.postimg.cc/fTs3zWt2/1-5-2-label-str.png"
+alt="1-5-2-label-str.png" /></a></p>
+<h4 id="3332-内存寻址">3.3.3.2 内存寻址</h4>
+<p>​现代 x86 兼容处理器能够寻址高达 2^32 字节的内存 : 内存地址为 32 位宽.
+在上面的示例中, 我们使用标签来引用内存区域, 这些标签实际上被 32
+位数据的汇编程序替换, 这些数据指定了内存中的地址. 除了支持通过标签
+(即常数值)引用存储区域之外, x86 提供了一种灵活的计算和引用内存地址的方案
+: 最多可将两个 32 位寄存器和一个32位有符号常量相加, 以计算存储器地址.
+其中一个寄存器可以选择预先乘以 2, 4 或 8.</p>
+<p>​寻址模式可以和许多 x86 指令一起使用 ( 我们将在下一节对它们进行讲解 ).
+这里我们用 <code>mov</code> 指令在寄存器和内存中移动数据当作例子.
+这个指令有两个参数, 第一个是数据的来源, 第二个是数据的去向.</p>
+<p>​一些<code>mov</code>的例子 :</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mov (%ebx), %eax          #从 EBX 中的内存地址加载 4 个字节的数据到 EAX, 就是把 EBX 中的内容当作标签, 这个标签在内存中对应的数据放到 EAX 中</span><br><span class="line">#后面如果没有说明的话, (%ebx)就表示寄存器ebx中存储的内容</span><br><span class="line"></span><br><span class="line">mov %ebx, var(,1)         # 将 EBX 中的 4 个字节大小的数据移动的内存中标签为 var 的地方去.( var 是一个 32 位常数).</span><br><span class="line"></span><br><span class="line">mov (%esi, %ebx, 4), %edx #将内存中标签为 ESI + 4 * EBX 所对应的 4 个字节大小的数据移动到 EDX 中.</span><br></pre></td></tr></table></figure>
+
+<p>​一些<strong>错误</strong>的例子:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mov (%ebx, %ecx, -1), %eax      #这个只能把寄存器中的值加上一遍.</span><br><span class="line">mov %ebx,(%eax, %esi, %edi, 1)  #在地址计算中, 最多只能出现 2 个寄存器, 这里却有 3 个寄存器.</span><br></pre></td></tr></table></figure>
+
+<h4 id="3333-操作后缀">3.3.3.3 操作后缀</h4>
+<p>​通常, 给定内存地址的数据类型可以从引用它的汇编指令推断出来. 例如,
+在上面的指令中, 你可以从寄存器操作数的大小来推出其所占的内存大小.
+当我们加载一个 32 位的寄存器的时候,
+编译器就可以推断出我们用到的内存大小是 4 个字节宽. 当我们将 1
+个字节宽的寄存器的值保存到内存中时, 编译器可以推断出我们想要在内存中弄个
+1 字节大小的 “ 坑 “ 来保存我们的数据.</p>
+<p>​然而在某些情况下, 我们用到的内存中 “ 坑 “ 的大小是不明确的.
+比如说这条指令 <code>mov $2,(%ebx)</code>. 这条指令是否应该将 “ 2 “
+这个值移动到 EBX 中的值所代表的地址 “ 坑 “ 的单个字节中 ?
+也许它表示的是将 32 位整数表示的 2 移动到从地址 EBX 开始的 4 字节.
+既然这两个解释都有道理, 但计算机汇编程序必须明确哪个解释才是正确的,
+计算机很单纯的, 要么是错的要么是对的. 后缀 b, w, 和 l
+就是来解决这个问题的, 它们分别表示 1, 2 和 4 个字节的大小.</p>
+<p>​举几个例子 :</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">movb $2, (%ebx) #将 2 移入到 ebx 中的值所表示的地址单元中.</span><br><span class="line">movw $2, (%ebx) #将 16 位整数 2 移动到 从 ebx 中的值所表示的地址单元 开始的 2 个字节中#这话有点绕, 所以我故意在里面加了点空格, 方便大家理解.</span><br><span class="line">movl $2,(%ebx) #将 32 位整数 2 移动到 从 ebx中的值表示的地址单元 开始的 4 个字节中.</span><br></pre></td></tr></table></figure>
+
+<h3 id="334-指令-instructions">3.3.4 指令 Instructions</h3>
+<p>​机器指令通常分为 3 类 : 数据移动指令, 逻辑运算指令和流程控制指令.
+在本节中, 我们将讲解每一种类型的 x86 指令以及它们的重要示例. 当然,
+我们不可能把 x86 所有指令讲得特别详细, 毕竟篇幅和水平有限.
+完整的指令列表, 请参阅 intel 的指令集参考手册.</p>
+<p>​我们将使用以下符号 :</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;reg32 任意的 32 位寄存器 (%eax, %ebx, %ecx, %edx, %esi, %edi, %esp 或者 %eb)</span><br><span class="line">&lt;reg16 任意的 16 位寄存器 (%ax, %bx, %cx 或者 %dx)</span><br><span class="line">&lt;reg8 任意的 8 位寄存器 (%ah, %al, %bh, %bl, %ch, %cl, %dh, %dl)</span><br><span class="line">&lt;reg 任意的寄存器</span><br><span class="line">&lt;mem 一个内存地址, 例如 (%eax), 4+var, (%eax, %ebx, 1)</span><br><span class="line">&lt;con32 32 位常数</span><br><span class="line">&lt;con16 16 位常数</span><br><span class="line">&lt;con8 8 位常数</span><br><span class="line">&lt;con 任意 32位, 16 位或者 8 位常数</span><br></pre></td></tr></table></figure>
+
+<p>​在汇编语言中, 用作 <em>立即操作数</em> 的所有标签和数字常量 (
+即不在诸如<code>3 (%eax, %ebx, 8)</code>这样的地址计算中 )
+总是以美元符号 $ 为前缀. 需要的时候, 前缀 0x 表示十六进制数,
+例如<code>​$ 0xABC</code>. 如果没有前缀, 则默认该数字为十进制数.
+就是所有的常数数字, 前面都会加上一个 <code>$</code> 符号.</p>
+<h4 id="3341-数据移动指令">3.3.4.1 数据移动指令</h4>
+<ul>
+<li><code>mov</code> 移动</li>
+</ul>
+<p>​<code>mov</code> 指令将数据从它的第一个参数 ( 即寄存器中的内容,
+内存单元中的内容, 或者一个常数值 ) 复制到它的第二个参数 (
+即寄存器或者内存单元 ). 当寄存器到寄存器之间的数据移动是可行的时候,
+直接地从内存单元中将数据移动到另一内存单元中是不行的.
+在这种需要在内存单元中传递数据的情况下,
+它数据来源的那个内存单元必须首先把那个内存单元中的数据加载到一个寄存器中,
+然后才可以通过这个寄存器来把数据移动到目标内存单元中.</p>
+<ul>
+<li><em>语法</em></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mov &lt;reg, &lt;reg</span><br><span class="line">mov &lt;reg, &lt;mem</span><br><span class="line">mov &lt;mem, &lt;reg</span><br><span class="line">mov &lt;con, &lt;reg</span><br><span class="line">mov &lt;con, &lt;mem</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><em>例子</em></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mov %ebx, %eax #将 EBX 中的值复制到 EAX 中</span><br><span class="line">mov $5, var(,1) #将数字 5 存到字节型内存单元 &quot; var &quot;</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://postimg.cc/9rrmnnxS"><img
+src="https://i.postimg.cc/jdhDLVys/1-5-2-mov-1.png"
+alt="1-5-2-mov-1.png" /></a></p>
+<ul>
+<li><code>push</code> 入栈</li>
+</ul>
+<p>​<code>push</code>指令将它的参数移动到硬件支持的<strong>栈</strong>内存顶端.
+特别地, <code>push</code> 首先将 ESP 中的值减少 4,
+然后将它的参数移动到一个 32 位的地址单元 ( %esp ). ESP ( 栈指针 )
+会随着不断入栈从而持续递减, 即栈内存是从高地址单元到低地址单元增长.</p>
+<ul>
+<li><em>语法</em></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">push &lt;reg32</span><br><span class="line">push &lt;mem</span><br><span class="line">push &lt;con32</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><em>例子</em></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">push %eax #将 EAX 送入栈</span><br><span class="line">push var(,1) #将 var 对应的 4 字节大小的数据送入栈中</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>pop</code> 出栈</li>
+</ul>
+<p>​<code>pop</code>指令从硬件支持的栈内存顶端移除 4 字节的数据,
+并把这个数据放到该指令指定的参数中 ( 即寄存器或者内存单元 ).
+其首先将内存中 ( %esp ) 的 4 字节数据放到指定的寄存器或者内存单元中,
+然后让 ESP + 4.</p>
+<ul>
+<li><em>语法</em></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pop &lt;reg32</span><br><span class="line">pop &lt;mem</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><em>例子</em></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pop %edi    #将栈顶的元素移除, 并放入到寄存器 EDI 中.</span><br><span class="line">pop (%ebx)  #将栈顶的元素移除, 并放入从 EBX 开始的 4 个字节大小的内存单元中.</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>重点内容 : 栈</p>
+<p><strong>栈</strong> 是一种特殊的存储空间, 特殊在它的访问形式上,
+它的访问形式就是最后进入这个空间的数据, 最先出去, 也就是 “先进后出,
+后进先出”.</p>
+</blockquote>
+<ul>
+<li><code>lea</code> 加载有效地址</li>
+</ul>
+<p>​<code>lea</code>指令将其第一个参数指定的内存单元 放入到
+第二个参数指定的寄存器中. 注意, 该指令不加载内存单元中的内容,
+只是计算有效地址并将其放入寄存器.
+这对于获得指向存储器区域的指针或者执行简单的算术运算非常有用.</p>
+<p>也许这里你会看得一头雾水, 不过你不必担心,
+这里有更为通俗易懂的解释.</p>
+<ul>
+<li><strong>汇编语言中 lea 指令和 mov 指令的区别 ?</strong></li>
+</ul>
+<p>这里的代码是 16 位 MASM 汇编的格式, 和我们现在用的 AT&amp;T
+汇编有一些细微区别, 不过不影响我们的理解.</p>
+<p><code>MOV</code> 指令的功能是传送数据, 例如
+<code>MOV AX,[1000H]</code>, 作用是将 1000H 作为偏移地址,
+寻址找到内存单元, 将该内存单元中的数据送至 AX;</p>
+<p><code>LEA</code> 指令的功能是取偏移地址, 例如
+<code>LEA AX,[1000H]</code>, 作用是将源操作数 [1000H] 的偏移地址 1000H
+送至 AX.理解时, 可直接将[ ]去掉, 等同于 <code>MOV AX,1000H</code>.</p>
+<p>再如: <code>LEA BX,[AX]</code>, 等同于 <code>MOV BX,AX</code>;
+<code>LEA BX,TABLE</code> 等同于 <code>MOV BX,OFFSET TABLE</code>.
+但有时不能直接使用 <code>MOV</code> 代替:</p>
+<p>比如: <code>LEA AX,[SI+6]</code> 不能直接替换成:
+<code>MOV AX,SI+6</code>; 但可替换为:</p>
+<p><code>MOV AX,SI</code></p>
+<p><code>ADD AX,6</code></p>
+<p>两步完成.</p>
+<p><a
+target="_blank" rel="noopener" href="https://zhidao.baidu.com/question/427095565.html">参考链接</a></p>
+<ul>
+<li><em>语法</em></li>
+</ul>
+<p><code>lea &lt;mem, &lt;reg32</code></p>
+<ul>
+<li><em>例子</em></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">lea (%ebx,%esi,8), %edi #EBX+8*ESI 的值被移入到了 EDI</span><br><span class="line">lea val(,1), %eax #val 的值被移入到了 EAX</span><br></pre></td></tr></table></figure>
+
+<h4 id="3342-逻辑运算指令">3.3.4.2 逻辑运算指令</h4>
+<ul>
+<li><code>add</code> 整数相加</li>
+</ul>
+<p>​<code>add</code> 指令将两个参数相加, 然后将结果存放到第二个参数中.
+注意, 参数可以是寄存器,但参数中最多只有一个内存单元. 这话有点绕,
+我们直接看语法 :</p>
+<ul>
+<li><em>语法</em></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">add &lt;reg, &lt;reg</span><br><span class="line">add &lt;mem, &lt;reg</span><br><span class="line">add &lt;reg, &lt;mem</span><br><span class="line">add &lt;con, &lt;reg</span><br><span class="line">add &lt;con, &lt;mem</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><em>例子</em></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">add $10, %eax #EAX 中的值被设置为了 EAX+10.</span><br><span class="line">addb $10, (%eax) #往 EAX 中的值 所代表的内存单元地址 加上 1 个字节的数字 10.</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>sub</code> 整数相减</li>
+</ul>
+<p>​<code>sub</code> 指令将第二个参数的值与第一个相减,
+就是后面那个减去前面那个, 然后把结果存储到第二个参数. 和
+<code>add</code> 一样, 两个参数都可以是寄存器,
+但两个参数中最多只能有一个是内存单元.</p>
+<ul>
+<li><em>语法</em></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sub &lt;reg, &lt;reg</span><br><span class="line">sub &lt;mem, &lt;reg</span><br><span class="line">sub &lt;con, &lt;reg</span><br><span class="line">sub &lt;con, &lt;mem</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><em>例子</em></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sub %ah, %al #AL 被设置成 AL-AH</span><br><span class="line">sub $216, %eax #将 EAX 中的值减去 216</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>inc, dec</code> 自增, 自减</li>
+</ul>
+<p>​<code>inc</code> 指令让它的参数加 1, <code>dec</code>
+指令则是让它的参数减去 1.</p>
+<ul>
+<li><em>语法</em></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">inc &lt;reg</span><br><span class="line">inc &lt;mem</span><br><span class="line">dec &lt;reg</span><br><span class="line">dec &lt;mem</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><em>例子</em></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dec %eax #EAX 中的值减去 1</span><br><span class="line">incl var(,1) #将 var 所代表的 32 位整数加上 1.</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>imul</code> 整数相乘</li>
+</ul>
+<p>​<code>imul</code> 指令有两种基本格式 : 第一种是 2 个参数的 (
+看下面语法开始两条 )# 第二种格式是 3 个参数的 ( 看下面语法最后两条
+).</p>
+<p>​2 个参数的这种格式, 先是将两个参数相乘, 然后把结果存到第二个参数中.
+运算结果 ( 即第二个参数 ) 必须是一个寄存器.</p>
+<p>​3 个参数的这种格式, 先是将它的第 1 个参数和第 2 个参数相乘,
+然后把结果存到第 3 个参数中, 当然, 第 3 个参数必须是一个寄存器. 此外, 第
+1 个参数必须是一个常数.</p>
+<ul>
+<li><em>语法</em></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">imul &lt;reg32, &lt;reg32</span><br><span class="line">imul &lt;mem, &lt;reg32</span><br><span class="line">imul &lt;con, &lt;reg32, &lt;reg32</span><br><span class="line">imul &lt;con, &lt;mem, &lt;reg32</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><em>例子</em></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">imul (%ebx), %eax #将 EAX 中的 32 位整数, 与 EBX 中的内容所指的内存单元, 相乘, 然后把结果存到 EAX 中.</span><br><span class="line">imul $25, %edi, %esi #ESI 被设置为 EDI * 25.</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>idiv</code> 整数相除</li>
+</ul>
+<p>​<code>idiv</code>只有一个操作数, 此操作数为除数, 而被除数则为 EDX :
+EAX 中的内容 (一个64位的整数), 除法结果 ( 商 ) 存在 EAX 中,
+而所得的余数存在 EDX 中.</p>
+<ul>
+<li><em>语法</em></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">idiv &lt;reg32</span><br><span class="line">idiv &lt;mem</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><em>例子</em></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">idiv %ebx #用 EDX : EAX 的值除以 EBX 的值. 商存放在 EAX 中, 余数存放在 EDX 中.</span><br><span class="line">idivw (%ebx) #将 EDX : EAX 的值除以存储在 EBX 所对应内存单元的 32 位值. 商存放在 EAX 中, 余数存放在 EDX 中.</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>and, or, xor</code> 按位逻辑 与, 或, 异或 运算</li>
+</ul>
+<p>这些指令分别对它们的参数进行相应的逻辑运算,
+运算结果存到第一个参数中.</p>
+<ul>
+<li><em>语法</em></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">and &lt;reg, &lt;reg</span><br><span class="line">and &lt;mem, &lt;reg</span><br><span class="line">and &lt;reg, &lt;mem</span><br><span class="line">and &lt;con, &lt;reg</span><br><span class="line">and &lt;con, &lt;mem</span><br><span class="line"></span><br><span class="line">or &lt;reg, &lt;reg</span><br><span class="line">or &lt;mem, &lt;reg</span><br><span class="line">or &lt;reg, &lt;mem</span><br><span class="line">or &lt;con, &lt;reg</span><br><span class="line">or &lt;con, &lt;mem</span><br><span class="line"></span><br><span class="line">xor &lt;reg, &lt;reg</span><br><span class="line">xor &lt;mem, &lt;reg</span><br><span class="line">xor &lt;reg, &lt;mem</span><br><span class="line">xor &lt;con, &lt;reg</span><br><span class="line">xor &lt;con, &lt;mem</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><em>例子</em></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">and $0x0F, %eax #只留下 EAX 中最后 4 位数字 (二进制位)</span><br><span class="line">xor %edx, %edx #将 EDX 的值全部设置成 0</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>not</code> 逻辑位运算 非</li>
+</ul>
+<p>对参数进行逻辑非运算, 即翻转参数中所有位的值.</p>
+<ul>
+<li><em>语法</em></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">not &lt;reg</span><br><span class="line">not &lt;mem</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><em>例子</em></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">not %eax #将 EAX 的所有值翻转.</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>neg</code> 取负指令</li>
+</ul>
+<p>取参数的二进制补码负数. 直接看例子也许会更好懂.</p>
+<ul>
+<li><em>语法</em></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">neg &lt;reg</span><br><span class="line">neg &lt;mem</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><em>例子</em></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">neg %eax #EAX → -EAX</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>shl, shr</code> 按位左移或者右移</li>
+</ul>
+<p>这两个指令对第二个参数进行位运算, 移动的位数由第一个参数决定,
+移动过后的空位拿 0 补上.被移的参数最多可以被移 31 位. 第一个参数可以是 8
+位常数或者寄存器 CL. 在任意情况下, 大于 31 的移位都默认是与 32 取模.</p>
+<ul>
+<li><em>语法</em></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">shl &lt;con8, &lt;reg</span><br><span class="line">shl &lt;con8, &lt;mem</span><br><span class="line">shl %cl, &lt;reg</span><br><span class="line">shl %cl, &lt;mem</span><br><span class="line"></span><br><span class="line">shr &lt;con8, &lt;reg</span><br><span class="line">shr &lt;con8, &lt;mem</span><br><span class="line">shr %cl, &lt;reg</span><br><span class="line">shr %cl, &lt;mem</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><em>例子</em></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">shl $1, %eax #将 EAX 的值乘以 2 (如果最高有效位是 0 的话)</span><br><span class="line">shr %cl, %ebx #将 EBX 的值除以 2^n, 其中 n 为 CL 中的值, 运算最终结果存到 EBX 中.</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">你也许会想, 明明只是把数字二进制移了 1 位, 结果却是等于这个数字乘以 2.什么情况 ? 这几个位运算的结果和计算机表示数字的原理有关,请看本章附录的计算机数字表示.</span><br></pre></td></tr></table></figure>
+
+<h4 id="3343-流程控制指令">3.3.4.3 流程控制指令</h4>
+<p>​x86 处理器有一个指令指针寄存器 ( EIP ), 该寄存器为 32 位寄存器,
+它用来在内存中指示我们输入汇编指令的位置.
+就是说这个寄存器指向哪个内存单元,
+那个单元存储的机器码就是程序执行的指令. 通常它是指向我们程序要执行的
+下一条指令. 但是你不能直接操作 EIP 寄存器,
+你需要流程控制指令来隐式地给它赋值.</p>
+<p>​我们使用符号 <code>&lt;label</code> 来当作程序中的标签.
+通过输入标签名称后跟冒号, 可以将标签插入 x86 汇编代码文本中的任何位置.
+例如 :</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">       mov 8(%ebp), %esi</span><br><span class="line">begin:</span><br><span class="line">       xor %ecx, %ecx</span><br><span class="line">       mov (%esi), %eax</span><br></pre></td></tr></table></figure>
+
+<p>该代码片段中的第二段被套上了 “ begin “ 这个标签. 在代码的其它地方,
+我们可以用 “ begin “ 这个标签从而更方便地来引用这段指令在内存中的位置.
+这个标签只是用来更方便地表示位置的, 它并不是用来代表某个 32 位值.</p>
+<ul>
+<li><p><code>jmp</code> 跳转指令</p>
+<p>将程序跳转到参数指定的内存地址, 然后执行该内存地址的指令.</p></li>
+<li><p><em>语法</em></p></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jmp &lt;label</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><em>例子</em></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jmp begin #跳转到打了 &quot; begin &quot; 这个标签的地方</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://postimg.cc/MfG6xPzn"><img
+src="https://i.postimg.cc/rs1K13bN/1-5-2-jmp.png"
+alt="1-5-2-jmp.png" /></a></p>
+<ul>
+<li><code>jcondition</code> 有条件的跳转</li>
+</ul>
+<p>​这些指令是条件跳转指令, 它们基于一组条件代码的状态,
+这些条件代码的状态存放在称为机器状态字 ( machine status word )
+的特殊寄存器中. 机器状态字的内容包括关于最后执行的算术运算的信息. 例如,
+这个字的一个位表示最后的结果是否为 0. 另一个位表示最后结果是否为负数.
+基于这些条件代码, 可以执行许多条件跳转. 例如, 如果最后一次算术运算结果为
+0, 则 <code>jz</code> 指令就是跳转到指定参数标签. 否则,
+程序就按照流程进入下一条指令.</p>
+<p>​许多条件分支的名称都是很直观的, 这些指令的运行,
+都和一个特殊的比较指令有关, <code>cmp</code>( 见下文 ). 例如, 像
+<code>jle</code> 和 <code>jne</code> 这种指令, 它们首先对参数进行
+<code>cmp</code> 操作.</p>
+<ul>
+<li><em>语法</em></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">je  &lt;label #当相等的时候跳转</span><br><span class="line">jne &lt;label #当不相等的时候跳转</span><br><span class="line">jz  &lt;label #当最后结果为 0 的时候跳转</span><br><span class="line">jg  &lt;label #当大于的时候跳转</span><br><span class="line">jge &lt;label #当大于等于的时候跳转</span><br><span class="line">jl  &lt;label #当小于的时候跳转</span><br><span class="line">jle &lt;label #当小于等于的时候跳转</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><em>例子</em></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cmp %ebx, %eax</span><br><span class="line">jle done</span><br><span class="line">#如果 EAX 的值小于等于 EBX 的值, 就跳转到 &quot; done &quot; 标签, 否则就继续执行下一条指令.</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://postimg.cc/v1WHvxPZ"><img
+src="https://i.postimg.cc/q7Fh48yy/1-5-2-jcondition.png"
+alt="1-5-2-jcondition.png" /></a></p>
+<ul>
+<li><code>cmp</code> 比较指令</li>
+</ul>
+<p>​比较两个参数的值, 适当地设置机器状态字中的条件代码.
+此指令与sub指令类似, 但是cmp不用将计算结果保存在操作数中.</p>
+<ul>
+<li><em>语法</em></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cmp &lt;reg, &lt;reg</span><br><span class="line">cmp &lt;mem, &lt;reg</span><br><span class="line">cmp &lt;reg, &lt;mem</span><br><span class="line">cmp &lt;con, &lt;reg</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><em>例子</em></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cmpb $10, (%ebx)</span><br><span class="line">jeq loop</span><br><span class="line">#如果 EBX 的值等于整数常量 10, 则跳转到标签 &quot; loop &quot; 的位置.</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://postimg.cc/4mSd4g7s"><img
+src="https://i.postimg.cc/L8HZT4mY/1-5-2-cmp.png"
+alt="1-5-2-cmp.png" /></a></p>
+<ul>
+<li><code>call, ret</code> 子程序调用与返回</li>
+</ul>
+<p>​这两个指令实现子程序的调用和返回. <code>call</code>
+指令首先将当前代码位置推到内存中硬件支持的栈内存上 ( 请看
+<code>push</code> 指令 ), 然后无条件跳转到标签参数指定的代码位置.
+与简单的 <code>jmp</code> 指令不同, <code>call</code>
+指令保存了子程序完成时返回的位置. 就是 <code>call</code> 指令结束后,
+返回到调用之前的地址.</p>
+<p>​<code>ret</code> 指令实现子程序的返回. 该指令首先从栈中取出代码 (
+类似于 <code>pop</code> 指令 ). 然后它无条件跳转到检索到的代码位置.</p>
+<ul>
+<li><em>语法</em></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">call &lt;label</span><br><span class="line">ret</span><br></pre></td></tr></table></figure>
+
+<h3 id="335-调用约定-calling-convention">3.3.5 调用约定 Calling
+Convention</h3>
+<p>​为了方便不同的程序员去分享代码和运行库, 并简化一般子程序的使用,
+程序员们通常会遵守一定的约定 ( Calling Convention ).
+调用约定是关于如何从例程调用和返回的协议. 例如, 给定一组调用约定规则,
+程序员不需要检查子程序的定义来确定如何将参数传递给该子程序. 此外,
+给定一组调用约定规则, 可以使高级语言编译器遵循规则,
+从而允许手动编码的汇编语言例程和高级语言例程相互调用.</p>
+<p>​我们将讲解被广泛使用的 C 语言调用约定. 遵循此约定将允许您编写可从 C (
+和C ++ ) 代码安全地调用的汇编语言子程序, 并且还允许您从汇编语言代码调用
+C 函数库.</p>
+<p>​C 调用约定很大程度上取决于使用硬件支持的栈内存. 它基于
+<code>push</code>, <code>pop</code>, <code>call</code> 和
+<code>ret</code> 指令. 子程序的参数在栈上传递. 寄存器保存在栈中,
+子程序使用的局部变量放在栈中.
+在大多数处理器上实现的高级过程语言都使用了类似的调用约定.</p>
+<p>​调用约定分为两组. 第一组规则是面向子程序的调用者 ( Caller ) 的,
+第二组规则面向子程序的编写者, 即被调用者 ( Callee ). 应该强调的是,
+错误地遵守这些规则会导致程序的致命错误, 因为栈将处于不一致的状态. 因此,
+在你自己的子程序中实现调用约定的时候, 务必当心.</p>
+<p><a target="_blank" rel="noopener" href="https://postimg.cc/sBR31DVd"><img
+src="https://i.postimg.cc/nLXrRCgz/1-5-2-stack-convention.png"
+alt="1-5-2-stack-convention.png" /></a></p>
+<p>​将调用约定可视化的一种好方法是, 在子程序执行期间画一个栈内存附近的图.
+图 2 描绘了在执行具有三个参数和三个局部变量的子程序期间栈的内容.
+栈中描绘的单元都是 32 位内存单元, 因此这些单元的内存地址相隔 4 个字节.
+第一个参数位于距基指针 8 个字节的偏移处. 在栈参数的上方 ( 和基指针下方
+), <code>call</code> 指令在这儿放了返回地址,
+从而导致从基指针到第一个参数有额外 4 个字节的偏移量. 当 <code>ret</code>
+指令用于从子程序返回时, 它将跳转到栈中的返回地址.</p>
+<h4 id="3351-调用者约定-caller-rules">3.3.5.1 调用者约定 Caller
+Rules</h4>
+<p>要进行子程序调用, 调用者应该 :</p>
+<ol type="1">
+<li><p>在调用子程序之前, 调用者应该保存指定调用者保存 ( Caller-saved
+)的某些寄存器的内容. 调用者保存的寄存器是 EAX, ECX, EDX.
+由于被调用的子程序可以修改这些寄存器,
+所以如果调用者在子程序返回后依赖这些寄存器的值,
+调用者必须将这些寄存器的值入栈,
+然后就可以在子程序返回后恢复它们.</p></li>
+<li><p>要把参数传递给子程序, 你可以在调用之前把参数入栈.
+参数的入栈顺序应该是反着的, 就是最后一个参数应该最先入栈.
+随着栈顶内存地址减小, 第一个参数将存储在最低的地址, 在历史上,
+这种参数的反转用于允许函数传递可变数量的参数.</p></li>
+<li><p>要调用子程序, 请使用<code>call</code>指令.
+该指令将返回地址存到栈上, 并跳转到子程序的代码. 这个会调用子程序,
+这个子程序应该遵循下面的被调用者约定.</p></li>
+</ol>
+<p>​子程序返回后 ( 紧跟调用指令后 ), 调用者可以期望在寄存器 EAX
+中找到子程序的返回值. 要恢复机器状态 ( machine state ), 调用者应该 :</p>
+<ol type="1">
+<li>从栈中删除参数, 这会把栈恢复到调用之前的状态.</li>
+<li>把 EAX, ECX, EDX 之前入栈的内容给出栈,
+调用者可以假设子程序没有修改其它寄存器.</li>
+</ol>
+<ul>
+<li><strong>例子</strong></li>
+</ul>
+<p>​下面的代码就是个活生生的例子, 它展示了遵循约定的函数调用.
+调用者正在调用一个带有 3 个整数参数的函数 myFunc. 第一个参数是 EAX,
+第二个参数是常数 216, 第三个参数位于 EBX 的值所代表的内存地址.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">push (%ebx) #最后一个参数最先入栈</span><br><span class="line">push $216   #把第二个参数入栈</span><br><span class="line">push %eax   #第一个参数最后入栈</span><br><span class="line"></span><br><span class="line">call myFunc #调用这个函数 ( 假设以 C 语言的模式命名 )</span><br><span class="line"></span><br><span class="line">add $12, %esp</span><br></pre></td></tr></table></figure>
+
+<p>​注意, 在调用返回后, 调用者使用 <code>add</code> 指令来清理栈内存.
+我们栈内存中有 12 个字节 ( 3 个参数, 每个参数 4 个字节 ),
+然后栈顶内存地址减小. 因此, 为了摆脱掉这些参数,
+我们可以直接往栈寄存器加个 12.</p>
+<p>​myFunc 返回的结果现在可以查看寄存器 EAX.</p>
+<p>调用者保存 ( Caller-saved ) 的寄存器 ( ECX, EDX ) 的值可能已经被修改.
+如果调用者在调用之后使用它们,
+则需要在调用之前将它们保存在堆栈中并在调用之后恢复它们.
+说白了就是把栈这个玩意当作临时存放点.</p>
+<h4 id="3352-被调用者约定-callee-rules">3.3.5.2 被调用者约定 Callee
+Rules</h4>
+<p>子程序的定义应该遵循子程序开头的以下规则 :</p>
+<ol type="1">
+<li><p>将 EBP 的值入栈, 然后把 ESP 的值复制到 EBP 中 :</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">push %ebp</span><br><span class="line">mov  %esp, %ebp</span><br></pre></td></tr></table></figure>
+
+<p>这个初始操作保留了基指针 EBP.</p>
+<p>按照约定, 基指针作为栈上找到参数和变量的参考点.</p>
+<p>当子程序正在执行的时候,
+基指针保存了从子程序开始执行时的栈指针值的副本.</p>
+<p>参数和局部变量将始终位于远离基指针值的已知常量偏移处.</p>
+<p>我们在子程序的开头将旧的基指针值入栈,
+以便稍后在子程序返回时为调用者恢复适当的基指针值.</p>
+<p>记住, 调用者不希望子程序修改基指针的值. 然后我们把栈指针复制到 EBP
+中, 以获取访问参数和局部变量的参考点.</p></li>
+<li><p>接下来, 通过在栈中创建空间来分配局部变量.</p>
+<p>回想一下, 栈会向下增长, 因此要在栈顶部创建空间, 栈指针应该递减.
+栈指针递减的数量取决于所需局部变量的数量和大小. 例如, 如果需要 3
+个局部整数 ( 每个 4 字节 ), 则需要将堆栈指针递减 12,
+从而为这些局部变量腾出空间 ( 即sub $12, %esp ). 和参数一样,
+局部变量将位于基指针的已知偏移处.</p></li>
+<li><p>再然后, 保存将由函数使用的 被调用者保存的 ( Callee-saved )
+寄存器的值.</p>
+<p>要存储寄存器, 请把它们入栈. 被调用者保存 ( Callee-saved ) 的寄存器是
+EBX, EDI 和 ESI ( ESP 和 EBP 也将由调用约定保留,
+但在这个步骤中不需要入栈 ).</p></li>
+</ol>
+<p>在完成这 3 步之后, 子程序的主体可以继续. 返回子程序的时候,
+必须遵循以下步骤 :</p>
+<ol type="1">
+<li><p>将返回值保存在 EAX 中.</p></li>
+<li><p>恢复已经被修改的任何被调用者保存 ( Callee-saved ) 的寄存器 ( EDI
+和 ESI ) 的旧值. 通过出栈来恢复它们.
+当然应该按照相反的顺序把它们出栈.</p></li>
+<li><p>释放局部变量. 显而易见的法子是把相应的值添加到栈指针 (
+因为空间是通过栈指针减去所需的数量来分配的 ). 事实上呢,
+避免变量释放出错的方法，是将基指针中的值复制到栈指针 :
+<code>mov %ebp, %esp</code>. 这个法子有效,
+是因为基指针始终包含栈指针在分配局部变量之前包含的值.</p></li>
+<li><p>在返回之前, 立即通过把 EBP 出栈来恢复调用者的基指针值. 回想一下,
+我们在进入子程序的时候做的第一件事是将基指针入栈，以保存它的旧值.</p></li>
+<li><p>最后, 通过执行 <code>ret</code> 指令返回.
+这个指令将从栈中删除相应的返回地址, 并跳转到该地址 ( call 指令保存的那个
+).</p></li>
+</ol>
+<p>请注意, 被调用者的约定完全被分成了两半, 简直是彼此的镜像.
+约定的前半部分适用于函数开头, 并且通常被称为定义函数的<em>序言</em> (
+<em>prologue</em> ) .这个约定的后半部分适用于函数结尾,
+因此通常被称为定义函数的<em>结尾</em> ( epilogue ).</p>
+<ul>
+<li><strong>例子</strong></li>
+</ul>
+<p>这是一个遵循被调用者约定的例子 :</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">#启动代码部分</span><br><span class="line">.text</span><br><span class="line"></span><br><span class="line">#将 myFunc 定义为全局 ( 导出 ) 函数</span><br><span class="line">.globl myFunc</span><br><span class="line">.type myFunc, @function</span><br><span class="line">myFunc :</span><br><span class="line">#子程序序言</span><br><span class="line">push %ebp #保存基指针旧值</span><br><span class="line">mov %esp, %ebp #设置基指针新值</span><br><span class="line">sub $4, %esp #为一个 4 字节的变量腾出位置</span><br><span class="line">push %edi</span><br><span class="line">push %esi #这个函数会修改 EDI 和 ESI, 所以先给它们入栈</span><br><span class="line">#不需要保存 EBX, EBP 和 ESP</span><br><span class="line"></span><br><span class="line">#子程序主体</span><br><span class="line">mov 8(%ebp), %eax #把参数 1 的值移到 EAX 中</span><br><span class="line">mov 12(%ebp), %esi #把参数 2 的值移到 ESI 中</span><br><span class="line">mov 16(%ebp), %edi #把参数 3 的值移到 EDI 中</span><br><span class="line"></span><br><span class="line">mov %edi, -4(%ebp) #把 EDI 移给局部变量</span><br><span class="line">add %esi, -4(%ebp) #把 ESI 添加给局部变量</span><br><span class="line">add -4(%ebp), %eax #将局部变量的内容添加到 EAX ( 最终结果 ) 中</span><br><span class="line"></span><br><span class="line">#子程序结尾</span><br><span class="line">pop %esi #恢复寄存器的值</span><br><span class="line">pop %edi</span><br><span class="line">mov %ebp, %esp #释放局部变量</span><br><span class="line">pop %ebp #恢复调用者的基指针值</span><br><span class="line">ret</span><br></pre></td></tr></table></figure>
+
+<p>​子程序序言执行标准操作, 即在 EBP ( 基指针 ) 中保存栈指针的副本,
+通过递减栈指针来分配局部变量, 并在栈上保存寄存器的值.</p>
+<p>​在子程序的主体中, 我们可以看到基指针的使用. 在子程序执行期间,
+参数和局部变量都位于基指针的常量偏移处. 特别地, 我们注意到,
+由于参数在调用子程序之前被放在栈中, 因此它们总是位于栈基指针 (
+即更高的地址 ) 之下. 子程序的第一个参数总是可以在内存地址 ( EBP+8 )
+找到, 第二个参数在 ( EBP+12 ), 第三个参数在 ( EBP+16). 类似地,
+由于在设置基指针后分配局部变量, 因此它们总是位于栈上基指针 ( 即较低地址
+) 之上. 特别是, 第一个局部变量总是位于 ( EBP-4 ), 第二个位于 ( EBP-8 ),
+以此类推. 这种基指针的常规使用,
+让我们可以快速识别函数内部局部变量和参数的使用.</p>
+<p>​函数结尾基本上是函数序言的镜像. 从栈中恢复调用者的寄存器值,
+通过重置栈指针来释放局部变量, 恢复调用者的基指针值, 并用
+<code>ret</code> 指令返回调用者中的相应代码位置, 从哪来回哪去.</p>
+<p><a
+target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/X86%E8%B0%83%E7%94%A8%E7%BA%A6%E5%AE%9A">维基百科
+X86 调用约定</a></p>
+<h2 id="34-x64-汇编基础">3.4 x64 汇编基础</h2>
+<h3 id="341-导语">3.4.1 导语</h3>
+<p>​x86-64 (也被称为 x64 或者 AMD64) 是 64 位版本的 x86/IA32 指令集.
+以下是我们关于 CS107 相关功能的概述.</p>
+<h3 id="342-寄存器-registers">3.4.2 寄存器 Registers</h3>
+<p>​下图列出了常用的 16 个通用寄存器.</p>
+<p>每个寄存器都是 64 bit 宽, 它们的低 32, 16, 8 位都可以看成相应的 32,
+16, 8 位寄存器, 并且都有其特殊名称.</p>
+<p>一些寄存器被设计用来完成某些特殊目的, 比如 %rsp 被用来作为栈指针,
+%rax 作为一个函数的返回值.</p>
+<p>其他寄存器则都是通用的, 但是一般在使用的时候, 还是要取决于调用者 (
+Caller-owned )或者被调用者 ( Callee-owned ).</p>
+<p>如果函数 binky 调用了 winky, 我们称 binky 为调用者, winky
+为被调用者.</p>
+<p>例如, 用于前 6 个参数和返回值的寄存器都是被调用者所有的 (
+Callee-owned ).</p>
+<p>被调用者可以任意使用这些寄存器,
+不用任何预防措施就可以随意覆盖里面的内容.</p>
+<p>如果 <code>%rax</code> 存着调用者想要保留的值,
+则调用者必须在调用之前将这个 <code>%rax</code>
+的值复制到一个“安全”的位置.</p>
+<p>被调用者拥有的 ( Callee-owned ) 寄存器非常适合一些临时性的使用.</p>
+<p>相反, 如果被调用者打算使用调用者所拥有的寄存器,
+那么被调用者必须首先把这个寄存器的值存起来,
+然后在退出调用之前把它恢复.</p>
+<p>调用者拥有的 ( Caller-owned ) 寄存器用于保存调用者的本地状态 ( local
+state ), 所以这个寄存器需要在进一步的函数调用中被保留下来.</p>
+<hr />
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://i.postimg.cc/t4CY6rzF/1-5-2-registers.png"
+alt="16 个 x64 整数寄存器" /></p>
+<hr />
+<h3 id="343-寻址模式-addressing-modes">3.4.3 寻址模式 Addressing
+modes</h3>
+<p>​正由于它的 CISC 特性, X86-64 支持各种寻址模式.
+寻址模式是计算要读或写的内存地址的表达式.
+这些表达式用作<code>mov</code>指令和访问内存的其它指令的来源和去路.
+下面的代码演示了如何在每个可用的寻址模式中将 立即数 1 写入各种内存位置
+:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">movl $1, 0x604892         #直接写入, 内存地址是一个常数</span><br><span class="line">movl $1, (%rax)           #间接写入, 内存地址存在寄存器 %rax 中</span><br><span class="line"></span><br><span class="line">movl $1, -24(%rbp)        #使用偏移量的间接写入</span><br><span class="line">                          #公式 : (address = base %rbp + displacement -24)</span><br><span class="line"></span><br><span class="line">movl $1, 8(%rsp, %rdi, 4) #间接写入, 用到了偏移量和按比例放大的索引 ( scaled-index )</span><br><span class="line">                          #公式 : (address = base %rsp + displ 8 + index %rdi * scale 4)</span><br><span class="line"></span><br><span class="line">movl $1, (%rax, %rcx, 8)  #特殊情况, 用到了按比例放大的索引 ( scaled-index ), 假设偏移量 ( displacement ) 为 0</span><br><span class="line"></span><br><span class="line">movl $1, 0x8(, %rdx, 4)   #特殊情况, 用到了按比例放大的索引 ( scaled-index ), 假设基数 ( base ) 为 0</span><br><span class="line">movl $1, 0x4(%rax, %rcx)  #特殊情况, 用到了按比例放大的索引 ( scaled-index ), 假设比例 ( scale ) 为0</span><br></pre></td></tr></table></figure>
+
+<h3 id="344-通用指令-common-instructions">3.4.4 通用指令 Common
+instructions</h3>
+<p>​先说下指令后缀, 之前讲过这里就重温一遍 : 许多指令都有个后缀 ( b, w,
+l, q ) , 后缀指明了这个指令代码所操纵参数数据的位宽 ( 分别为 1, 2, 4 或
+8 个字节 ).</p>
+<p>当然, 如果可以从参数确定位宽的时候, 后缀可以被省略.</p>
+<p>例如呢, 如果目标寄存器是 %eax, 则它必须是 4 字节宽, 如果是 %ax
+寄存器, 则必须是 2 个字节, 而 %al 将是 1 个字节.</p>
+<p>还有些指令, 比如 <code>movs</code> 和 <code>movz</code> 有两个后缀 :
+第一个是来源参数长度, 第二个是目的参数长度.</p>
+<p>这话乍一看让人摸不着头脑, 且听我分析. 例如, <code>movzbl</code>
+这个指令把 1 个字节的来源参数值移动到 4 个字节的去路.</p>
+<p>​当目标是子寄存器 ( sub-registers ) 时, 只有子寄存器的特定字节被写入,
+但有一个例外 : 32 位指令将目标寄存器的高 32 位设置为 0.</p>
+<h4 id="mov-和-lea-指令"><code>mov</code> 和 <code>lea</code> 指令</h4>
+<p>​到目前为止, 我们遇到的最频繁的指令就是 <code>mov</code>,
+而它有很多变种. 关于 <code>mov</code> 指令就不多说了, 和之前 32 位 x86
+的没什么区别. <code>lea</code> 指令其实也没什么好说的, 上一节都有,
+这里就不废话了.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">这里写几个比较有意思的例子 :</span><br><span class="line">mov 8(%rsp), %eax    #%eax = 从地址 %rsp + 8 读取的值</span><br><span class="line">lea 0x20(%rsp), %rdi #%rdi = %rsp + 0x20</span><br><span class="line">lea (%rdi,%rdx,1), %rax  #%rax = %rdi + %rdx</span><br></pre></td></tr></table></figure>
+
+<p>​在把较小位宽的数据移动复制到较大位宽的情况下, <code>movs</code> 和
+<code>movz</code> 这两个变种指令用于指定怎么样去填充字节,
+因为你是一个小东西被移到了一个大空间, 肯定还有地方是空的,
+所以空的地方要填起来, 拿 0 或者 符号扩展 ( sign-extend ) 来填充.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">movsbl %al, %edx     #把 1 个字节的 %al, 符号扩展 复制到 4 字节的 %edx</span><br><span class="line">movzbl %al, %edx     #把 1 个字节的 %al, 零扩展 ( zero-extend ) 复制到 4 字节的 %edx</span><br></pre></td></tr></table></figure>
+
+<p>​有个特殊情况要注意, 默认情况下, 将 32 位值写入寄存器的
+<code>mov</code> 指令, 也会将寄存器的高 32 位归零, 即隐式零扩展到位宽 q.
+这个解释了诸如 <code>mov %ebx, %ebx</code> 这种指令,
+这些指令看起来很奇怪, 但实际上这是用于从 32 位扩展到 64 位.
+因为这个是默认的, 所以我们不用 <code>movzlq</code> 指令来特地把它扩展到
+64 位. 当然, 有一个 <code>movslq</code> 指令也是从 32 位符号扩展到 64
+位.</p>
+<p>​<code>cltq</code> 指令是一个在 %rax 上运行的专用移动指令.
+这个没有参数的指令在 %rax 上进行符号扩展, 源位宽为 l, 目标位宽为 q.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cltq   #在 ％rax 上运行, 将 4 字节 src 符号扩展为 8 字节 dst, 用于 movslq ％eax, ％rax</span><br></pre></td></tr></table></figure>
+
+<h4 id="算术和位运算">算术和位运算</h4>
+<p>​二进制的运算一般是两个参数, 其中第二个参数既是我们指令运算的来源,
+也是运算结果的去路, 就是说我们把运算结果存在第二个参数里.</p>
+<p>我们的第一个参数可以是立即数常数, 寄存器或者内存单元.</p>
+<p>第二个参数<strong>必须</strong>是寄存器或者内存.</p>
+<p>这两个参数中, <strong>最多只有一个参数是内存单元</strong>,
+当然也有的指令只有一个参数, 这个参数既是我们运算数据的来源,
+也是我们运算数据的去路, 它可以是寄存器或者内存.</p>
+<p>这个我们上一节讲了, 这里回顾一下.
+许多算术指令用于有符号和无符号类型,也就是带符号加法和无符号加法都使用相同的指令.
+当需要的时候, 参数设置的条件代码可以用来检测不同类型的溢出.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">add src, dst      # dst = dst + src</span><br><span class="line">sub src, dst      # dst = dst - src</span><br><span class="line">imul src, dst     # dst = dst * src</span><br><span class="line">neg dst           # dst = -dst ( 算术取反 )</span><br><span class="line"></span><br><span class="line">and src, dst      # dst = dst &amp; src</span><br><span class="line">or src, dst       # dst = dst | src</span><br><span class="line">xor src, dst      # dst = dst ^ src</span><br><span class="line">not dst           # dst = ~dst ( 按位取反 )</span><br><span class="line"></span><br><span class="line">shl count, dst    # dst &lt;&lt;= count ( 按 count 的值来左移 ), 跟这个相同的是`sal`指令</span><br><span class="line">sar count, dst    # dst &gt;&gt;= count ( 按 count 的值来算术右移 )</span><br><span class="line">shr count, dst    # dst &gt;&gt;= count ( 按 count 的值来逻辑右移 )</span><br><span class="line"></span><br><span class="line">#某些指令有特殊情况 变体, 这些变体有不同的参数</span><br><span class="line">imul src          # 一个参数的 imul 指令假定 %rax 中其他参数计算 128 位的结果, 在 %rdx 中存储高 64 位, 在 %rax 中存储低 64 位.</span><br><span class="line">shl dst           # dst &lt;&lt;= 1 ( 后面没有 count 参数的时候默认是移动 1 位, `sar`, `shr`, `sal` 指令也是一样 )</span><br></pre></td></tr></table></figure>
+
+<p>​这些指令上一节都讲过, 这里稍微提一下.</p>
+<h4 id="流程控制指令">流程控制指令</h4>
+<p>​有一个特殊的 %eflags 寄存器, 它存着一组被称为条件代码的 boolean
+布尔标志.</p>
+<p>大多数的算术运算会更新这些条件代码.</p>
+<p>条件跳转指令读取这些条件代码之后, 再确定是否执行相应的分支指令.</p>
+<p>条件代码包括 ZF( 零标志 ), SF( 符号标志 ), OF( 溢出标志, 有符号 ) 和
+CF( 进位标志, 无符号 ).</p>
+<p>例如, 如果结果为 0 , 则设置 ZF, 如果操作溢出 ( 进入符号位 ), 则设置
+OF.</p>
+<p>​这些指令一般是先执行 <code>cmp</code> 或 <code>test</code>
+操作来设置标志位, 然后紧跟条件跳转指令,
+该指令读取标志位来确定是否跳转.</p>
+<p><code>cmp</code> 或 <code>test</code>
+的参数可以是立即数、寄存器或者内存单元 ( 最多只有一个内存参数 ).</p>
+<p>条件跳转有 32 种变体, 其中几种效果是一样的. 下面是一些分支指令.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">cmpl op2, op1 # 运算结果 = op1 - op2, 丢弃结果然后设置条件代码</span><br><span class="line">test op2, op1 # 运算结果 = op1 &amp; op2, 丢弃结果然后设置条件代码</span><br><span class="line"></span><br><span class="line">jmp target    # 无条件跳转</span><br><span class="line">je target     # 等于时跳转, 和它相同的还有 jz, 即jump zero ( ZF = 1 )</span><br><span class="line">jne target    # 不相等时跳转, 和它相同的还有 jnz, 即 jump non zero ( ZF = 0 )</span><br><span class="line">jl target     # 小于时跳转, 和它相同的还有 jnge, 即 jump not greater or equal ( SF != OF )</span><br><span class="line">jle target    # 小于等于时跳转, 和它相同的还有 jng, 即 jump not greater ( ZF = 1 or SF != OF )</span><br><span class="line">jg target     # 大于时跳转, 和它相同的还有 jnle, 即 jump not less or equal ( ZF = 0 and SF = OF )</span><br><span class="line">jge target    # 大于等于时跳转, 和它相同的还有 jnl, 即 jump not less ( SF = OF )</span><br><span class="line">ja  target    # 跳转到上面, 和它相同的还有 jnbe, 即 jump not below or equal ( CF = 0 and ZF = 0 )</span><br><span class="line">jb  target    # 跳转到下面, 和它相同的还有 jnae, 即 jump not above or equal ( CF = 1 )</span><br><span class="line">js  target    # SF = 1 时跳转</span><br><span class="line">jns target    # SF = 0 时跳转</span><br></pre></td></tr></table></figure>
+
+<p>​其实你也会发现这里大部分上一节都讲过,
+这里我们可以再来一遍巩固一下.</p>
+<h4 id="setx-和-cmovx"><code>setx</code> 和 <code>cmovx</code></h4>
+<p>​还有两个指令家族可以 读取/响应 当前的条件代码. <code>setx</code>
+指令根据条件 x 的状态将目标寄存器设置为 0 或 1. <code>cmovx</code>
+指令根据条件 x 是否成立来有条件地执行 mov. x 是任何条件变量的占位符,
+就是说 x 可以用这些来代替 : e, ne, s, ns. 它们的意思上面也都说过了.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sete dst #根据 零/相等( zero/equal ) 条件来把 dst 设置成 0 或 1</span><br><span class="line">setge dst #根据 大于/相等( greater/equal ) 条件来把 dst 设置成 0 或 1</span><br><span class="line">cmovns src, dst #如果 ns 条件成立, 则继续执行 mov</span><br><span class="line">cmovle src, dst #如果 le 条件成立, 则继续执行 mov</span><br></pre></td></tr></table></figure>
+
+<p>​对于 <code>setx</code> 指令, 其目标必须是单字节寄存器 ( 例如 %al 用于
+%rax 的低字节 ). 对于 <code>cmovx</code> 指令,
+其来源和去路都必须是寄存器.</p>
+<h4 id="函数调用与栈">函数调用与栈</h4>
+<p>​%rsp 寄存器用作 “ 栈指针 “, <code>push</code> 和 <code>pop</code>
+用于添加或者删除栈内存中的值.</p>
+<p><code>push</code> 指令只有一个参数,
+这个参数可以是立即数、寄存器或内存单元.</p>
+<p><code>push</code> 指令先把 %rsp 的值递减,
+然后将参数复制到栈内存顶部.</p>
+<p><code>pop</code> 指令也只有一个参数, 即目标寄存器.</p>
+<p><code>pop</code> 先把栈内存最顶层的值复制到目标寄存器, 然后把 %rsp
+递增. 直接调整 %rsp,
+以通过单个参数添加或删除整个数组或变量集合也是可以的.</p>
+<p>但注意, 栈内存是朝下增长 ( 即朝向较低地址 ).</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">push %rbx       #把 %rbx 入栈</span><br><span class="line">pushq $0x3      #把立即数 3 入栈</span><br><span class="line">sub $0x10, %rsp #调整栈指针以空出 16 字节</span><br><span class="line"></span><br><span class="line">pop %rax        #把栈中最顶层的值出栈到寄存器 %rax 中</span><br><span class="line">add $0x10, %rsp #调整栈指针以删除最顶层的 16 个字节</span><br></pre></td></tr></table></figure>
+
+<p>​函数之间是通过互相调用返回来互相控制的.</p>
+<p><code>callq</code> 指令有一个参数, 即被调用的函数的地址.</p>
+<p>它将要返回到的地址入栈, 这个要返回的地址就是 %rip 当前的值,
+也即调用函数指令之后的下一条指令.</p>
+<p>然后这个指令让程序跳转到被调用的函数的地址. <code>retq</code>
+指令把刚才入栈的地址给出栈, 让它回到 %rip 中,
+从而让程序在保存的返回地址处重新开始, 就是说你中途跳到别的地方去,
+你回来的时候要从你跳的那个地方重新开始.</p>
+<p>​当然, 你如果要设置这种函数间的互相调用,
+调用者需要将前六个参数放入寄存器 %rdi, %rsi, %rdx, %rcx, %r8 和 %r9 (
+任何其它参数都入栈 ), 然后再执行调用指令.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mov $0x3, %rdi  #第一个参数在 %rdi 中</span><br><span class="line">mov $0x7, %rsi  #第二个参数在 %rsi 中</span><br><span class="line">callq binky     #把程序交给 binky 控制</span><br></pre></td></tr></table></figure>
+
+<p>​当被调用函数结束的时候, 这个函数将返回值 ( 如果有的话 ) 写入 %rax,
+然后清理栈内存, 并使用 <code>retq</code>
+指令把程序控制权交还给调用者.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mov $0x0, %eax  #将返回值写入 %rax</span><br><span class="line">add $0x10, %rsp #清理栈内存</span><br><span class="line">retq            #交还控制权, 跳回去</span><br></pre></td></tr></table></figure>
+
+<p>​这些分支跳转指令的目标通常是在编译时确定的绝对地址.</p>
+<p>但是, 有些情况下直到运行程序的时候, 我们才知道目标的绝对内存地址.</p>
+<p>例如编译为跳转表的 switch 语句或调用函数指针时.</p>
+<p>对于这些, 我们先计算目标地址, 然后把地址存到寄存器中, 然后用
+分支/调用( branch/call ) 变量 <code>je *%rax</code> 或
+<code>callq *%rax</code> 从指定寄存器中读取目标地址.</p>
+<p>​当然还有更简单的方法, 就是上一节讲的打标签.</p>
+<h3 id="345-汇编和-gdb">3.4.5 汇编和 gdb</h3>
+<p>gdb 调试器的下载与安装就不在这里说了.</p>
+<p>​调试器 ( debugger ) 有许多功能, 可以让你在程序中追踪和调试代码.
+你可以通过在其名称上加个 $ 来打印寄存器中的值, 或者使用命令 info reg
+显示所有寄存器的值 :</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(gdb) p $rsp</span><br><span class="line">(gdb) info reg</span><br></pre></td></tr></table></figure>
+
+<p>​<code>disassemble</code> 命令按照名称打印函数的反汇编. <code>x</code>
+命令支持 i 格式, 这个格式把内存地址的内容解释为编码指令 ( 解码 ).</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(gdb) disassemble main //反汇编, 然后打印所有 main 函数的指令</span><br><span class="line">(gdb) x/8i main //反汇编, 然后打印开始的 8 条指令</span><br></pre></td></tr></table></figure>
+
+<p>​你可以通过在函数中的直接地址或偏移量为特定汇编指令设置断点.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(gdb) b *0x08048375</span><br><span class="line">(gdb) b *main+7 //在 main+7个字节这里设置断点</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>​你可以用 <code>stepi</code> 和 <code>nexti</code>
+命令来让程序通过指令 ( 而不是源代码 ) 往前执行.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(gdb) stepi</span><br><span class="line">(gdb) nexti</span><br></pre></td></tr></table></figure>
+
+<h2 id="35-arm汇编基础">3.5 ARM汇编基础</h2>
+<h3 id="351-引言">3.5.1 引言</h3>
+<p>本章所讲述的是在 GNU 汇编程序下的 ARM 汇编快速指南,
+而所有的代码示例都会采用下面的结构:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[&lt; 标签 label :]  &#123;&lt;指令 instruction or directive &#125; @ 注释 comment</span><br></pre></td></tr></table></figure>
+
+<p>在 GNU 程序中不需要缩进指令.程序的标签是由冒号识别而与所处的位置无关.
+就通过一个简单的程序来介绍:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">.section .text, &quot;x&quot;</span><br><span class="line">.global   add @给符号添加外部链接</span><br><span class="line">add:</span><br><span class="line">       ADD    r0, r0, r1    @添加输入参数</span><br><span class="line">​      MOV    pc, lr         @从子程序返回</span><br><span class="line">                            @程序结束</span><br></pre></td></tr></table></figure>
+
+<p>它定义的是一个返回总和函数 “ add “,
+允许两个输入参数.通过了解这个程序实例,
+想必接下来这类程序的理解我们也能够很好的的掌握.</p>
+<h3 id="352-arm-的-gnu-汇编程序指令表">3.5.2 ARM 的 GNU
+汇编程序指令表</h3>
+<p>在 GNU 汇编程序下的 ARM 指令集涵括如下:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">GUN 汇编程序指令</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>.ascii "&lt;string&gt;"</code></td>
+<td>将字符串作为数据插入到程序中</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>.asciz "&lt;string&gt;"</code></td>
+<td>与 .ascii 类似, 但跟随字符串的零字节</td>
+</tr>
+<tr>
+<td
+style="text-align: left;"><code>.balign &lt;power_of_2&gt; &#123;,&lt;fill_value&gt;&#123;,&lt;max_padding&gt;&#125; &#125;</code></td>
+<td>将地址与 <code>&lt;power_of_2&gt;</code> 字节对齐.
+汇编程序通过添加值 <code>&lt;fill_value&gt;</code>
+的字节或合适的默认值来对齐. 如果需要超过
+<code>&lt;max_padding&gt;</code> 这个数字来填充字节, 则不会发生对齐 (
+类似于armasm 中的 ALIGN )</td>
+</tr>
+<tr>
+<td
+style="text-align: left;"><code>.byte &lt;byte1&gt;  &#123;,&lt;byte2&gt; &#125; …</code></td>
+<td>将一个字节值列表作为数据插入到程序中</td>
+</tr>
+<tr>
+<td
+style="text-align: left;"><code>.code &lt;number_of_bits&gt;</code></td>
+<td>以位为单位设置指令宽度. 使用 16 表示 Thumb, 32 表示 ARM 程序 (
+类似于 armasm 中的 CODE16 和 CODE32 )</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>.else</code></td>
+<td>与.if和 .endif 一起使用 ( 类似于 armasm 中的 ELSE )</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>.end</code></td>
+<td>标记程序文件的结尾 ( 通常省略 )</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>.endif</code></td>
+<td>结束条件编译代码块 - 参见.if, .ifdef, .ifndef ( 类似于 armasm 中的
+ENDIF )</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>.endm</code></td>
+<td>结束宏定义 - 请参阅 .macro ( 类似于 armasm 中的 MEND )</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>.endr</code></td>
+<td>结束重复循环 - 参见 .rept 和 .irp (类似于 armasm 中的 WEND )</td>
+</tr>
+<tr>
+<td
+style="text-align: left;"><code>.equ &lt;symbol name&gt;, &lt;vallue&gt;</code></td>
+<td>该指令设置符号的值 ( 类似于 armasm 中的 EQU )</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>.err</code></td>
+<td>这个会导致程序停止并出现错误</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>.exitm</code></td>
+<td>中途退出一个宏 - 参见 .macro ( 类似于 armasm 中的 MEXIT )</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>.global &lt;symbol&gt;</code></td>
+<td>该指令给出符号外部链接 ( 类似于 armasm 中的 MEXIT ).</td>
+</tr>
+<tr>
+<td
+style="text-align: left;"><code>.hword &lt;short1&gt;  &#123;,&lt;short2&gt; &#125;...</code></td>
+<td>将16位值列表作为数据插入到程序中 ( 类似于 armasm 中的 DCW )</td>
+</tr>
+<tr>
+<td
+style="text-align: left;"><code>.if &lt;logical_expression&gt;</code></td>
+<td>把一段代码变成前提条件. 使用 .endif 结束代码块 ( 类似于 armasm中的
+IF ). 另见 .else</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>.ifdef &lt;symbol&gt;</code></td>
+<td>如果定义了 <code>&lt;symbol&gt;</code>, 则包含一段代码. 结束代码块用
+.endif, 这就是个条件判断嘛, 很简单的.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>.ifndef &lt;symbol&gt;</code></td>
+<td>如果未定义 <code>&lt;symbol&gt;</code>, 则包含一段代码. 结束代码块用
+.endif, 同上.</td>
+</tr>
+<tr>
+<td
+style="text-align: left;"><code>.include "&lt;filename&gt;"</code></td>
+<td>包括指定的源文件, 类似于 armasm 中的 INCLUDE 或 C 中的#include</td>
+</tr>
+<tr>
+<td
+style="text-align: left;"><code>.irp &lt;param&gt;  &#123;,&lt;val 1&gt;&#125; &#123;,&lt;val_2&gt;&#125; ...</code></td>
+<td>为值列表中的每个值重复一次代码块. 使用 .endr 指令标记块的结尾.
+在里面重复代码块, 使用 <code>\&lt;param&gt;</code>
+替换关联的代码块值列表中的值.</td>
+</tr>
+<tr>
+<td
+style="text-align: left;"><code>.macro &lt;name&gt; &#123;&lt;arg_1&gt;&#125; &#123;,&lt; arg_2&gt;&#125; ... &#123;,&lt;arg_N&gt;&#125;</code></td>
+<td>使用 N
+个参数定义名为<code>&lt;name&gt;</code>的汇编程序宏.宏定义必须以
+<code>.endm</code> 结尾. 要在较早的时候从宏中逃脱, 请使用
+<code>.exitm</code>. 这些指令是类似于 armasm 中的 MACRO, MEND 和MEXIT.
+你必须在虚拟宏参数前面加 <code>\</code>.</td>
+</tr>
+<tr>
+<td
+style="text-align: left;"><code>.rept &lt;number_of_times&gt;</code></td>
+<td>重复给定次数的代码块. 以<code>.endr</code>结束.</td>
+</tr>
+<tr>
+<td
+style="text-align: left;"><code>&lt;register_new_name&gt;  .req   &lt;register_name&gt;</code></td>
+<td>该指令命名一个寄存器. 它与 armasm 中的 <code>RN</code> 指令类似,
+不同之处在于您必须在右侧提供名称而不是数字 (例如,
+<code>acc .req r0</code>)</td>
+</tr>
+<tr>
+<td
+style="text-align: left;"><code>.section &lt;section_name&gt;   &#123;,"&lt;flags&gt; "&#125;</code></td>
+<td>启动新的代码或数据部分. GNU 中有这些部分:<code>.text</code>代码部分,
+<code>.data</code>初始化数据部分和<code>.bss</code>未初始化数据部分.
+这些部分有默认值flags和链接器理解默认名称 (与armasm指令AREA类似的指令).
+以下是 ELF 格式文件允许的 .section标志: <br/>a 表示 allowable
+section<br/>w 表示 writable section<br/>x 表示 executable section</td>
+</tr>
+<tr>
+<td
+style="text-align: left;"><code>.set &lt;variable_name&gt;,   &lt;variable_value&gt;</code></td>
+<td>该指令设置变量的值. 它类似于 SETA.</td>
+</tr>
+<tr>
+<td
+style="text-align: left;"><code>.space &lt;number_of_bytes&gt;  &#123;,&lt;fill_byte&gt; &#125;</code></td>
+<td>保留给定的字节数. 如果指定了字节, 则填充零或
+<code>&lt;fill_byte&gt;</code> (类似于 armasm 中的 SPACE)</td>
+</tr>
+<tr>
+<td
+style="text-align: left;"><code>.word &lt;word1&gt;  &#123;,&lt;word2&gt;&#125;...</code></td>
+<td>将 32 位字值列表作为数据插入到程序集中 (类似于 armasm 中的
+DCD).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="353-寄存器名称">3.5.3 寄存器名称</h3>
+<p>通用寄存器:</p>
+<p>%r0 - %r15</p>
+<p>fp 寄存器:</p>
+<p>%f0 - %f7</p>
+<p>临时寄存器:</p>
+<p>%r0 - %r3, %r12</p>
+<p>保存寄存器:</p>
+<p>%r4 - %r10</p>
+<p>堆栈 ptr 寄存器:</p>
+<p>%sp</p>
+<p>帧 ptr 寄存器:</p>
+<p>%fp</p>
+<p>链接寄存器:</p>
+<p>%lr</p>
+<p>程序计数器:</p>
+<p>%ip</p>
+<p>状态寄存器:</p>
+<p>$psw</p>
+<p>状态标志寄存器:</p>
+<p>xPSR</p>
+<p>xPSR_all</p>
+<p>xPSR_f</p>
+<p>xPSR_x</p>
+<p>xPSR_ctl</p>
+<p>xPSR_fs</p>
+<p>xPSR_fx</p>
+<p>xPSR_fc</p>
+<p>xPSR_cs</p>
+<p>xPSR_cf</p>
+<p>xPSR_cx</p>
+<h3 id="354-汇编程序特殊字符语法">3.5.4 汇编程序特殊字符/语法</h3>
+<p>内联注释字符: ‘@’</p>
+<p>​行注释字符: ‘#’</p>
+<p>语句分隔符: ‘#’</p>
+<p>立即操作数前缀: ‘#’ 或 ‘$’</p>
+<h3 id="355-arm程序调用标准">3.5.5 arm程序调用标准</h3>
+<p>参数寄存器 : ％a0 - ％a4 (别名为％r0 - ％r4)</p>
+<p>返回值regs : ％v1 - ％v6 (别名为％r4 - ％r9)</p>
+<h3 id="356-寻址模式">3.5.6 寻址模式</h3>
+<p><code>addr</code> 绝对寻址模式</p>
+<p><code>％rn</code> 寄存器直接寻址</p>
+<p><code>[％rn]</code> 寄存器间接寻址或索引</p>
+<p><code>[％rn, #n]</code> 基于寄存器的偏移量</p>
+<p>上述 “rn” 指任意寄存器, 但不包括控制寄存器.</p>
+<h3 id="357-机器相关指令">3.5.7 机器相关指令</h3>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>.arm</td>
+<td>使用arm模式进行装配</td>
+</tr>
+<tr>
+<td>.thumb</td>
+<td>使用thumb模式进行装配</td>
+</tr>
+<tr>
+<td>.code16</td>
+<td>使用thumb模式进行装配</td>
+</tr>
+<tr>
+<td>.code32</td>
+<td>使用arm模式进行组装</td>
+</tr>
+<tr>
+<td>.force_thumb Force</td>
+<td>thumb模式 (即使不支持)</td>
+</tr>
+<tr>
+<td>.thumb_func</td>
+<td>将输入点标记为thumb编码 (强制bx条目)</td>
+</tr>
+<tr>
+<td>.ltorg</td>
+<td>启动一个新的文字池</td>
+</tr>
+</tbody>
+</table>
+<h2 id="36-mips汇编基础">3.6 MIPS汇编基础</h2>
+<h3 id="数据类型和常量">数据类型和常量</h3>
+<ul>
+<li><p>数据类型:</p>
+<ul>
+<li><p>指令全是32位</p></li>
+<li><p>字节 (8位), 半字 (2字节), 字 (4字节)</p></li>
+<li><p>一个字符需要1个字节的存储空间</p></li>
+<li><p>整数需要1个字 (4个字节)的存储空间</p></li>
+</ul></li>
+<li><p>常量:</p>
+<ul>
+<li><p>按原样输入的数字.例如 4</p></li>
+<li><p>用单引号括起来的字符.例如 ‘b’</p></li>
+<li><p>用双引号括起来的字符串.例如 “A string”</p></li>
+</ul></li>
+</ul>
+<h3 id="寄存器">寄存器</h3>
+<ul>
+<li><p>32个通用寄存器</p></li>
+<li><p>寄存器前面有 $</p></li>
+</ul>
+<p>两种格式用于寻址:</p>
+<ul>
+<li><p>使用寄存器号码, 例如 <code>$0</code> 到 <code>$31</code></p></li>
+<li><p>使用别名, 例如 <code>$t1</code>, <code>$sp</code></p></li>
+<li><p>特殊寄存器 Lo 和 Hi 用于存储乘法和除法的结果</p>
+<ul>
+<li>不能直接寻址 使用特殊指令 <code>mfhi</code> ( “ 从 Hi 移动 “ )和
+<code>mflo</code> ( “ 从 Lo 移动 “ )访问的内容</li>
+</ul></li>
+<li><p>栈从高到低增长</p></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>寄存器</th>
+<th>别名</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$0</code></td>
+<td><code>$zero</code></td>
+<td>常量0(constant value 0)</td>
+</tr>
+<tr>
+<td><code>$1</code></td>
+<td><code>$at</code></td>
+<td>保留给汇编器(Reserved for assembler)</td>
+</tr>
+<tr>
+<td><code>$2-$3</code></td>
+<td><code>$v0-$v1</code></td>
+<td>函数调用返回值(values for results and expression evaluation)</td>
+</tr>
+<tr>
+<td><code>$4-$7</code></td>
+<td><code>$a0-$a3</code></td>
+<td>函数调用参数(arguments)</td>
+</tr>
+<tr>
+<td><code>$8-$15</code></td>
+<td><code>$t0-$t7</code></td>
+<td>暂时的(或随便用的)</td>
+</tr>
+<tr>
+<td><code>$16-$23</code></td>
+<td><code>$s0-$s7</code></td>
+<td>保存的(或如果用, 需要SAVE/RESTORE的)(saved)</td>
+</tr>
+<tr>
+<td><code>$24-$25</code></td>
+<td><code>$t8-$t9</code></td>
+<td>暂时的(或随便用的)</td>
+</tr>
+<tr>
+<td><code>$26~$27</code></td>
+<td><code>$k0~$k1</code></td>
+<td>保留供中断/陷阱处理程序使用</td>
+</tr>
+<tr>
+<td><code>$28</code></td>
+<td><code>$gp</code></td>
+<td>全局指针(Global Pointer)</td>
+</tr>
+<tr>
+<td><code>$29</code></td>
+<td><code>$sp</code></td>
+<td>堆栈指针(Stack Pointer)</td>
+</tr>
+<tr>
+<td><code>$30</code></td>
+<td><code>$fp</code></td>
+<td>帧指针(Frame Pointer)</td>
+</tr>
+<tr>
+<td><code>$31</code></td>
+<td><code>$ra</code></td>
+<td>返回地址(return address)</td>
+</tr>
+</tbody>
+</table>
+<p>再来说一说这些寄存器 :</p>
+<ul>
+<li><p>zero 它一般作为源寄存器, 读它永远返回 0,
+也可以将它作为目的寄存器写数据,
+但效果等于白写.为什么单独拉一个寄存器出来返回一个数字呢？答案是为了效率,
+MIPS 的设计者只允许在寄存器内执行算术操作,
+而不允许直接操作立即数.所以对最常用的数字 0 单独留了一个寄存器,
+以提高效率</p></li>
+<li><p>at 该寄存器为给编译器保留, 用于处理在加载 16
+位以上的大常数时使用, 编译器或汇编程序需要把大常数拆开,
+然后重新组合到寄存器里.系统程序员也可以显式的使用这个寄存器, 有一个汇编
+directive 可被用来禁止汇编器在 directive 之后再使用 at 寄存器.</p></li>
+<li><p>v0, v1.这两个很简单, 用做函数的返回值, 大部分时候, 使用 v0
+就够了.如果返回值的大小超过 8 字节, 那就需要分配使用堆栈,
+调用者在堆栈里分配一个匿名的结构, 设置一个指向该参数的指针, 返回时 v0
+指向这个对应的结构, 这些都是由编译器自动完成.</p></li>
+<li><p>a0-a3. 用来传递函数入参给子函数.看一下这个例子:
+<code>ret = strncmp("bear","bearer",4)</code> 参数少于 16 字节,
+可以放入寄存器中, 在 strncmp 的函数里, a0 存放的是 “bear”
+这个字符串所在的只读区地址, a1 是 “bearer” 的地址, a2 是 4.</p></li>
+<li><p>t0-t9 临时寄存器 s0-s8 保留寄存器 这两种寄存器需要放在一起说,
+它们是 MIPS 汇编里面代码里见到的最多的两种寄存器,
+它们的作用都是存取数据, 做计算、移位、比较、加载、存储等等, 区别在于,
+t0-t9 在子程序中可以使用其中的值, 并不必存储它们,
+它们很适合用来存放计算表达式时使用的“临时“变量.
+这些变量的使用要在跳转到子函数之前完成,
+因为子函数里很可能会使用相同的寄存器, 而且不会有任何保护.
+如果子程序里不会调用其它函数, 那么建议尽量多地使用t0-t9,
+这样可以避免函数入口处的保存和结束时的恢复. 相反的, s0-s8
+在子程序的执行过程中, 需要将它们存储在堆栈里, 并在子程序结束前恢复,
+从而在调用函数看来这些寄存器的值没有变化.</p></li>
+<li><p>k0, k1.
+这两个寄存器是专门预留给异常处理流程中使用.异常处理流程中有什么特别的地方吗？当然.当
+MIPS CPU 在任务里运行的时候, 一旦有外部中断或者异常发生, CPU
+就会立刻跳转到一个固定地址的异常 handler 函数执行,
+并同时将异常结束后返回到任务的指令地址记录在 EPC 寄存器 (Exception
+Program Counter)里.习惯性地, 异常 handler 函数开头总是会保持现场（即
+MIPS 寄存器）到中断栈空间里, 而在异常返回前, 再把这些寄存器的值恢复回去.
+那就存在一个问题：这个 EPC 里的值存放在哪里？异常 handler
+函数的最后肯定是一句 <code>jr x</code>, X 是一个 MIPS 寄存器,
+如果存放在前面提到的 t0,s0 等等寄存器中, 那么 PC 跳回任务执行现场时,
+这个寄存器里的值就不再是异常发生之前的值. 所以必要时就可以一句
+<code>jr k0</code>指令返回了. k1 是另外一个专为异常而生的寄存器,
+它可以用来记录中断嵌套的深度.CPU 在执行任务空间的代码时, k1 就可以置为
+0, 进入到中断空间, 每进入一次就加 1, 退出一次相应减 1,
+这样就可以记录中断嵌套的深度.这个深度在调试问题的时候经常会用到,
+同时应用程序在执行的时候可能会需要知道当前是在任务还是中断上下文, 这时,
+也可以通过 k1 寄存器是否为 0 来判断.</p></li>
+<li><p>sp 指向当前正在操作的堆栈顶部, 它指向堆栈中的下一个可写入的单元,
+如果从栈顶获取一个字节是 sp-1 地址的内容.在有 RTOS 的系统里, 每个 task
+都有自己的一个堆栈空间和实时 sp 副本, 中断也有自己的堆栈空间和 sp 副本,
+它们会在上下文切换的过程中进行保存和恢复.</p></li>
+<li><p>gp 这是一个辅助型的寄存器, 其含义较为模糊, MIPS
+官方为该寄存器提供了两个用法建议, 一种是指向 Linux
+应用中位置无关代码之外的数据引用的全局偏移量表; 在运行 RTOS
+的小型嵌入式系统中, 它可以指向一块访问较为频繁的全局数据区域, 由于MIPS
+汇编指令长度都是 32bit, 指令内部的 offset 为 16bit, 且为有符号数,
+所以能用一条指令以 gp 为基地址访问正负 15bit 的地址空间,
+提高效率.那么编译器怎么知道gp初始化的值呢？只要在 link 文件中添加
+<code>_gp</code> 符号, 连接器就会认为这是 gp 的值.我们在上电时, 将
+<code>_gp</code> 的值赋给 gp 寄存器就行了. 话说回来, 这都是 MIPS
+设计者的建议, 不是强制, 楼主还见过一种 gp 寄存器的用法,
+来在中断和任务切换时做 sp 的存储过渡, 也是可以的.</p></li>
+<li><p>fp 这个寄存器不同的编译器对其解释不同. GNU MIPS C
+编译器使用其作为帧指针, 指向堆栈里的过程帧 (一个子函数) 的第一个字,
+子函数可以用其做一个偏移访问栈帧里的局部变量, sp 也可以较为灵活的移动,
+因为在函数退出之前可以使用 fp 来恢复; 还有一种 C
+编译器会将这个寄存器直接作为
+s9,扩展了一个保留寄存器给编译器使用.</p></li>
+<li><p>ra 在函数调用过程中,
+保持子函数返回后的指令地址.汇编语句里函数调用的形式为:
+<code>jal function_X</code> 这条指令 jal(jump-and-link,跳转并链接)
+指令会将当前执行指令的地址 +4 存储到 ra 寄存器里, 然后跳转到 function_X
+的地址处.相应地, 子函数返回时, 最常见的一条指令就是 <code>jr ra</code>
+ra 是一个对于调试很有用的寄存器,
+系统的运行的任何时刻都可以查看它的值以获取 CPU 的运行轨迹.</p></li>
+</ul>
+<p>​最后, 如果纯写汇编语句的话, 这些寄存器当中除了 zero 之外,
+其它的基本上都可以做普通寄存器存取数据使用
+(这也是它们为什么会定义为“通用寄存器“,
+而不像其它的协处理器、或者外设的都是专用寄存器,
+其在出厂时所有的功能都是定死的), 那为什么有这么多规则呢 ？MIPS
+开发者们为了让自己的处理器可以运行像 C、Java 这样的高级语言,
+以及让汇编语言和高级语言可以安全的混合编程而设计的一套 ABI
+(应用编程接口), 不同的编译器的设计者们就会有据可依,
+系统程序员们在阅读、修改汇编程序的时候也能根据这些约定而更为顺畅地理解汇编代码的含义.</p>
+<h3 id="程序结构">程序结构</h3>
+<ul>
+<li><p>本质上只是带有数据声明的纯文本文件, 程序代码 ( 文件名应以后缀 .s
+结尾, 或者.asm )</p></li>
+<li><p>数据声明部分后跟程序代码部分</p></li>
+</ul>
+<h4 id="数据声明">数据声明</h4>
+<ul>
+<li><p>数据以 <code>.data</code> 为标识</p></li>
+<li><p>声明变量后, 即在内存中分配空间</p></li>
+</ul>
+<h4 id="代码">代码</h4>
+<ul>
+<li><p>放在用汇编指令 <code>.text</code> 标识的文本部分中</p></li>
+<li><p>包含程序代码 ( 指令 )</p></li>
+<li><p>给定标签 <code>main</code> 代码执行的起点 ( 和 C 语言一样
+)</p></li>
+<li><p>程序结束标志 (见下面的系统调用)</p></li>
+</ul>
+<h4 id="注释">注释</h4>
+<ul>
+<li><p><code>#</code> 表示单行注释</p>
+<p><code>#</code> 后面的任何内容都会被视为注释</p></li>
+<li><p>MIPS 汇编语言程序的模板:</p></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#给出程序名称和功能描述的注释</span><br><span class="line">#Template.s</span><br><span class="line">#MIPS汇编语言程序的Bare-bones概述</span><br><span class="line"></span><br><span class="line">            .data #变量声明紧跟这一行</span><br><span class="line">                        #...</span><br><span class="line">            .text #指令紧跟这一行</span><br><span class="line"></span><br><span class="line"> main: #表示代码的开始 (执行的第一条指令)</span><br><span class="line">                        #...</span><br><span class="line"></span><br><span class="line">#程序结束, 之后留空, 以符合 SPIM 要求.</span><br></pre></td></tr></table></figure>
+
+<h4 id="变量声明">变量声明</h4>
+<p>声明格式:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">name: storage_type value (s)</span><br></pre></td></tr></table></figure>
+
+<p>使用给定名称和指定值为指定类型的变量创建空间</p>
+<p>value (s) 通常给出初始值.</p>
+<p>对于 .space, 则给出要分配的字节数</p>
+<p>注意: 标签后面跟冒号 (:)</p>
+<ul>
+<li><strong>例如</strong></li>
+</ul>
+<figure class="highlight arm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">var1:</span> <span class="meta">.word</span> <span class="number">3</span> #创建一个初始值为 <span class="number">3</span> 的整数变量</span><br><span class="line"><span class="symbol">array1:</span> <span class="meta">.byte</span> <span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span> #创建一个元素经过初始化的 <span class="number">2</span> 元素字符数组，数组成员分别为字符 <span class="string">&#x27;a&#x27;</span> 和 字符 <span class="string">&#x27;b&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="symbol">array2:</span> <span class="meta">.space</span> <span class="number">40</span>  #分配 <span class="number">40</span> 个连续字节, 未初始化的空间可以用作 <span class="number">40</span> 个元素的字符数组, 或者是</span><br><span class="line">                   <span class="comment">#10 个元素的整数数组.</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="读取写入--loadstore-指令">读取/写入 ( Load/Store )指令</h4>
+<ul>
+<li>对 RAM 的访问, 仅允许使用加载和存储指令 ( 即 <code>load</code> 或者
+<code>store</code>)</li>
+<li>所有其他指令都使用寄存器参数</li>
+</ul>
+<p><code>load</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">lw register_destination, RAM_source</span><br><span class="line">#将源内存地址的字 ( 4 个字节 ) 复制到目标寄存器, (lw中的&#x27;w&#x27;意为&#x27;word&#x27;,即该数据大小为4个字节)</span><br><span class="line">lb register_destination, RAM_source</span><br><span class="line">#将源内存地址的字节复制到目标寄存器的低位字节, 并将符号映射到高位字节 ( 同上, lb 意为 load byte )</span><br></pre></td></tr></table></figure>
+
+<p><code>store</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sw register_source, RAM_destination</span><br><span class="line">#将源寄存器的字存储到目标内存RAM中</span><br><span class="line">sb register_source, RAM_destination</span><br><span class="line">#将源寄存器中的低位字节存储到目标内存RAM中</span><br></pre></td></tr></table></figure>
+
+<p>立即加载:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">li register_destination, value</span><br><span class="line">#把立即数加载到目标寄存器中,顾名思义, 这里的 li 意为 load immediate, 即立即加载.</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><em>例子</em></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">       .data</span><br><span class="line">var1:  .word  23            # 给变量 var1 在内存中开辟空间, 变量初始值为 23</span><br><span class="line"></span><br><span class="line">       .text</span><br><span class="line">__start:</span><br><span class="line">       lw     $t0, var1            # 将内存单元中的内容加载到寄存器中 $t0:  $t0 = var1</span><br><span class="line">       li     $t1, 5               #  $t1 = 5   (&quot;立即加载&quot;)</span><br><span class="line">       sw     $t1, var1            # 把寄存器$t1的内容存到内存中 : var1 = $t1</span><br><span class="line">       done</span><br></pre></td></tr></table></figure>
+
+<h4 id="间接和立即寻址">间接和立即寻址</h4>
+<ul>
+<li>仅用于读取和写入指令</li>
+</ul>
+<p>***直接给地址: ***</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">la $t0, var1</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>将 var1 的内存地址 (可能是程序中定义的标签)复制到寄存器
+<code>$t0</code> 中</li>
+</ul>
+<p>***间接寻址, 地址是寄存器的内容, 类似指针: ***</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lw $t2,  ($t0)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>将 <code>$t0</code> 中包含的 RAM 地址加载到 <code>$t2</code></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sw $t2,  ($t0)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>将 <code>$t2</code> 寄存器中的字存储到 <code>$t0</code>
+中包含的地址的 RAM 中</li>
+</ul>
+<p>***基于偏移量的寻址: ***</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lw $t2, 4 ($t0)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>将内存地址 ( <code>$t0 + 4</code> ) 的字加载到寄存器
+<code>$t2</code> 中</li>
+<li>“ 4 “ 给出了地址基于寄存器 <code>$t0</code> 值的偏移量</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sw $t2, -12 ($t0)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>将寄存器 <code>$t2</code> 中的字放到内存地址 (
+<code>$t0 - 12</code> )</p></li>
+<li><p>负偏移也是可以的, 反向漂移方不方 ?</p>
+<p>注意: 基于<em>偏移量</em> 的寻址特别适用于:</p>
+<ul>
+<li>数组# 访问元素作为与基址的偏移量</li>
+<li>栈# 易于访问偏离栈指针或帧指针的元素</li>
+</ul>
+<p><em>例子</em></p></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"> .data</span><br><span class="line"> array1:             .space 12            #  定义一个 12字节 长度的数组 array1, 容纳 3个整型</span><br><span class="line">              .text</span><br><span class="line"> __start:     la     $t0, array1          #  让 $t0 = 数组首地址</span><br><span class="line">              li     $t1, 5               #  $t1 = 5   (&quot;load immediate&quot;)</span><br><span class="line">              sw $t1, ($t0)               #  数组第一个元素设置为 5# 用的间接寻址# array[0] = $1 = 5</span><br><span class="line">              li $t1, 13                  #   $t1 = 13</span><br><span class="line">              sw $t1, 4($t0)              # 数组第二个元素设置为 13# array[1] = $1 = 13</span><br><span class="line">              #该数组中每个元素地址相距长度就是自身数据类型长度, 即4字节,  所以对于array+4就是array[1]</span><br><span class="line">              li $t1, -7                  #   $t1 = -7</span><br><span class="line">              sw $t1, 8($t0)              #  第三个元素设置为 -7#  </span><br><span class="line">#array+8 =  (address[array[0])+4)+ 4 = address(array[1]) + 4 = address(array[2])</span><br><span class="line">              done</span><br></pre></td></tr></table></figure>
+
+<h4 id="算术指令">算术指令</h4>
+<ul>
+<li>最多使用3个参数</li>
+<li>所有操作数都是寄存器, 不能有内存地址的存在</li>
+<li>操作数大小是字 ( 4个字节 ), 32位 = 4 * 8 bit = 4bytes = 1 word</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">add    $t0,$t1,$t2   #  $t0 = $t1 + $t2 和为有符号 (2 的补码)整数</span><br><span class="line">sub    $t2,$t3,$t4   #  $t2 = $t3 - $t4</span><br><span class="line">addi   $t2,$t3, 5    #  $t2 = $t3 + 5</span><br><span class="line">addu   $t1,$t6,$t7   #  $t1 = $t6 + $t7 按无符号数相加</span><br><span class="line">subu   $t1,$t6,$t7   #  $t1 = $t6 - $t7 按无符号数相减</span><br><span class="line"></span><br><span class="line">mult   $t3,$t4       # 运算结果存储在hi,lo (hi保存高位数据,  lo保存低位数据)</span><br><span class="line">div    $t5,$t6       #  lo = $t5 / $t6   (整数商)</span><br><span class="line">                     #  hi = $t5 mod $t6   (求余数)</span><br><span class="line">                     # 商数存放在 lo, 余数存放在 hi</span><br><span class="line">mfhi   $t0           #  把特殊寄存器 Hi 的值移动到 $t0 : $t0 = Hi</span><br><span class="line">mflo   $t1           #  把特殊寄存器 Lo 的值移动到 $t1:   $t1 = Lo</span><br><span class="line">                     # 不能直接获取 hi 或 lo中的值,  需要通过 mfhi、mflo 指令传值给寄存器</span><br><span class="line"></span><br><span class="line">move   $t2,$t3       #  $t2 = $t3</span><br></pre></td></tr></table></figure>
+
+<h4 id="流程控制">流程控制</h4>
+<p>分支 ( if-else )</p>
+<ul>
+<li>条件分支的比较内置于指令中</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">b target                # 无条件分支,直接跳转到 target 标签</span><br><span class="line">beq $t0, $t1, target    # if $t0 = $t1, 就跳转到 target</span><br><span class="line">blt $t0, $t1, target    # if $t0 &lt;$t1, 就跳转到 target</span><br><span class="line">ble $t0, $t1, target    # if $t0 &lt;= $t1, 就跳转到 target</span><br><span class="line">bgt $t0, $t1, target    # if $t0 &gt;= $t1, 就跳转到 target</span><br><span class="line">bge $t0, $t1, target    # if $t0  = $t1, 就跳转到 target</span><br><span class="line">bne    $t0, $t1, target # if  $t0 &lt; $t1, 就跳转到 target</span><br></pre></td></tr></table></figure>
+
+<p>跳转 ( while, for, goto )</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">j     target # 看到就跳,  不用考虑任何条件</span><br><span class="line">jr    $t3    # 类似相对寻址, 跳到该寄存器给出的地址处</span><br></pre></td></tr></table></figure>
+
+<p>子程序调用</p>
+<p>子程序调用: “跳转和链接” 指令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jal sub_label # &quot;跳转和链接&quot;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>将当前的程序计数器保存到 <code>$ra</code> 中</li>
+<li>跳转到 <code>sub_label</code> 的程序语句</li>
+</ul>
+<p>子程序返回: “跳转寄存器“指令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jr $ra       # &quot;跳转寄存器&quot;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>跳转到 $ra 中的地址 (由jal指令存储)</li>
+</ul>
+<p>注意: 寄存地址存储在寄存器 <code>$ra</code> 中.
+如果子程序将调用其他子程序, 或者会递归调用自身, 则应该从
+<code>$ra</code> 复制到栈以保留返回地址. 因为 <code>jal</code>
+总是将返回地址放在该寄存器中, 再次调用子程序将覆盖之前的值.</p>
+<h4 id="系统调用和-i--o--针对-spim-模拟器-">系统调用和 I / O ( 针对 SPIM
+模拟器 )</h4>
+<ul>
+<li>通过系统调用实现从输入/输出窗口读取或打印值或字符串,
+并指示程序结束</li>
+<li><code>syscall</code></li>
+<li>首先在寄存器 <code>$v0</code> 和
+<code>$a0 - $a1</code>中提供适当的值</li>
+<li>寄存器 <code>$v0</code> 中存储返回的结果值 ( 如果有的话 )</li>
+</ul>
+<p>下表列出了可能的 <strong>系统调用</strong> 服务.</p>
+<p>| Service / 服务 | Code in <code>$v0</code> / 对应功能的调用码 |
+Arguments / <strong>所需参数</strong> | Results / 返回值 | |
+———————————– | –––––––––––––– ––| ––––––––––––––––––––––––––––– |
+––––––––––––– | | print 一个整型数 | <code>$v0</code> = 1 |
+<code>$a0</code> = 要打印的整型数 | | | print 一个浮点数 |
+<code>$v0</code> = 2 | <code>$f12</code> = 要打印的浮点数 | | | print
+双精度数 | <code>$v0</code> = 3 | <code>$f12</code> = 要打印的双精度数 |
+| | print 字符串 | <code>$v0</code> = 4 | <code>$a0</code> =
+要打印的字符串的地址 | | | 读取 ( read ) 整型数 | <code>$v0</code> = 5 |
+| <code>$v0</code> = 读取的整型数 | | 读取 ( read ) 浮点数 |
+<code>$v0</code> = 6 | | <code>$v0</code> = 读取的浮点数 | | 读取 ( read
+) 双精度数 | <code>$v0</code>= 7 | | <code>$v0</code> = 读取的双精度 | |
+读取 ( read ) 字符串 | <code>$v0</code> = 8 | 将读取的字符串地址赋值给
+<code>$a0</code>, 将读取的字符串长度赋值给 <code>$a1</code> | | |
+这个应该和 C 语言的 <code>sbrk()</code> 函数一样 | <code>$v0</code> = 9
+| 需要分配的空间大小 (单位目测是字节 bytes) | 将分配好的空间首地址给
+<code>$v0</code> | | exit | <code>$v0</code> =10 | 这个还要说吗…..= _ =
+| |</p>
+<ul>
+<li><code>print_string</code> 即 <code>print 字符串</code> 服务期望以
+null 结尾的字符串.指令<code>.asciiz</code> 创建一个以 null
+结尾的字符串.</li>
+<li><code>read_int</code>, <code>read_float</code> 和
+<code>read_double</code> 服务读取整行输入,
+包括换行符<code>\n</code>.</li>
+<li><code>read_string</code> 服务与 UNIX 库例程 fgets 具有相同的语义.
+<ul>
+<li>它将最多 n-1 个字符读入缓冲区, 并以空字符终止字符串.</li>
+<li>如果当前行中少于 n-1 个字符, 则它会读取并包含换行符,
+并使用空字符终止该字符串.</li>
+<li>就是输入过长就截断, 过短就保持原样. 最后都要加一个终止符.</li>
+</ul></li>
+<li><code>sbrk</code> 服务将返回包含 n
+个字节的内存块首地址.这将用于动态内存分配.</li>
+<li><code>exit</code> 服务使程序停止运行</li>
+</ul>
+<p>例子 : 打印一个存储在 $2 的整型数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">li $v0, 1    #声明需要调用的操作代码为 1 ( print_int ), 然后赋值给 $v0</span><br><span class="line">move $a0, $t2 #把这个要打印的整型数赋值给 $a0</span><br><span class="line">syscall #让操作系统执行我们的操作</span><br></pre></td></tr></table></figure>
+
+<p>例子 : 读取一个数, 并且存储到内存中的 int_value 变量中</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">li $v0, 5 #声明需要调用的操作代码为 5 ( read_int ), 然后赋值给 $v0</span><br><span class="line">syscall #让操作系统执行我们的操作, 然后 $v0 = 5</span><br><span class="line">sw    $v0, int_value #通过写入 (store_word)指令 将 $v0 的值 (5)存入内存中</span><br></pre></td></tr></table></figure>
+
+<p>例子 : 打印一个字符串 ( 这是完整的, 其实上面例子都可以直接替换 main:
+部分, 都能直接运行 )</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">              .data</span><br><span class="line"> string1:             .asciiz       &quot;Print this.\n&quot;  # 字符串变量声明</span><br><span class="line">                                                    # .asciiz 指令使字符串被 null 终止</span><br><span class="line"></span><br><span class="line">              .text</span><br><span class="line"> main: li     $v0, 4                                # 将适当的系统调用代码加载到寄存器 $v0 中</span><br><span class="line">                                                    # 打印字符串,  赋值对应的操作代码 $v0 = 4</span><br><span class="line">              la     $a0, string1                   # 将要打印的字符串地址赋值  $a0 = address(string1)</span><br><span class="line">              syscall                               # 让操作系统执行打印操作</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 要指示程序结束, 应该退出系统调用, 所以最后一行代码应该是这个 :</span><br><span class="line">              li     $v0, 10　　　                  #对着上面的表, 不用说了吧</span><br><span class="line">              syscall                              # 让操作系统结束这一切吧 !</span><br></pre></td></tr></table></figure>
+
+<h4 id="补充--mips-指令格式">补充 : MIPS 指令格式</h4>
+<ul>
+<li><strong>R 格式</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>6</th>
+<th>5</th>
+<th>5</th>
+<th>5</th>
+<th>5</th>
+<th>6</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>op</td>
+<td>rs</td>
+<td>rt</td>
+<td>rd</td>
+<td>shamt</td>
+<td>funct</td>
+</tr>
+</tbody>
+</table>
+<p>用处: 寄存器 - 寄存器 ALU 操作 读写专用寄存器</p>
+<ul>
+<li><strong>I 格式</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>6</th>
+<th>5</th>
+<th>5</th>
+<th>16</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>op</td>
+<td>rs</td>
+<td>rt</td>
+<td>立即数操作</td>
+</tr>
+</tbody>
+</table>
+<p>用处: 加载/存储 字节, 半字, 字, 双字 条件分支, 跳转,
+跳转并链接寄存器</p>
+<ul>
+<li><strong>J 格式</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>6</th>
+<th>26</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>op</td>
+<td>跳转地址</td>
+</tr>
+</tbody>
+</table>
+<p>用处:</p>
+<p>跳转, 跳转并链接</p>
+<p>陷阱和从异常中返回</p>
+<p>各字段含义:</p>
+<p>op : 指令基本操作, 称为操作码.</p>
+<p>rs : 第一个源操作数寄存器.</p>
+<p>rt : 第二个源操作数寄存器.</p>
+<p>rd : 存放操作结果的目的操作数.</p>
+<p>shamt : 位移量;</p>
+<p>funct : 函数, 这个字段选择 op 操作的某个特定变体.</p>
+<p>例:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">add $t0,$s0,$s1  </span><br></pre></td></tr></table></figure>
+
+<p>表示 <code>$t0=$s0+$s1</code>, 即 16 号寄存器 ( s0 ) 的内容和 17
+号寄存器 ( s1 ) 的内容相加, 结果放到 8 号寄存器 ( t0 ).</p>
+<p>指令各字段的十进制表示为:</p>
+<table>
+<thead>
+<tr>
+<th>0</th>
+<th>16</th>
+<th>17</th>
+<th>8</th>
+<th>0</th>
+<th>32</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p>op = 0 和 funct = 32 表示这是加法,</p>
+<p>16 = <code>$s0</code> 表示第一个源操作数 ( rs ) 在 16 号寄存器里,</p>
+<p>17 = <code>$s1</code> 表示第二个源操作数 ( rt ) 在 17 号寄存器里,</p>
+<p>8 = <code>$t0</code> 表示目的操作数 ( rd ) 在 8 号寄存器里.</p>
+<p>把各字段写成二进制, 为:</p>
+<table>
+<thead>
+<tr>
+<th>000000</th>
+<th>10000</th>
+<th>10001</th>
+<th>01000</th>
+<th>00000</th>
+<th>100000</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p>这就是上述指令的机器码 ( machine code ), 可以看出是很有规则性的.</p>
+<h4 id="补充--mips-常用指令集">补充 : MIPS 常用指令集</h4>
+<ul>
+<li><p><strong>lb/lh/lw</strong> : 从存储器中读取一个 byte / half word /
+word 的数据到寄存器中.</p>
+<p>如<code>lb $1, 0($2)</code></p></li>
+<li><p><strong>sb/sh/sw</strong> : 把一个 byte / half word / word
+的数据从寄存器存储到存储器中.</p>
+<p>如 <code>sb $1, 0($2)</code></p></li>
+<li><p><strong>add/addu</strong> : 把两个定点寄存器的内容相加</p>
+<p><code>add $1,$2,$3($1=$2+$3)</code># u 为不带符号加</p></li>
+<li><p><strong>addi/addiu</strong> :
+把一个寄存器的内容加上一个立即数</p>
+<p><code>add $1,$2,#3($1=$2+3)</code># u 为不带符号加</p></li>
+<li><p><strong>sub/subu</strong> : 把两个定点寄存器的内容相减</p></li>
+<li><p><strong>div/divu</strong> : 两个定点寄存器的内容相除</p></li>
+<li><p><strong>mul/mulu</strong> : 两个定点寄存器的内容相乘</p></li>
+<li><p><strong>and/andi</strong> : 与运算, 两个寄存器中的内容相与</p>
+<p><code>and $1,$2,$3($1=$2 &amp; $3)</code> # i 为立即数.</p></li>
+<li><p><strong>or/ori</strong> : 或运算.</p></li>
+<li><p><strong>xor/xori</strong> : 异或运算.</p></li>
+<li><p><strong>beq/beqz/benz/bne</strong> : 条件转移 eq 相等, z 零, ne
+不等</p></li>
+<li><p><strong>j/jr/jal/jalr</strong> : j 直接跳转; jr
+使用寄存器跳转</p></li>
+<li><p><strong>lui</strong> : 把一个 16 位的立即数填入到寄存器的高 16
+位, 低 16 位补零</p></li>
+<li><p><strong>sll/srl</strong> : 逻辑 左移 / 右移</p>
+<p><code>sll $1,$2,2</code> # <span
+class="math inline">\(1=\)</span>2&lt;&lt;2</p></li>
+<li><p><strong>slt/slti/sltui</strong> : 如果 <code>$2</code> 的值小于
+<code>​$3</code>, 那么设置 <code>$1</code> 的值为 1,否则设置
+​<code>$1</code> 的值为 0</p>
+<p><code>slt $1,$2,$3</code></p></li>
+<li><p><strong>mov/movz/movn</strong> : 复制, n 为负, z 为零</p>
+<p><code>mov $1,$2# movz $1,$2,$3</code> ( <code>$3</code> 为零则复制
+<code>$2</code> 到 <code>$1</code> )</p></li>
+<li><p><strong>trap</strong> : 根据地址向量转入管态</p></li>
+<li><p><strong>eret</strong> : 从异常中返回到用户态</p></li>
+</ul>
+<h3 id="参考资料">参考资料</h3>
+<p><a
+target="_blank" rel="noopener" href="http://logos.cs.uic.edu/366/notes/mips%20quick%20tutorial.htm">参考资料</a></p>
+<h2 id="更多资料">更多资料</h2>
+<ul>
+<li><a
+target="_blank" rel="noopener" href="https://onetale.xyz/category/%e7%bc%96%e7%a8%8b%e8%af%ad%e8%a8%80%e7%b1%bb%e7%ac%94%e8%ae%b0/%e6%b1%87%e7%bc%96%e8%af%ad%e8%a8%80/">汇编语言</a></li>
+</ul>
+</article><div class="post-copyright"><div class="copyright-cc-box"><i class="anzhiyufont anzhiyu-icon-copyright"></i></div><div class="post-copyright__author_box"><a class="post-copyright__author_img" href="/" title="头像"><img class="post-copyright__author_img_back" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/avatar.jpg" title="头像" alt="头像"><img class="post-copyright__author_img_front" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/avatar.jpg" title="头像" alt="头像"></a><div class="post-copyright__author_name">小鹤</div><div class="post-copyright__author_desc">小鹤博客</div></div><div class="post-copyright__post__info"><a class="post-copyright__original" title="该文章为原创文章，注意版权协议" href="http://example.com/2024/11/18/1.5.2_assembly/">原创</a><a class="post-copyright-title"><span onclick="rm.copyPageUrl('http://example.com/2024/11/18/1.5.2_assembly/')">汇编语言</span></a></div><div class="post-tools" id="post-tools"><div class="post-tools-left"><div class="rewardLeftButton"><div class="post-reward" onclick="anzhiyu.addRewardMask()"><div class="reward-button button--animated" title="赞赏作者"><i class="anzhiyufont anzhiyu-icon-hand-heart-fill"></i>打赏作者</div><div class="reward-main"><div class="reward-all"><span class="reward-title">感谢你赐予我前进的力量</span><ul class="reward-group"><li class="reward-item"><a href="/img/weixing_money.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/weixing_money.jpg" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="/img/Alipay_money.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/Alipay_money.jpg" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul><a class="reward-main-btn" href="/about/#about-reward" target="_blank"><div class="reward-text">赞赏者名单</div><div class="reward-dec">因为你们的支持让我意识到写文章的价值🙏</div></a></div></div></div><div id="quit-box" onclick="anzhiyu.removeRewardMask()" style="display: none"></div></div><div class="shareRight"><div class="share-link mobile"><div class="share-qrcode"><div class="share-button" title="使用手机访问这篇文章"><i class="anzhiyufont anzhiyu-icon-qrcode"></i></div><div class="share-main"><div class="share-main-all"><div id="qrcode" title="http://example.com/2024/11/18/1.5.2_assembly/"></div><div class="reward-dec">使用手机访问这篇文章</div></div></div></div></div><div class="share-link weibo"><a class="share-button" target="_blank" href="https://service.weibo.com/share/share.php?title=汇编语言&amp;url=http://example.com/2024/11/18/1.5.2_assembly/&amp;pic=/img/default_cover.jpg" rel="external nofollow noreferrer noopener"><i class="anzhiyufont anzhiyu-icon-weibo"></i></a></div><script>function copyCurrentPageUrl() {
+  var currentPageUrl = window.location.href;
+  var input = document.createElement("input");
+  input.setAttribute("value", currentPageUrl);
+  document.body.appendChild(input);
+  input.select();
+  input.setSelectionRange(0, 99999);
+  document.execCommand("copy");
+  document.body.removeChild(input);
+}</script><div class="share-link copyurl"><div class="share-button" id="post-share-url" title="复制链接" onclick="copyCurrentPageUrl()"><i class="anzhiyufont anzhiyu-icon-link"></i></div></div></div></div></div><div class="post-copyright__notice"><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">小鹤实验室</a>！</span></div></div><div class="post-tools-right"><div class="tag_share"><div class="post-meta__box"><div class="post-meta__box__tag-list"></div></div></div><div class="post_share"><div class="social-share" data-image="/img/default_cover.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.cbd.int/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"/><script src="https://cdn.cbd.int/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer="defer"></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2024/11/18/html+css+js%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/default_cover.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info"></div></div></a></div><div class="next-post pull-right"><a href="/2024/11/18/1.3_linux_basic/"><img class="next-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/default_cover.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">操作系统(2)--Linux 基础</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-content"><div class="author-info-avatar"><img class="avatar-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__description">小鹤博客——专注机器学习，深度学习，计算机视觉，自然语言处理，图像识别</div></div></div><div class="card-widget anzhiyu-right-widget" id="card-wechat" onclick="null"><div id="flip-wrapper"><div id="flip-content"><div class="face" style="background: url(https://bu.dusays.com/2023/01/13/63c02edf44033.png) center center / 100% no-repeat"></div><div class="back face" style="background: url(/img/weixing_PublicAccount.png) center center / 100% no-repeat"></div></div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-bars"></i><span>文章目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">汇编语言</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#33-x86-%E6%B1%87%E7%BC%96%E5%9F%BA%E7%A1%80"><span class="toc-number">1.1.</span> <span class="toc-text">3.3 X86 汇编基础</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#332-%E5%AF%84%E5%AD%98%E5%99%A8-registers"><span class="toc-number">1.1.1.</span> <span class="toc-text">3.3.2 寄存器 Registers</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#333-%E5%86%85%E5%AD%98%E5%92%8C%E5%AF%BB%E5%9D%80%E6%A8%A1%E5%BC%8F-memory-and-addressing-modes"><span class="toc-number">1.1.2.</span> <span class="toc-text">3.3.3
+内存和寻址模式 Memory and Addressing Modes</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3331-%E5%A3%B0%E6%98%8E%E9%9D%99%E6%80%81%E6%95%B0%E6%8D%AE%E5%8C%BA%E5%9F%9F"><span class="toc-number">1.1.2.1.</span> <span class="toc-text">3.3.3.1 声明静态数据区域</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3332-%E5%86%85%E5%AD%98%E5%AF%BB%E5%9D%80"><span class="toc-number">1.1.2.2.</span> <span class="toc-text">3.3.3.2 内存寻址</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3333-%E6%93%8D%E4%BD%9C%E5%90%8E%E7%BC%80"><span class="toc-number">1.1.2.3.</span> <span class="toc-text">3.3.3.3 操作后缀</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#334-%E6%8C%87%E4%BB%A4-instructions"><span class="toc-number">1.1.3.</span> <span class="toc-text">3.3.4 指令 Instructions</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3341-%E6%95%B0%E6%8D%AE%E7%A7%BB%E5%8A%A8%E6%8C%87%E4%BB%A4"><span class="toc-number">1.1.3.1.</span> <span class="toc-text">3.3.4.1 数据移动指令</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3342-%E9%80%BB%E8%BE%91%E8%BF%90%E7%AE%97%E6%8C%87%E4%BB%A4"><span class="toc-number">1.1.3.2.</span> <span class="toc-text">3.3.4.2 逻辑运算指令</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3343-%E6%B5%81%E7%A8%8B%E6%8E%A7%E5%88%B6%E6%8C%87%E4%BB%A4"><span class="toc-number">1.1.3.3.</span> <span class="toc-text">3.3.4.3 流程控制指令</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#335-%E8%B0%83%E7%94%A8%E7%BA%A6%E5%AE%9A-calling-convention"><span class="toc-number">1.1.4.</span> <span class="toc-text">3.3.5 调用约定 Calling
+Convention</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3351-%E8%B0%83%E7%94%A8%E8%80%85%E7%BA%A6%E5%AE%9A-caller-rules"><span class="toc-number">1.1.4.1.</span> <span class="toc-text">3.3.5.1 调用者约定 Caller
+Rules</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3352-%E8%A2%AB%E8%B0%83%E7%94%A8%E8%80%85%E7%BA%A6%E5%AE%9A-callee-rules"><span class="toc-number">1.1.4.2.</span> <span class="toc-text">3.3.5.2 被调用者约定 Callee
+Rules</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#34-x64-%E6%B1%87%E7%BC%96%E5%9F%BA%E7%A1%80"><span class="toc-number">1.2.</span> <span class="toc-text">3.4 x64 汇编基础</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#341-%E5%AF%BC%E8%AF%AD"><span class="toc-number">1.2.1.</span> <span class="toc-text">3.4.1 导语</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#342-%E5%AF%84%E5%AD%98%E5%99%A8-registers"><span class="toc-number">1.2.2.</span> <span class="toc-text">3.4.2 寄存器 Registers</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#343-%E5%AF%BB%E5%9D%80%E6%A8%A1%E5%BC%8F-addressing-modes"><span class="toc-number">1.2.3.</span> <span class="toc-text">3.4.3 寻址模式 Addressing
+modes</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#344-%E9%80%9A%E7%94%A8%E6%8C%87%E4%BB%A4-common-instructions"><span class="toc-number">1.2.4.</span> <span class="toc-text">3.4.4 通用指令 Common
+instructions</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#mov-%E5%92%8C-lea-%E6%8C%87%E4%BB%A4"><span class="toc-number">1.2.4.1.</span> <span class="toc-text">mov 和 lea 指令</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AE%97%E6%9C%AF%E5%92%8C%E4%BD%8D%E8%BF%90%E7%AE%97"><span class="toc-number">1.2.4.2.</span> <span class="toc-text">算术和位运算</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B5%81%E7%A8%8B%E6%8E%A7%E5%88%B6%E6%8C%87%E4%BB%A4"><span class="toc-number">1.2.4.3.</span> <span class="toc-text">流程控制指令</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#setx-%E5%92%8C-cmovx"><span class="toc-number">1.2.4.4.</span> <span class="toc-text">setx 和 cmovx</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E4%B8%8E%E6%A0%88"><span class="toc-number">1.2.4.5.</span> <span class="toc-text">函数调用与栈</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#345-%E6%B1%87%E7%BC%96%E5%92%8C-gdb"><span class="toc-number">1.2.5.</span> <span class="toc-text">3.4.5 汇编和 gdb</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#35-arm%E6%B1%87%E7%BC%96%E5%9F%BA%E7%A1%80"><span class="toc-number">1.3.</span> <span class="toc-text">3.5 ARM汇编基础</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#351-%E5%BC%95%E8%A8%80"><span class="toc-number">1.3.1.</span> <span class="toc-text">3.5.1 引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#352-arm-%E7%9A%84-gnu-%E6%B1%87%E7%BC%96%E7%A8%8B%E5%BA%8F%E6%8C%87%E4%BB%A4%E8%A1%A8"><span class="toc-number">1.3.2.</span> <span class="toc-text">3.5.2 ARM 的 GNU
+汇编程序指令表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#353-%E5%AF%84%E5%AD%98%E5%99%A8%E5%90%8D%E7%A7%B0"><span class="toc-number">1.3.3.</span> <span class="toc-text">3.5.3 寄存器名称</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#354-%E6%B1%87%E7%BC%96%E7%A8%8B%E5%BA%8F%E7%89%B9%E6%AE%8A%E5%AD%97%E7%AC%A6%E8%AF%AD%E6%B3%95"><span class="toc-number">1.3.4.</span> <span class="toc-text">3.5.4 汇编程序特殊字符&#x2F;语法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#355-arm%E7%A8%8B%E5%BA%8F%E8%B0%83%E7%94%A8%E6%A0%87%E5%87%86"><span class="toc-number">1.3.5.</span> <span class="toc-text">3.5.5 arm程序调用标准</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#356-%E5%AF%BB%E5%9D%80%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.3.6.</span> <span class="toc-text">3.5.6 寻址模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#357-%E6%9C%BA%E5%99%A8%E7%9B%B8%E5%85%B3%E6%8C%87%E4%BB%A4"><span class="toc-number">1.3.7.</span> <span class="toc-text">3.5.7 机器相关指令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#36-mips%E6%B1%87%E7%BC%96%E5%9F%BA%E7%A1%80"><span class="toc-number">1.4.</span> <span class="toc-text">3.6 MIPS汇编基础</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%92%8C%E5%B8%B8%E9%87%8F"><span class="toc-number">1.4.1.</span> <span class="toc-text">数据类型和常量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%84%E5%AD%98%E5%99%A8"><span class="toc-number">1.4.2.</span> <span class="toc-text">寄存器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A8%8B%E5%BA%8F%E7%BB%93%E6%9E%84"><span class="toc-number">1.4.3.</span> <span class="toc-text">程序结构</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%A3%B0%E6%98%8E"><span class="toc-number">1.4.3.1.</span> <span class="toc-text">数据声明</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81"><span class="toc-number">1.4.3.2.</span> <span class="toc-text">代码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B3%A8%E9%87%8A"><span class="toc-number">1.4.3.3.</span> <span class="toc-text">注释</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%98%E9%87%8F%E5%A3%B0%E6%98%8E"><span class="toc-number">1.4.3.4.</span> <span class="toc-text">变量声明</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AF%BB%E5%8F%96%E5%86%99%E5%85%A5--loadstore-%E6%8C%87%E4%BB%A4"><span class="toc-number">1.4.3.5.</span> <span class="toc-text">读取&#x2F;写入 ( Load&#x2F;Store )指令</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%97%B4%E6%8E%A5%E5%92%8C%E7%AB%8B%E5%8D%B3%E5%AF%BB%E5%9D%80"><span class="toc-number">1.4.3.6.</span> <span class="toc-text">间接和立即寻址</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AE%97%E6%9C%AF%E6%8C%87%E4%BB%A4"><span class="toc-number">1.4.3.7.</span> <span class="toc-text">算术指令</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B5%81%E7%A8%8B%E6%8E%A7%E5%88%B6"><span class="toc-number">1.4.3.8.</span> <span class="toc-text">流程控制</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E5%92%8C-i--o--%E9%92%88%E5%AF%B9-spim-%E6%A8%A1%E6%8B%9F%E5%99%A8-"><span class="toc-number">1.4.3.9.</span> <span class="toc-text">系统调用和 I &#x2F; O ( 针对 SPIM
+模拟器 )</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A1%A5%E5%85%85--mips-%E6%8C%87%E4%BB%A4%E6%A0%BC%E5%BC%8F"><span class="toc-number">1.4.3.10.</span> <span class="toc-text">补充 : MIPS 指令格式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A1%A5%E5%85%85--mips-%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4%E9%9B%86"><span class="toc-number">1.4.3.11.</span> <span class="toc-text">补充 : MIPS 常用指令集</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">1.4.4.</span> <span class="toc-text">参考资料</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%B4%E5%A4%9A%E8%B5%84%E6%96%99"><span class="toc-number">1.5.</span> <span class="toc-text">更多资料</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-history"></i><span>最近发布</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/11/18/1.3_linux_basic/" title="操作系统(2)--Linux 基础"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/default_cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="操作系统(2)--Linux 基础"/></a><div class="content"><a class="title" href="/2024/11/18/1.3_linux_basic/" title="操作系统(2)--Linux 基础">操作系统(2)--Linux 基础</a><time datetime="2024-11-18T04:36:29.000Z" title="发表于 2024-11-18 12:36:29">2024-11-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/11/18/1.5.2_assembly/" title="汇编语言"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/default_cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="汇编语言"/></a><div class="content"><a class="title" href="/2024/11/18/1.5.2_assembly/" title="汇编语言">汇编语言</a><time datetime="2024-11-18T04:36:29.000Z" title="发表于 2024-11-18 12:36:29">2024-11-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/11/18/html+css+js%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/" title="无题"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/default_cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="无题"/></a><div class="content"><a class="title" href="/2024/11/18/html+css+js%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/" title="无题">无题</a><time datetime="2024-11-18T04:14:25.609Z" title="发表于 2024-11-18 12:14:25">2024-11-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/11/17/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%EF%BC%886%EF%BC%89/" title="数据结构与算法（6）"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://pic4.zhimg.com/v2-2d666d57cb8f9959e367bc94eeaa46c0_1440w.jpg?source=172ae18b" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数据结构与算法（6）"/></a><div class="content"><a class="title" href="/2024/11/17/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%EF%BC%886%EF%BC%89/" title="数据结构与算法（6）">数据结构与算法（6）</a><time datetime="2024-11-17T07:36:29.000Z" title="发表于 2024-11-17 15:36:29">2024-11-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/11/17/Web%20%E5%AE%89%E5%85%A8%20PHP%20%E4%BB%A3%E7%A0%81%E5%AE%A1%E6%9F%A5%E4%B9%8B%E5%B8%B8%E8%A7%84%E6%BC%8F%E6%B4%9E/" title="无题"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/default_cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="无题"/></a><div class="content"><a class="title" href="/2024/11/17/Web%20%E5%AE%89%E5%85%A8%20PHP%20%E4%BB%A3%E7%A0%81%E5%AE%A1%E6%9F%A5%E4%B9%8B%E5%B8%B8%E8%A7%84%E6%BC%8F%E6%B4%9E/" title="无题">无题</a><time datetime="2024-11-17T05:43:18.864Z" title="发表于 2024-11-17 13:43:18">2024-11-17</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div id="workboard"><img class="workSituationImg boardsign" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://npm.elemecdn.com/anzhiyu-blog@2.0.4/img/badge/安知鱼-上班摸鱼中.svg" alt="距离月入25k也就还差一个大佬带我~" title="距离月入25k也就还差一个大佬带我~"/><div id="runtimeTextTip"></div></div></div><div id="footer-bar"><div class="footer-bar-links"><div class="footer-bar-left"><div id="footer-bar-tips"><div class="copyright">&copy;2023 - 2024 By <a class="footer-bar-link" href="/" title="小鹤" target="_blank">小鹤</a></div></div><div id="footer-type-tips"></div></div><div class="footer-bar-right"><a class="footer-bar-link" target="_blank" rel="noopener" href="https://github.com/TianHe2005" title="主题">主题</a></div></div></div></footer></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="sidebar-site-data site-data is-center"><a href="/archives/" title="archive"><div class="headline">文章</div><div class="length-num">22</div></a><a href="/tags/" title="tag"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/" title="category"><div class="headline">分类</div><div class="length-num">3</div></a></div><span class="sidebar-menu-item-title">功能</span><div class="sidebar-menu-item"><a class="darkmode_switchbutton menu-child" href="javascript:void(0);" title="显示模式"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span>显示模式</span></a></div><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://blog.anheyu.com/" title="博客"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/favicon.ico" alt="博客"/><span class="back-menu-item-text">博客</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">项目</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://image.anheyu.com/" title="安知鱼图床"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.anheyu.com/favicon.ico" alt="安知鱼图床"/><span class="back-menu-item-text">安知鱼图床</span></a></div></div></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/categories/"><i class="anzhiyufont anzhiyu-icon-shapes faa-tada" style="font-size: 0.9em;"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags faa-tada" style="font-size: 0.9em;"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 友链</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/link/"><i class="anzhiyufont anzhiyu-icon-link faa-tada" style="font-size: 0.9em;"></i><span> 友人帐</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/fcircle/"><i class="anzhiyufont anzhiyu-icon-artstation faa-tada" style="font-size: 0.9em;"></i><span> 朋友圈</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/comments/"><i class="anzhiyufont anzhiyu-icon-envelope faa-tada" style="font-size: 0.9em;"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 我的</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/music/"><i class="anzhiyufont anzhiyu-icon-music faa-tada" style="font-size: 0.9em;"></i><span> 音乐馆</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/album/"><i class="anzhiyufont anzhiyu-icon-images faa-tada" style="font-size: 0.9em;"></i><span> 相册集</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/air-conditioner/"><i class="anzhiyufont anzhiyu-icon-fan faa-tada" style="font-size: 0.9em;"></i><span> 小空调</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/about/"><i class="anzhiyufont anzhiyu-icon-paper-plane faa-tada" style="font-size: 0.9em;"></i><span> 关于本人</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/essay/"><i class="anzhiyufont anzhiyu-icon-lightbulb faa-tada" style="font-size: 0.9em;"></i><span> 闲言碎语</span></a></li><li><a class="site-page child faa-parent animated-hover" href="javascript:toRandomPost()"><i class="anzhiyufont anzhiyu-icon-shoe-prints1 faa-tada" style="font-size: 0.9em;"></i><span> 随便逛逛</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/equipment/"><i class="anzhiyufont anzhiyu-icon-dice-d20 faa-tada" style="font-size: 0.9em;"></i><span> 我的装备</span></a></li></ul></div></div><span class="sidebar-menu-item-title">标签</span></div></div><div id="keyboard-tips"><div class="keyboardTitle">博客快捷键</div><div class="keybordList"><div class="keybordItem"><div class="keyGroup"><div class="key">shift K</div></div><div class="keyContent"><div class="content">关闭快捷键功能</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift A</div></div><div class="keyContent"><div class="content">打开/关闭中控台</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift M</div></div><div class="keyContent"><div class="content">播放/暂停音乐</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift D</div></div><div class="keyContent"><div class="content">深色/浅色显示模式</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift S</div></div><div class="keyContent"><div class="content">站内搜索</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift R</div></div><div class="keyContent"><div class="content">随机访问</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift H</div></div><div class="keyContent"><div class="content">返回首页</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift F</div></div><div class="keyContent"><div class="content">友链鱼塘</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift L</div></div><div class="keyContent"><div class="content">友链页面</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift P</div></div><div class="keyContent"><div class="content">关于本站</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift I</div></div><div class="keyContent"><div class="content">原版/本站右键菜单</div></div></div></div></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="anzhiyufont anzhiyu-icon-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="anzhiyufont anzhiyu-icon-gear"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="anzhiyufont anzhiyu-icon-list-ul"></i></button><button id="chat-btn" type="button" title="聊天"><i class="anzhiyufont anzhiyu-icon-comment-sms"></i></button><a id="switch-commentBarrage" href="javascript:anzhiyu.switchCommentBarrage();" title="开关弹幕"><i class="anzhiyufont anzhiyu-icon-danmu"></i></a><button id="go-up" type="button" title="回到顶部"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></button></div></div><div id="nav-music"><a id="nav-music-hoverTips" onclick="anzhiyu.musicToggle()" accesskey="m">播放音乐</a><div id="console-music-bg"></div><meting-js id="8152976493" server="netease" type="playlist" mutex="true" preload="none" theme="var(--anzhiyu-main)" data-lrctype="0" order="random" volume="0.7"></meting-js></div><div id="rightMenu"><div class="rightMenu-group rightMenu-small"><div class="rightMenu-item" id="menu-backward"><i class="anzhiyufont anzhiyu-icon-arrow-left"></i></div><div class="rightMenu-item" id="menu-forward"><i class="anzhiyufont anzhiyu-icon-arrow-right"></i></div><div class="rightMenu-item" id="menu-refresh"><i class="anzhiyufont anzhiyu-icon-arrow-rotate-right" style="font-size: 1rem;"></i></div><div class="rightMenu-item" id="menu-top"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></div></div><div class="rightMenu-group rightMenu-line rightMenuPlugin"><div class="rightMenu-item" id="menu-copytext"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制选中文本</span></div><div class="rightMenu-item" id="menu-pastetext"><i class="anzhiyufont anzhiyu-icon-paste"></i><span>粘贴文本</span></div><a class="rightMenu-item" id="menu-commenttext"><i class="anzhiyufont anzhiyu-icon-comment-medical"></i><span>引用到评论</span></a><div class="rightMenu-item" id="menu-newwindow"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开</span></div><div class="rightMenu-item" id="menu-copylink"><i class="anzhiyufont anzhiyu-icon-link"></i><span>复制链接地址</span></div><div class="rightMenu-item" id="menu-copyimg"><i class="anzhiyufont anzhiyu-icon-images"></i><span>复制此图片</span></div><div class="rightMenu-item" id="menu-downloadimg"><i class="anzhiyufont anzhiyu-icon-download"></i><span>下载此图片</span></div><div class="rightMenu-item" id="menu-newwindowimg"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开图片</span></div><div class="rightMenu-item" id="menu-search"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>站内搜索</span></div><div class="rightMenu-item" id="menu-searchBaidu"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>百度搜索</span></div><div class="rightMenu-item" id="menu-music-toggle"><i class="anzhiyufont anzhiyu-icon-play"></i><span>播放音乐</span></div><div class="rightMenu-item" id="menu-music-back"><i class="anzhiyufont anzhiyu-icon-backward"></i><span>切换到上一首</span></div><div class="rightMenu-item" id="menu-music-forward"><i class="anzhiyufont anzhiyu-icon-forward"></i><span>切换到下一首</span></div><div class="rightMenu-item" id="menu-music-playlist" onclick="window.open(&quot;https://y.qq.com/n/ryqq/playlist/8802438608&quot;, &quot;_blank&quot;);" style="display: none;"><i class="anzhiyufont anzhiyu-icon-radio"></i><span>查看所有歌曲</span></div><div class="rightMenu-item" id="menu-music-copyMusicName"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制歌名</span></div></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item menu-link" id="menu-randomPost"><i class="anzhiyufont anzhiyu-icon-shuffle"></i><span>随便逛逛</span></a><a class="rightMenu-item menu-link" href="/categories/"><i class="anzhiyufont anzhiyu-icon-cube"></i><span>博客分类</span></a><a class="rightMenu-item menu-link" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags"></i><span>文章标签</span></a></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item" id="menu-copy" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制地址</span></a><a class="rightMenu-item" id="menu-commentBarrage" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-message"></i><span class="menu-commentBarrage-text">关闭热评</span></a><a class="rightMenu-item" id="menu-darkmode" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span class="menu-darkmode-text">深色模式</span></a><a class="rightMenu-item" id="menu-translate" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-language"></i><span>轉為繁體</span></a></div></div><div id="rightmenu-mask"></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.cbd.int/@fancyapps/ui@5.0.28/dist/fancybox/fancybox.umd.js"></script><script src="https://cdn.cbd.int/instant.page@5.2.0/instantpage.js" type="module"></script><script src="https://cdn.cbd.int/vanilla-lazyload@17.8.5/dist/lazyload.iife.min.js"></script><script src="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.js"></script><canvas id="universe"></canvas><script async src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/dark/dark.js"></script><script>// 消除控制台打印
+var HoldLog = console.log;
+console.log = function () {};
+let now1 = new Date();
+queueMicrotask(() => {
+  const Log = function () {
+    HoldLog.apply(console, arguments);
+  }; //在恢复前输出日志
+  const grt = new Date("06/01/2023 00:00:00"); //此处修改你的建站时间或者网站上线时间
+  now1.setTime(now1.getTime() + 250);
+  const days = (now1 - grt) / 1000 / 60 / 60 / 24;
+  const dnum = Math.floor(days);
+  const ascll = [
+    `欢迎使用安知鱼!`,
+    `生活明朗, 万物可爱`,
+    `
+        
+       █████╗ ███╗   ██╗███████╗██╗  ██╗██╗██╗   ██╗██╗   ██╗
+      ██╔══██╗████╗  ██║╚══███╔╝██║  ██║██║╚██╗ ██╔╝██║   ██║
+      ███████║██╔██╗ ██║  ███╔╝ ███████║██║ ╚████╔╝ ██║   ██║
+      ██╔══██║██║╚██╗██║ ███╔╝  ██╔══██║██║  ╚██╔╝  ██║   ██║
+      ██║  ██║██║ ╚████║███████╗██║  ██║██║   ██║   ╚██████╔╝
+      ╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝╚═╝   ╚═╝    ╚═════╝
+        
+        `,
+    "已上线",
+    dnum,
+    "天",
+    "©2023 By 安知鱼 V1.6.14",
+  ];
+  const ascll2 = [`NCC2-036`, `调用前置摄像头拍照成功，识别为【小笨蛋】.`, `Photo captured: `, `🤪`];
+
+  setTimeout(
+    Log.bind(
+      console,
+      `\n%c${ascll[0]} %c ${ascll[1]} %c ${ascll[2]} %c${ascll[3]}%c ${ascll[4]}%c ${ascll[5]}\n\n%c ${ascll[6]}\n`,
+      "color:#425AEF",
+      "",
+      "color:#425AEF",
+      "color:#425AEF",
+      "",
+      "color:#425AEF",
+      ""
+    )
+  );
+  setTimeout(
+    Log.bind(
+      console,
+      `%c ${ascll2[0]} %c ${ascll2[1]} %c \n${ascll2[2]} %c\n${ascll2[3]}\n`,
+      "color:white; background-color:#4fd953",
+      "",
+      "",
+      'background:url("https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/tinggge.gif") no-repeat;font-size:450%'
+    )
+  );
+
+  setTimeout(Log.bind(console, "%c WELCOME %c 你好，小笨蛋.", "color:white; background-color:#4f90d9", ""));
+
+  setTimeout(
+    console.warn.bind(
+      console,
+      "%c ⚡ Powered by 安知鱼 %c 你正在访问 小鹤 的博客.",
+      "color:white; background-color:#f0ad4e",
+      ""
+    )
+  );
+
+  setTimeout(Log.bind(console, "%c W23-12 %c 你已打开控制台.", "color:white; background-color:#4f90d9", ""));
+
+  setTimeout(
+    console.warn.bind(console, "%c S013-782 %c 你现在正处于监控中.", "color:white; background-color:#d9534f", "")
+  );
+});</script><script async src="/anzhiyu/random.js"></script><script async="async">(function () {
+  var grt = new Date("06/01/2023 00:00:00"); //设置网站上线时间
+  var now = new Date();
+  var dnum;
+  var hnum;
+  var mnum;
+  var snum;
+  var nowHour;
+
+  // 计算并更新天数、小时数、分钟数和秒数
+  function updateTime() {
+    now = new Date(); // 更新 now 的值
+    nowHour = now.getHours(); // 更新 nowHour 的值
+    var days = (now - grt) / 1000 / 60 / 60 / 24;
+    dnum = Math.floor(days);
+    var hours = (now - grt) / 1000 / 60 / 60 - 24 * dnum;
+    hnum = Math.floor(hours);
+    if (String(hnum).length == 1) {
+      hnum = "0" + hnum;
+    }
+    var minutes = (now - grt) / 1000 / 60 - 24 * 60 * dnum - 60 * hnum;
+    mnum = Math.floor(minutes);
+    if (String(mnum).length == 1) {
+      mnum = "0" + mnum;
+    }
+    var seconds = (now - grt) / 1000 - 24 * 60 * 60 * dnum - 60 * 60 * hnum - 60 * mnum;
+    snum = Math.round(seconds);
+    if (String(snum).length == 1) {
+      snum = "0" + snum;
+    }
+  }
+
+  // 更新网页中显示的网站运行时间
+  function updateHtml() {
+    const footer = document.getElementById("footer");
+    if (!footer) return
+    let currentTimeHtml = "";
+    if (nowHour < 18 && nowHour >= 9) {
+      // 如果是上班时间，默认就是"安知鱼-上班摸鱼中.svg"图片，不需要更改
+      currentTimeHtml = `本站居然运行了 ${dnum} 天<span id='runtime'> ${hnum} 小时 ${mnum} 分 ${snum} 秒 </span><i class='anzhiyufont anzhiyu-icon-heartbeat' style='color:red'></i>`;
+    } else {
+      // 如果是下班时间，插入"安知鱼-下班啦.svg"图片
+      let img = document.querySelector("#workboard .workSituationImg");
+      if (img != null) {
+        img.src = "https://npm.elemecdn.com/anzhiyu-blog@2.0.4/img/badge/安知鱼-下班啦.svg";
+        img.title = "下班了就该开开心心的玩耍，嘿嘿~";
+        img.alt = "下班了就该开开心心的玩耍，嘿嘿~";
+      }
+
+      currentTimeHtml = `本站居然运行了 ${dnum} 天<span id='runtime'> ${hnum} 小时 ${mnum} 分 ${snum} 秒 </span><i class='anzhiyufont anzhiyu-icon-heartbeat' style='color:red'></i>`;
+    }
+
+    if (document.getElementById("runtimeTextTip")) {
+      document.getElementById("runtimeTextTip").innerHTML = currentTimeHtml;
+    }
+  }
+
+  setInterval(() => {
+    updateTime();
+    updateHtml();
+  }, 1000);
+})();</script><div class="js-pjax"><input type="hidden" name="page-type" id="page-type" value="post"></div><script>var visitorMail = "";
+</script><script async data-pjax src="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/waterfall/waterfall.js"></script><script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/qrcodejs/1.0.0/qrcode.min.js"></script><script src="/js/anzhiyu/right_click_menu.js"></script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.9/icon/ali_iconfont_css.css"><script>(() => {
+  const isChatBtn = true
+  const isChatHideShow = true
+
+  if (isChatBtn) {
+    const close = () => {
+      Chatra('minimizeWidget')
+      Chatra('hide')
+    }
+
+    const open = () => {
+      Chatra('openChat', true)
+      Chatra('show')
+    }
+
+    window.ChatraSetup = {
+      startHidden: true
+    }
+  
+    window.chatBtnFn = () => {
+      const isShow = document.getElementById('chatra').classList.contains('chatra--expanded')
+      isShow ? close() : open()
+    }
+  } else if (isChatHideShow) {
+    window.chatBtn = {
+      hide: () => {
+        Chatra('hide')
+      },
+      show: () => {
+        Chatra('show')
+      }
+    }
+  }
+
+  (function(d, w, c) {
+    w.ChatraID = ''
+    var s = d.createElement('script')
+    w[c] = w[c] || function() {
+        (w[c].q = w[c].q || []).push(arguments)
+    }
+    s.async = true
+    s.src = 'https://call.chatra.io/chatra.js'
+    if (d.head) d.head.appendChild(s)
+  })(document, window, 'Chatra')
+
+})()</script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/aplayer/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.cbd.int/anzhiyu-blog-static@1.0.1/js/APlayer.min.js"></script><script src="https://cdn.cbd.int/hexo-anzhiyu-music@1.0.1/assets/js/Meting2.min.js"></script><script src="https://cdn.cbd.int/pjax@0.2.8/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+  // removeEventListener scroll 
+  anzhiyu.removeGlobalFnEvent('pjax')
+  anzhiyu.removeGlobalFnEvent('themeChange')
+
+  document.getElementById('rightside').classList.remove('rightside-show')
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', e => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script charset="UTF-8" src="https://cdn.cbd.int/anzhiyu-theme-static@1.1.5/accesskey/accesskey.js"></script></div><div id="popup-window"><div class="popup-window-title">通知</div><div class="popup-window-divider"></div><div class="popup-window-content"><div class="popup-tip">你好呀</div><div class="popup-link"><i class="anzhiyufont anzhiyu-icon-arrow-circle-right"></i></div></div></div></body></html>
