@@ -1,0 +1,846 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><title>数据结构与算法（7） | 小鹤实验室</title><meta name="author" content="小鹤"><meta name="copyright" content="小鹤"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#f7f9fe"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-touch-fullscreen" content="yes"><meta name="apple-mobile-web-app-title" content="数据结构与算法（7）"><meta name="application-name" content="数据结构与算法（7）"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="#f7f9fe"><meta property="og:type" content="article"><meta property="og:title" content="数据结构与算法（7）"><meta property="og:url" content="http://example.com/2024/11/19/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%EF%BC%887%EF%BC%89/index.html"><meta property="og:site_name" content="小鹤实验室"><meta property="og:description" content="图的定义 图(Graph)是由顶点的有穷非空集合 ( V(G) ) 和顶点之间边的集合 ( E(G) ) 组成，通常表示为: ( G &amp;#x3D; (V, E) )，其中，( G ) 表示一个图，( V ) 是图 ( G ) 中顶点的集合，( E ) 是图 ( G ) 中边的集合。若 ( V &amp;#x3D; {v_"><meta property="og:locale" content="zh-CN"><meta property="og:image" content="https://pic4.zhimg.com/v2-2d666d57cb8f9959e367bc94eeaa46c0_1440w.jpg?source=172ae18b"><meta property="article:author" content="小鹤"><meta property="article:tag"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://pic4.zhimg.com/v2-2d666d57cb8f9959e367bc94eeaa46c0_1440w.jpg?source=172ae18b"><meta name="description" content="图的定义 图(Graph)是由顶点的有穷非空集合 ( V(G) ) 和顶点之间边的集合 ( E(G) ) 组成，通常表示为: ( G &amp;#x3D; (V, E) )，其中，( G ) 表示一个图，( V ) 是图 ( G ) 中顶点的集合，( E ) 是图 ( G ) 中边的集合。若 ( V &amp;#x3D; {v_"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="http://example.com/2024/11/19/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%EF%BC%887%EF%BC%89/"><link rel="preconnect" href="//cdn.cbd.int"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta name="google-site-verification" content="xxx"/><meta name="baidu-site-verification" content="code-xxx"/><meta name="msvalidate.01" content="xxx"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.cbd.int/@fancyapps/ui@5.0.28/dist/fancybox/fancybox.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/swiper/swiper.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  linkPageTop: {"enable":true,"title":"与数百名博主无限进步","addFriendPlaceholder":"昵称（请勿包含博客等字样）：\n网站地址（要求博客地址，请勿提交个人主页）：\n头像图片url（请提供尽可能清晰的图片，我会上传到我自己的图床）：\n描述：\n站点截图（可选）：\n"},
+  peoplecanvas: undefined,
+  postHeadAiDescription: {"enable":true,"gptName":"AnZhiYu","mode":"local","switchBtn":false,"btnLink":"https://afdian.net/item/886a79d4db6711eda42a52540025c377","randomNum":3,"basicWordCount":1000,"key":"xxxx","Referer":"https://xx.xx/"},
+  diytitle: {"enable":true,"leaveTitle":"w(ﾟДﾟ)w 不要走！再看看嘛！","backTitle":"♪(^∇^*)欢迎肥来！"},
+  LA51: undefined,
+  greetingBox: {"enable":true,"default":"晚上好👋","list":[{"greeting":"晚安😴","startTime":0,"endTime":5},{"greeting":"早上好鸭👋, 祝你一天好心情！","startTime":6,"endTime":9},{"greeting":"上午好👋, 状态很好，鼓励一下～","startTime":10,"endTime":10},{"greeting":"11点多啦, 在坚持一下就吃饭啦～","startTime":11,"endTime":11},{"greeting":"午安👋, 宝贝","startTime":12,"endTime":14},{"greeting":"🌈充实的一天辛苦啦！","startTime":14,"endTime":18},{"greeting":"19点喽, 奖励一顿丰盛的大餐吧🍔。","startTime":19,"endTime":19},{"greeting":"晚上好👋, 在属于自己的时间好好放松😌~","startTime":20,"endTime":24}]},
+  twikooEnvId: '',
+  commentBarrageConfig:{"enable":true,"maxBarrage":1,"barrageTime":4000,"accessToken":"","mailMd5":"71D1A0082222768A053ECCE774F1A5A0"},
+  music_page_default: "nav_music",
+  root: '/',
+  preloader: {"source":3},
+  friends_vue_info: {"apiurl":"https://friends.anheyu.com/"},
+  navMusic: true,
+  mainTone: undefined,
+  authorStatus: undefined,
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简","rightMenuMsgToTraditionalChinese":"转为繁体","rightMenuMsgToSimplifiedChinese":"转为简体"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":330},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    simplehomepage: true,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"copy":true,"copyrightEbable":false,"limitCount":50,"languages":{"author":"作者: 小鹤","link":"链接: ","source":"来源: 小鹤实验室","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。","copySuccess":"复制成功，复制和转载请标注本文地址"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#425AEF","bgDark":"#1f1f1f","position":"top-center"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.min.js',
+      css: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  shortcutKey: {"enable":true,"delay":100,"shiftDelay":200},
+  autoDarkmode: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  configTitle: '小鹤实验室',
+  title: '数据结构与算法（7）',
+  postAI: '',
+  pageFillDescription: '图的定义, 图的基本概念, 1. 有向图, 有向图的表示, 无向图的表示, 简单图, 多重图, 完全图（也称简单完全图）, 子图, 连通、连通图和连通分量, 强连通图、强连通分量, 生成树、生成森林, 顶点的度、入度和出度, 边的权和网, 稠密图、稀疏图, 路径、路径长度和回路, 简单路径、简单回路, 距离, 有向树, 1. 图的存储结构, 图的存储结构, 总结, 图的遍历算法, 1. 深度优先搜索 (DFS), C 语言实现, 2. 广度优先搜索 (BFS), C 语言实现, 总结, 3. 图的连通分量, 4. 图的深度优先搜索, 5. 图的广度优先搜索, 6. 图的拓扑排序, 7. 最小生成树, 8. 最短路径问题, 9. 欧拉回路图的定义图是由顶点的有穷非空集合和顶点之间边的集合组成通常表示为其中表示一个图是图中顶点的集合是图中边的集合若则用表示图中顶点的个数也称图的阶用表示图中边的条数图的基本概念有向图有向图的表示图所示的有向图可表示为其中无向图若是无向边简称边的有限集合时则图为无向图边是顶点的无序对记为或因为其中是顶点可以说顶点和顶点互为邻接点边依附于顶点和或者说边和顶点相关联无向图的表示图所示的无向图可表示为其中简单图一个图若满足以下条件不存在重复边不存在顶点到自身的边则称图为简单图上图中的和均为简单图数据结构中仅讨论简单图多重图若图中某两个结点之间的边数多于一条又允许顶点通过同一条边和自己关联则为多重图多重图的定义和简单图是相对的完全图也称简单完全图对于无向图的取值范围是到有条边的无向图称为完全图在完全图中任意两个顶点之间都存在边对于有向图的取值范围是到有条弧的有向图称为有向完全图在有向完全图中任意两个顶点之间都存在方向相反的两条弧上图中的为无向完全图而为有向完全图子图设有两个图和若是的子集且是的子集则称是的子图若有满足的子图则称其为的生成子图上图中的为的子图注意并非和的任何子集都能构成的子图因为这样的子集可能不是图即的子集中的某些边关联的顶点可能不在这个的子集中连通连通图和连通分量在无向图中若从顶点到顶点有路径存在则称和是连通的若图中任意两个顶点都是连通的则称图为连通图否则称为非连通图无向图中的极大连通子图称为连通分量若一个图有个顶点并且边数小于则此图必是非连通图如下图所示图有个连通分量如图所示注意弄清连通连通图连通分量的概念非常重要首先要区分极大连通子图和极小连通子图极大连通子图是无向图的连通分量极大即要求该连通子图包含其所有的边极小连通子图是既要保持图连通又要使得边数最少的子图强连通图强连通分量在有向图中若从顶点到顶点和从顶点到顶点之间都有路径则称这两个顶点是强连通的若图中任何一对顶点都是强连通的则称此图为强连通图有向图中的极大强连通子图称为有向图的强连通分量图的强连通分量如下图所示注意强连通图强连通分量只是针对有向图而言的一般在无向图中讨论连通性在有向图中考虑强连通性生成树生成森林连通图的生成树是包含图中全部顶点的一个极小连通子图若图中顶点数为则它的生成树含有条边对生成树而言若砍去它的一条边则会变成非连通图若加上一条边则会形成一个回路在非连通图中连通分量的生成树构成了非连通图的生成森林图的一个生成树如下图所示注意包含无向图中全部顶点的极小连通子图只有生成树满足条件因为砍去生成树的任一条边图将不再连通顶点的度入度和出度图中每个顶点的度定义为以该顶点为一个端点的边的数目对于无向图顶点的度是指依附于该顶点的边的条数记为在具有个顶点条边的无向图中即无向图的全部顶点的度的和等于边数的倍因为每条边和两个顶点相关联对于有向图顶点的度分为入度和出度入度是以顶点为终点的有向边的数目记为而出度是以顶点为起点的有向边的数目记为顶点的度等于其入度和出度之和即在具有个顶点条边的有向图中即有向图的全部顶点的入度之和与出度之和相等并且等于边数这是因为每条有向边都有一个起点和终点边的权和网在一个图中每条边都可以标上具有某种含义的数值该数值称为该边的权值这种边上带有权值的图称为带权图也称网稠密图稀疏图边数很少的图称为稀疏图反之称为稠密图稀疏和稠密本身是模糊的概念稀疏图和稠密图常常是相对而言的一般当图满足时可以将视为稀疏图路径路径长度和回路顶点到顶点之间的一条路径是指顶点序列当然关联的边也可以理解为路径的构成要素路径上边的数目称为路径长度第一个顶点和最后一个顶点相同的路径称为回路或环若一个图有个顶点并且有大于条边则此图一定有环简单路径简单回路在路径序列中顶点不重复出现的路径称为简单路径除第一个顶点和最后一个顶点外其余顶点不重复出现的回路称为简单回路距离从顶点出发到顶点的最短路径若存在则此路径的长度称为从到的距离若从到根本不存在路径则记该距离为无穷有向树一个顶点的入度为其余顶点的入度均为的有向图称为有向树图的存储结构图的存储结构邻接矩阵定义使用一个二维数组来表示图中节点之间的连接关系特点适合稠密图即边数接近于节点数的平方实现优缺点优点实现简单判断两点是否相连的时间复杂度为缺点空间复杂度高不适合稀疏图邻接表定义使用链表或数组加指针的方式存储每个节点的邻居节点特点适合稀疏图即边数远小于节点数的平方实现优缺点优点空间复杂度低适合稀疏图缺点判断两点是否相连的时间复杂度为是节点的度边集数组定义使用一个数组来存储图中的所有边特点适用于边数较少的情况实现优缺点优点实现简单适合边数较少的图缺点查找节点的邻居节点效率较低总结邻接矩阵适合稠密图实现简单但空间复杂度高邻接表适合稀疏图空间复杂度低但查找邻居节点的时间复杂度较高边集数组适用于边数较少的图实现简单但查找节点的邻居节点效率较低图的遍历算法深度优先搜索基本思想从某个节点开始沿着某条路径一直搜索下去直到无法继续为止然后回溯到上一个节点继续搜索其他路径应用场景检测图的连通性寻找路径拓扑排序等语言实现假设有个顶点初始化邻接矩阵添加边如果是有向图去掉这一行初始化访问数组从顶点开始进行广度优先搜索基本思想从某个节点开始先访问其所有邻居节点再依次访问这些邻居节点的邻居逐层扩展应用场景最短路径问题图的连通性检测等语言实现假设有个顶点初始化邻接矩阵添加边如果是有向图去掉这一行初始化访问数组从顶点开始进行总结深度优先搜索适用于检测图的连通性寻找路径拓扑排序等广度优先搜索适用于最短路径问题图的连通性检测等希望这些介绍和代码示例对您有所帮助如果有更多具体问题或需要进一步的解释请随时提问图的连通分量无向图的连通分量图中的一组顶点其中任意两个顶点之间都存在路径有向图的强连通分量图中的一组顶点其中任意两个顶点之间都存在双向路径图的深度优先搜索基本思想从某个节点开始沿着某条路径一直搜索下去直到无法继续为止然后回溯到上一个节点继续搜索其他路径应用检测图的连通性寻找路径拓扑排序等图的广度优先搜索基本思想从某个节点开始先访问其所有邻居节点再依次访问这些邻居节点的邻居逐层扩展应用最短路径问题图的连通性检测等图的拓扑排序定义对于一个有向无环图将图中的所有顶点排成一个线性序列使得图中任意一对顶点和若边存在则在线性序列中出现在的前面算法算法和基于的算法最小生成树定义对于一个带权的无向图生成树是指包含图中所有顶点的一个无环子图最小生成树是指生成树中所有边的权重之和最小的生成树算法算法和算法最短路径问题单源最短路径从某个起点出发找到到其他所有顶点的最短路径常用算法有算法和算法所有顶点对的最短路径求解图中任意两个顶点之间的最短路径常用算法有算法欧拉回路定义欧拉回路是指通过图中每条边恰好一次且仅一次并能回到出发点的路径条件对于无向图每个顶点的度数必须为偶数对于有向图每个顶点的入度和出度必须相等希望这些扩写内容对您有所帮助如果您有更多具体问题或需要进一步的解释请随时提问',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-11-19 12:30:09',
+  postMainColor: '',
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#18171d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f7f9fe')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+          const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+          const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+          const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+          if (t === undefined) {
+            if (isLightMode) activateLightMode()
+            else if (isDarkMode) activateDarkMode()
+            else if (isNotSpecified || hasNoSupport) {
+              const now = new Date()
+              const hour = now.getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addListener(e => {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><script defer src="mathjax_config.js"></script><script type="text/javascript" id="MathJax-script" defer src="https://unpkg.com/mathjax@3/es5/tex-chtml.js"></script><meta name="generator" content="Hexo 7.3.0"><style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style></head><body data-type="anzhiyu"><div id="web_bg"></div><div id="an_music_bg"></div><div id="loading-box" onclick="document.getElementById(&quot;loading-box&quot;).classList.add(&quot;loaded&quot;)"><div class="loading-bg"><img class="loading-img nolazyload" alt="加载头像" src="/img/avatar.jpg"/><div class="loading-image-dot"></div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.getElementById('loading-box').classList.add("loaded");
+  },
+  initLoading: () => {
+    document.getElementById('loading-box').classList.remove("loaded")
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+setTimeout(function(){preloader.endLoading();},10000)
+
+if (true) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.10/progress_bar/progress_bar.css"/><script async="async" src="https://cdn.cbd.int/pace-js@1.2.4/pace.min.js" data-pace-options="{ &quot;restartOnRequestAfter&quot;:false,&quot;eventLag&quot;:false}"></script><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><div id="nav-group"><span id="blog_name"><div class="back-home-button"><i class="anzhiyufont anzhiyu-icon-grip-vertical"></i><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://blog.anheyu.com/" title="博客"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/favicon.ico" alt="博客"/><span class="back-menu-item-text">博客</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">项目</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://image.anheyu.com/" title="安知鱼图床"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.anheyu.com/favicon.ico" alt="安知鱼图床"/><span class="back-menu-item-text">安知鱼图床</span></a></div></div></div></div><a id="site-name" href="/" accesskey="h"><div class="title">小鹤实验室</div><i class="anzhiyufont anzhiyu-icon-house-chimney"></i></a><div id="he-plugin-simple"></div><script>var WIDGET = {
+  "CONFIG": {
+    "modules": "0124",
+    "background": "2",
+    "tmpColor": "FFFFFF",
+    "tmpSize": "16",
+    "cityColor": "FFFFFF",
+    "citySize": "16",
+    "aqiColor": "E8D87B",
+    "aqiSize": "16",
+    "weatherIconSize": "24",
+    "alertIconSize": "18",
+    "padding": "10px 10px 10px 10px",
+    "shadow": "0",
+    "language": "auto",
+    "borderRadius": "20",
+    "fixed": "true",
+    "vertical": "top",
+    "horizontal": "left",
+    "left": "20",
+    "top": "7.1",
+    "key": "df245676fb434a0691ead1c63341cd94"
+  }
+}
+</script><link rel="stylesheet" href="https://widget.qweather.net/simple/static/css/he-simple.css?v=1.4.0"/><script src="https://widget.qweather.net/simple/static/js/he-simple.js?v=1.4.0"></script></span><div class="mask-name-container"><div id="name-container"><a id="page-name" href="javascript:anzhiyu.scrollToDest(0, 500)">PAGE_NAME</a></div></div><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/categories/"><i class="anzhiyufont anzhiyu-icon-shapes faa-tada" style="font-size: 0.9em;"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags faa-tada" style="font-size: 0.9em;"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 友链</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/link/"><i class="anzhiyufont anzhiyu-icon-link faa-tada" style="font-size: 0.9em;"></i><span> 友人帐</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/fcircle/"><i class="anzhiyufont anzhiyu-icon-artstation faa-tada" style="font-size: 0.9em;"></i><span> 朋友圈</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/comments/"><i class="anzhiyufont anzhiyu-icon-envelope faa-tada" style="font-size: 0.9em;"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 我的</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/music/"><i class="anzhiyufont anzhiyu-icon-music faa-tada" style="font-size: 0.9em;"></i><span> 音乐馆</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/album/"><i class="anzhiyufont anzhiyu-icon-images faa-tada" style="font-size: 0.9em;"></i><span> 相册集</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/air-conditioner/"><i class="anzhiyufont anzhiyu-icon-fan faa-tada" style="font-size: 0.9em;"></i><span> 小空调</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/about/"><i class="anzhiyufont anzhiyu-icon-paper-plane faa-tada" style="font-size: 0.9em;"></i><span> 关于本人</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/essay/"><i class="anzhiyufont anzhiyu-icon-lightbulb faa-tada" style="font-size: 0.9em;"></i><span> 闲言碎语</span></a></li><li><a class="site-page child faa-parent animated-hover" href="javascript:toRandomPost()"><i class="anzhiyufont anzhiyu-icon-shoe-prints1 faa-tada" style="font-size: 0.9em;"></i><span> 随便逛逛</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/equipment/"><i class="anzhiyufont anzhiyu-icon-dice-d20 faa-tada" style="font-size: 0.9em;"></i><span> 我的装备</span></a></li></ul></div></div></div><div id="nav-right"><div class="nav-button" id="randomPost_button"><a class="site-page" onclick="toRandomPost()" title="随机前往一个文章" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-dice"></i></a></div><input id="center-console" type="checkbox"/><label class="widget" for="center-console" title="中控台" onclick="anzhiyu.switchConsole();"><i class="left"></i><i class="widget center"></i><i class="widget right"></i></label><div id="console"><div class="console-card-group-reward"><ul class="reward-all console-card"><li class="reward-item"><a href="/img/weixing_money.jpg" target="_blank"><img class="post-qr-code-img" alt="微信" src="/img/weixing_money.jpg"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="/img/Alipay_money.jpg" target="_blank"><img class="post-qr-code-img" alt="支付宝" src="/img/Alipay_money.jpg"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div><div class="console-card-group"><div class="console-card-group-left"><div class="console-card" id="card-newest-comments"><div class="card-content"><div class="author-content-item-tips">互动</div><span class="author-content-item-title"> 最新评论</span></div><div class="aside-list"><span>正在加载中...</span></div></div></div><div class="console-card-group-right"><div class="console-card tags"><div class="card-content"><div class="author-content-item-tips">兴趣点</div><span class="author-content-item-title">寻找你感兴趣的领域</span></div></div><div class="console-card history"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-box-archiv"></i><span>文章</span></div><div class="card-archives"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/11/"><span class="card-archive-list-date">十一月 2024</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">24</span><span>篇</span></div></a></li></ul></div><hr/></div></div></div><div class="button-group"><div class="console-btn-item"><a class="darkmode_switchbutton" title="显示模式切换" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-moon"></i></a></div><div class="console-btn-item" id="consoleHideAside" onclick="anzhiyu.hideAsideBtn()" title="边栏显示控制"><a class="asideSwitch"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></a></div><div class="console-btn-item on" id="consoleCommentBarrage" onclick="anzhiyu.switchCommentBarrage()" title="热评开关"><a class="commentBarrage"><i class="anzhiyufont anzhiyu-icon-message"></i></a></div><div class="console-btn-item" id="consoleMusic" onclick="anzhiyu.musicToggle()" title="音乐开关"><a class="music-switch"><i class="anzhiyufont anzhiyu-icon-music"></i></a></div><div class="console-btn-item" id="consoleKeyboard" onclick="anzhiyu.keyboardToggle()" title="快捷键开关"><a class="keyboard-switch"><i class="anzhiyufont anzhiyu-icon-keyboard"></i></a></div></div><div class="console-mask" onclick="anzhiyu.hideConsole()" href="javascript:void(0);"></div></div><div class="nav-button" id="nav-totop"><a class="totopbtn" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i><span id="percent" onclick="anzhiyu.scrollToDest(0,500)">0</span></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);" title="切换"><i class="anzhiyufont anzhiyu-icon-bars"></i></a></div></div></div></nav><div id="post-info"><div id="post-firstinfo"><div class="meta-firstline"><a class="post-meta-original">原创</a><span class="post-meta-categories"><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-inbox post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E5%BC%80%E5%8F%91/" itemprop="url">编程开发</a></span><span class="article-meta tags"></span></div></div><h1 class="post-title" itemprop="name headline">数据结构与算法（7）</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="anzhiyufont anzhiyu-icon-calendar-days post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" itemprop="dateCreated datePublished" datetime="2024-11-19T07:36:29.000Z" title="发表于 2024-11-19 15:36:29">2024-11-19</time><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-history post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" itemprop="dateCreated datePublished" datetime="2024-11-19T04:30:09.029Z" title="更新于 2024-11-19 12:30:09">2024-11-19</time></span></div><div class="meta-secondline"><span class="post-meta-separator"></span><span class="post-meta-pv-cv" id="" data-flag-title="数据结构与算法（7）"><i class="anzhiyufont anzhiyu-icon-fw-eye post-meta-icon"></i><span class="post-meta-label" title="阅读量">阅读量:</span><span id="busuanzi_value_page_pv"><i class="anzhiyufont anzhiyu-icon-spinner anzhiyu-spin"></i></span></span><span class="post-meta-separator">       </span><span class="post-meta-position" title="作者IP属地为南京"><i class="anzhiyufont anzhiyu-icon-location-dot"></i>南京</span></div></div></div><section class="main-hero-waves-area waves-area"><svg class="waves-svg" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M -160 44 c 30 0 58 -18 88 -18 s 58 18 88 18 s 58 -18 88 -18 s 58 18 88 18 v 44 h -352 Z"></path></defs><g class="parallax"><use href="#gentle-wave" x="48" y="0"></use><use href="#gentle-wave" x="48" y="3"></use><use href="#gentle-wave" x="48" y="5"></use><use href="#gentle-wave" x="48" y="7"></use></g></svg></section><div id="post-top-cover"><img class="nolazyload" id="post-top-bg" src="https://pic4.zhimg.com/v2-2d666d57cb8f9959e367bc94eeaa46c0_1440w.jpg?source=172ae18b"></div></header><main id="blog-container"><div class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container" itemscope itemtype="http://example.com/2024/11/19/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%EF%BC%887%EF%BC%89/"><header><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E5%BC%80%E5%8F%91/" itemprop="url">编程开发</a><h1 id="CrawlerTitle" itemprop="name headline">数据结构与算法（7）</h1><span itemprop="author" itemscope itemtype="http://schema.org/Person">小鹤</span><time itemprop="dateCreated datePublished" datetime="2024-11-19T07:36:29.000Z" title="发表于 2024-11-19 15:36:29">2024-11-19</time><time itemprop="dateCreated datePublished" datetime="2024-11-19T04:30:09.029Z" title="更新于 2024-11-19 12:30:09">2024-11-19</time></header><h2 id="图的定义">图的定义</h2>
+<p>图(Graph)是由顶点的有穷非空集合 ( V(G) ) 和顶点之间边的集合 ( E(G) )
+组成，通常表示为: ( G = (V, E) )，其中，( G ) 表示一个图，( V ) 是图 ( G
+) 中顶点的集合，( E ) 是图 ( G ) 中边的集合。若 ( V = {v_1, v_2, …, v_n}
+)，则用 ( |V| ) 表示图 ( G ) 中顶点的个数，也称图 ( G ) 的阶，( E = {(u,
+v) | u \in V, v \in V} )，用 ( |E| ) 表示图 ( G ) 中边的条数。</p>
+<h2 id="图的基本概念">图的基本概念</h2>
+<h3 id="1-有向图">1. 有向图</h3>
+<h3 id="有向图的表示">有向图的表示</h3>
+<p>【】</p>
+<p>图(a)所示的有向图 ( G_1 ) 可表示为 [ G_1 = (V_1, E_1) ] 其中， [ V_1
+= {1, 2, 3} ] [ E_1 = {&lt;1, 2&gt;, &lt;2, 1&gt;, &lt;2, 3&gt;} ]</p>
+<p>2、无向图
+若E是无向边(简称边)的有限集合时，则图G为无向图。边是顶点的无序对，记为(v,
+w)或(w,v),因为(v,w)=(w,v),
+其中v,w是顶点。可以说顶点w和顶点v互为邻接点。边(v,
+w)依附于顶点w和v，或者说边(v, w)和顶点v, w相关联。 【】</p>
+<h3 id="无向图的表示">无向图的表示</h3>
+<p>图(b)所示的无向图 ( G_2 ) 可表示为 [ G_2 = (V_2, E_2) ] 其中， [ V_2
+= {1, 2, 3, 4} ] [ E_2 = {(1, 2), (1, 3), (1, 4), (2, 3), (2, 4), (3,
+4)} ]</p>
+<h3 id="简单图">简单图</h3>
+<p>一个图 ( G ) 若满足以下条件：</p>
+<ol type="1">
+<li>不存在重复边；</li>
+<li>不存在顶点到自身的边，</li>
+</ol>
+<p>则称图 ( G ) 为简单图。上图中的 ( G_1 ) 和 ( G_2 )
+均为简单图。数据结构中仅讨论简单图。</p>
+<h3 id="多重图">多重图</h3>
+<p>若图 ( G )
+中某两个结点之间的边数多于一条，又允许顶点通过同一条边和自己关联，则 ( G
+) 为多重图。多重图的定义和简单图是相对的。</p>
+<h3 id="完全图也称简单完全图">完全图（也称简单完全图）</h3>
+<ul>
+<li><strong>对于无向图</strong>，( |E| ) 的取值范围是 0 到 (
+\frac{n(n-1)}{2} )。有 ( \frac{n(n-1)}{2} )
+条边的无向图称为完全图，在完全图中任意两个顶点之间都存在边。</li>
+<li><strong>对于有向图</strong>，( |E| ) 的取值范围是 0 到 ( n(n-1)
+)。有 ( n(n-1) )
+条弧的有向图称为有向完全图，在有向完全图中任意两个顶点之间都存在方向相反的两条弧。</li>
+</ul>
+<p>上图中的 ( G_2 ) 为无向完全图，而 ( G_3 ) 为有向完全图。</p>
+<h3 id="子图">子图</h3>
+<p>设有两个图 ( G = (V, E) ) 和 ( G’ = (V’, E’) )，若 ( V’ ) 是 ( V )
+的子集，且 ( E’ ) 是 ( E ) 的子集，则称 ( G’ ) 是 ( G ) 的子图。若有满足
+( V(G’) = V(G) ) 的子图 ( G’ )，则称其为 ( G ) 的生成子图。上图中的 (
+G_3 ) 为 ( G_1 ) 的子图。</p>
+<p><strong>注意</strong>: 并非 ( V ) 和 ( E ) 的任何子集都能构成 ( G )
+的子图，因为这样的子集可能不是图，即 ( E )
+的子集中的某些边关联的顶点可能不在这个 ( V ) 的子集中。</p>
+<h3 id="连通连通图和连通分量">连通、连通图和连通分量</h3>
+<p>在无向图中，若从顶点 ( v ) 到顶点 ( w ) 有路径存在，则称 ( v ) 和 ( w
+) 是连通的。若图 ( G ) 中任意两个顶点都是连通的，则称图 ( G )
+为连通图，否则称为非连通图。无向图中的极大连通子图称为连通分量。若一个图有
+( n ) 个顶点，并且边数小于 ( n - 1
+)，则此图必是非连通图。如下图(a)所示，图 ( G_4 )
+有3个连通分量，如图（b）所示。</p>
+<p><strong>注意</strong>:
+弄清连通、连通图、连通分量的概念非常重要。首先要区分极大连通子图和极小连通子图，极大连通子图是无向图的连通分量，极大即要求该连通子图包含其所有的边；极小连通子图是既要保持图连通又要使得边数最少的子图。</p>
+<h3 id="强连通图强连通分量">强连通图、强连通分量</h3>
+<p>在有向图中，若从顶点 ( v ) 到顶点 ( w ) 和从顶点 ( w ) 到顶点 ( v )
+之间都有路径，则称这两个顶点是强连通的。若图中任何一对顶点都是强连通的，则称此图为强连通图。有向图中的极大强连通子图称为有向图的强连通分量，图
+( G_1 ) 的强连通分量如下图所示。</p>
+<p><strong>注意</strong>:
+强连通图、强连通分量只是针对有向图而言的。一般在无向图中讨论连通性，在有向图中考虑强连通性。</p>
+<h3 id="生成树生成森林">生成树、生成森林</h3>
+<p>连通图的生成树是包含图中全部顶点的一个极小连通子图。若图中顶点数为 (
+n )，则它的生成树含有 ( n - 1 )
+条边。对生成树而言，若砍去它的一条边，则会变成非连通图，若加上一条边则会形成一个回路。在非连通图中，连通分量的生成树构成了非连通图的生成森林。图
+( G_2 ) 的一个生成树如下图所示。</p>
+<p><strong>注意</strong>:
+包含无向图中全部顶点的极小连通子图，只有生成树满足条件，因为砍去生成树的任一条边，图将不再连通。</p>
+<h3 id="顶点的度入度和出度">顶点的度、入度和出度</h3>
+<p>图中每个顶点的度定义为以该顶点为一个端点的边的数目。</p>
+<ul>
+<li>对于无向图，顶点 ( v ) 的度是指依附于该顶点的边的条数，记为 ( TD(v)
+)。</li>
+<li>在具有 ( n ) 个顶点、( e ) 条边的无向图中，(\sum<span data-wrapper="1" data-i="1">_</span>^{n} TD(v_i) =
+2e)，即无向图的全部顶点的度的和等于边数的2倍，因为每条边和两个顶点相关联。</li>
+<li>对于有向图，顶点 ( v ) 的度分为入度和出度，入度是以顶点 ( v )
+为终点的有向边的数目，记为 ( ID(v) )；而出度是以顶点 ( v )
+为起点的有向边的数目，记为 ( OD(v) )。顶点 ( v )
+的度等于其入度和出度之和，即 ( TD(v) = ID(v) + OD(v) )。</li>
+<li>在具有 ( n ) 个顶点、( e ) 条边的有向图中，(\sum<span data-wrapper="1" data-i="1">_</span><sup>{n} ID(v_i) = \sum<span data-wrapper="1" data-i="1">_</span></sup>{n} OD(v_i) =
+e)，即有向图的全部顶点的入度之和与出度之和相等，并且等于边数。这是因为每条有向边都有一个起点和终点。</li>
+</ul>
+<h3 id="边的权和网">边的权和网</h3>
+<p>在一个图中，每条边都可以标上具有某种含义的数值，该数值称为该边的权值。这种边上带有权值的图称为带权图，也称网。</p>
+<h3 id="稠密图稀疏图">稠密图、稀疏图</h3>
+<p>边数很少的图称为稀疏图，反之称为稠密图。稀疏和稠密本身是模糊的概念，稀疏图和稠密图常常是相对而言的。一般当图
+( G ) 满足 ( |E| &lt; |V| \log |V| ) 时，可以将 ( G ) 视为稀疏图。</p>
+<h3 id="路径路径长度和回路">路径、路径长度和回路</h3>
+<p>顶点 ( v_p ) 到顶点 ( v_q ) 之间的一条路径是指顶点序列 ( v_p,
+v_{i_1}, v_{i_2}, …, v_{i_m}, v_q
+)，当然关联的边也可以理解为路径的构成要素。路径上边的数目称为路径长度。第一个顶点和最后一个顶点相同的路径称为回路或环。若一个图有
+( n ) 个顶点，并且有大于 ( n - 1 ) 条边，则此图一定有环。</p>
+<h3 id="简单路径简单回路">简单路径、简单回路</h3>
+<p>在路径序列中，顶点不重复出现的路径称为简单路径。除第一个顶点和最后一个顶点外，其余顶点不重复出现的回路称为简单回路。</p>
+<h3 id="距离">距离</h3>
+<p>从顶点 ( u ) 出发到顶点 ( v ) 的最短路径若存在，则此路径的长度称为从
+( u ) 到 ( v ) 的距离。若从 ( u ) 到 ( v )
+根本不存在路径，则记该距离为无穷 ( (\infty) )。</p>
+<h3 id="有向树">有向树</h3>
+<p>一个顶点的入度为0、其余顶点的入度均为1的有向图，称为有向树。</p>
+<h3 id="1-图的存储结构">1. 图的存储结构</h3>
+<h3 id="图的存储结构">图的存储结构</h3>
+<ol type="1">
+<li><p><strong>邻接矩阵</strong></p>
+<ul>
+<li><strong>定义</strong>：使用一个二维数组来表示图中节点之间的连接关系。</li>
+<li><strong>特点</strong>：适合稠密图，即边数接近于节点数的平方。</li>
+<li><strong>实现</strong>：
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> adjacencyMatrix = [</span><br><span class="line">  [<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>],</span><br><span class="line">  [<span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>],</span><br><span class="line">  [<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>],</span><br><span class="line">  [<span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>]</span><br><span class="line">];</span><br></pre></td></tr></table></figure>
+</li>
+<li><strong>优缺点</strong>：
+<ul>
+<li>优点：实现简单，判断两点是否相连的时间复杂度为 O(1)。</li>
+<li>缺点：空间复杂度高，不适合稀疏图。</li>
+</ul></li>
+</ul></li>
+<li><p><strong>邻接表</strong></p>
+<ul>
+<li><strong>定义</strong>：使用链表或数组加指针的方式存储每个节点的邻居节点。</li>
+<li><strong>特点</strong>：适合稀疏图，即边数远小于节点数的平方。</li>
+<li><strong>实现</strong>：
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> adjacencyList = {</span><br><span class="line">  <span class="number">0</span>: [<span class="number">1</span>, <span class="number">3</span>],</span><br><span class="line">  <span class="number">1</span>: [<span class="number">0</span>, <span class="number">2</span>],</span><br><span class="line">  <span class="number">2</span>: [<span class="number">1</span>, <span class="number">3</span>],</span><br><span class="line">  <span class="number">3</span>: [<span class="number">0</span>, <span class="number">2</span>]</span><br><span class="line">};</span><br></pre></td></tr></table></figure>
+</li>
+<li><strong>优缺点</strong>：
+<ul>
+<li>优点：空间复杂度低，适合稀疏图。</li>
+<li>缺点：判断两点是否相连的时间复杂度为 O(d)，d 是节点的度。</li>
+</ul></li>
+</ul></li>
+<li><p><strong>边集数组</strong></p>
+<ul>
+<li><strong>定义</strong>：使用一个数组来存储图中的所有边。</li>
+<li><strong>特点</strong>：适用于边数较少的情况。</li>
+<li><strong>实现</strong>：
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> edgeList = [</span><br><span class="line">  [<span class="number">0</span>, <span class="number">1</span>],</span><br><span class="line">  [<span class="number">1</span>, <span class="number">2</span>],</span><br><span class="line">  [<span class="number">2</span>, <span class="number">3</span>],</span><br><span class="line">  [<span class="number">3</span>, <span class="number">0</span>]</span><br><span class="line">];</span><br></pre></td></tr></table></figure>
+</li>
+<li><strong>优缺点</strong>：
+<ul>
+<li>优点：实现简单，适合边数较少的图。</li>
+<li>缺点：查找节点的邻居节点效率较低。</li>
+</ul></li>
+</ul></li>
+</ol>
+<h3 id="总结">总结</h3>
+<ul>
+<li><strong>邻接矩阵</strong>适合稠密图，实现简单，但空间复杂度高。</li>
+<li><strong>邻接表</strong>适合稀疏图，空间复杂度低，但查找邻居节点的时间复杂度较高。</li>
+<li><strong>边集数组</strong>适用于边数较少的图，实现简单，但查找节点的邻居节点效率较低。</li>
+</ul>
+<h3 id="图的遍历算法">图的遍历算法</h3>
+<h4 id="1-深度优先搜索-dfs">1. 深度优先搜索 (DFS)</h4>
+<ul>
+<li><strong>基本思想</strong>：从某个节点开始，沿着某条路径一直搜索下去，直到无法继续为止，然后回溯到上一个节点，继续搜索其他路径。</li>
+<li><strong>应用场景</strong>：检测图的连通性、寻找路径、拓扑排序等。</li>
+</ul>
+<h5 id="c-语言实现">C 语言实现</h5>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> MAX_VERTICES 100</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> visited[MAX_VERTICES];</span><br><span class="line"><span class="type">int</span> adjacencyMatrix[MAX_VERTICES][MAX_VERTICES];</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">dfs</span><span class="params">(<span class="type">int</span> v, <span class="type">int</span> n)</span> {</span><br><span class="line">    visited[v] = <span class="number">1</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"Visited vertex %d\n"</span>, v);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; n; i++) {</span><br><span class="line">        <span class="keyword">if</span> (adjacencyMatrix[v][i] == <span class="number">1</span> &amp;&amp; !visited[i]) {</span><br><span class="line">            dfs(i, n);</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> {</span><br><span class="line">    <span class="type">int</span> n = <span class="number">5</span>; <span class="comment">// 假设有 5 个顶点</span></span><br><span class="line">    <span class="type">int</span> edges[][<span class="number">2</span>] = {{<span class="number">0</span>, <span class="number">1</span>}, {<span class="number">0</span>, <span class="number">2</span>}, {<span class="number">1</span>, <span class="number">3</span>}, {<span class="number">1</span>, <span class="number">4</span>}, {<span class="number">2</span>, <span class="number">3</span>}, {<span class="number">3</span>, <span class="number">4</span>}};</span><br><span class="line">    <span class="type">int</span> numEdges = <span class="keyword">sizeof</span>(edges) / <span class="keyword">sizeof</span>(edges[<span class="number">0</span>]);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 初始化邻接矩阵</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; n; i++) {</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">0</span>; j &lt; n; j++) {</span><br><span class="line">            adjacencyMatrix[i][j] = <span class="number">0</span>;</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 添加边</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; numEdges; i++) {</span><br><span class="line">        <span class="type">int</span> u = edges[i][<span class="number">0</span>];</span><br><span class="line">        <span class="type">int</span> v = edges[i][<span class="number">1</span>];</span><br><span class="line">        adjacencyMatrix[u][v] = <span class="number">1</span>;</span><br><span class="line">        adjacencyMatrix[v][u] = <span class="number">1</span>; <span class="comment">// 如果是有向图，去掉这一行</span></span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 初始化访问数组</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; n; i++) {</span><br><span class="line">        visited[i] = <span class="number">0</span>;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 从顶点 0 开始进行 DFS</span></span><br><span class="line">    dfs(<span class="number">0</span>, n);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-广度优先搜索-bfs">2. 广度优先搜索 (BFS)</h4>
+<ul>
+<li><strong>基本思想</strong>：从某个节点开始，先访问其所有邻居节点，再依次访问这些邻居节点的邻居，逐层扩展。</li>
+<li><strong>应用场景</strong>：最短路径问题、图的连通性检测等。</li>
+</ul>
+<h5 id="c-语言实现-1">C 语言实现</h5>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> MAX_VERTICES 100</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> visited[MAX_VERTICES];</span><br><span class="line"><span class="type">int</span> adjacencyMatrix[MAX_VERTICES][MAX_VERTICES];</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">bfs</span><span class="params">(<span class="type">int</span> start, <span class="type">int</span> n)</span> {</span><br><span class="line">    <span class="type">int</span> <span class="built_in">queue</span>[MAX_VERTICES];</span><br><span class="line">    <span class="type">int</span> front = <span class="number">0</span>, rear = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    visited[start] = <span class="number">1</span>;</span><br><span class="line">    <span class="built_in">queue</span>[rear++] = start;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (front != rear) {</span><br><span class="line">        <span class="type">int</span> v = <span class="built_in">queue</span>[front++];</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"Visited vertex %d\n"</span>, v);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; n; i++) {</span><br><span class="line">            <span class="keyword">if</span> (adjacencyMatrix[v][i] == <span class="number">1</span> &amp;&amp; !visited[i]) {</span><br><span class="line">                visited[i] = <span class="number">1</span>;</span><br><span class="line">                <span class="built_in">queue</span>[rear++] = i;</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> {</span><br><span class="line">    <span class="type">int</span> n = <span class="number">5</span>; <span class="comment">// 假设有 5 个顶点</span></span><br><span class="line">    <span class="type">int</span> edges[][<span class="number">2</span>] = {{<span class="number">0</span>, <span class="number">1</span>}, {<span class="number">0</span>, <span class="number">2</span>}, {<span class="number">1</span>, <span class="number">3</span>}, {<span class="number">1</span>, <span class="number">4</span>}, {<span class="number">2</span>, <span class="number">3</span>}, {<span class="number">3</span>, <span class="number">4</span>}};</span><br><span class="line">    <span class="type">int</span> numEdges = <span class="keyword">sizeof</span>(edges) / <span class="keyword">sizeof</span>(edges[<span class="number">0</span>]);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 初始化邻接矩阵</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; n; i++) {</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">0</span>; j &lt; n; j++) {</span><br><span class="line">            adjacencyMatrix[i][j] = <span class="number">0</span>;</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 添加边</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; numEdges; i++) {</span><br><span class="line">        <span class="type">int</span> u = edges[i][<span class="number">0</span>];</span><br><span class="line">        <span class="type">int</span> v = edges[i][<span class="number">1</span>];</span><br><span class="line">        adjacencyMatrix[u][v] = <span class="number">1</span>;</span><br><span class="line">        adjacencyMatrix[v][u] = <span class="number">1</span>; <span class="comment">// 如果是有向图，去掉这一行</span></span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 初始化访问数组</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; n; i++) {</span><br><span class="line">        visited[i] = <span class="number">0</span>;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 从顶点 0 开始进行 BFS</span></span><br><span class="line">    bfs(<span class="number">0</span>, n);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+
+<h3 id="总结-1">总结</h3>
+<ul>
+<li><strong>深度优先搜索
+(DFS)</strong>：适用于检测图的连通性、寻找路径、拓扑排序等。</li>
+<li><strong>广度优先搜索
+(BFS)</strong>：适用于最短路径问题、图的连通性检测等。</li>
+</ul>
+<p>希望这些介绍和代码示例对您有所帮助！如果有更多具体问题或需要进一步的解释，请随时提问。</p>
+<h3 id="3-图的连通分量">3. 图的连通分量</h3>
+<ul>
+<li><strong>无向图的连通分量</strong>：图中的一组顶点，其中任意两个顶点之间都存在路径。</li>
+<li><strong>有向图的强连通分量</strong>：图中的一组顶点，其中任意两个顶点之间都存在双向路径。</li>
+</ul>
+<h3 id="4-图的深度优先搜索">4. 图的深度优先搜索</h3>
+<ul>
+<li><strong>基本思想</strong>：从某个节点开始，沿着某条路径一直搜索下去，直到无法继续为止，然后回溯到上一个节点，继续搜索其他路径。</li>
+<li><strong>应用</strong>：检测图的连通性、寻找路径、拓扑排序等。</li>
+</ul>
+<h3 id="5-图的广度优先搜索">5. 图的广度优先搜索</h3>
+<ul>
+<li><strong>基本思想</strong>：从某个节点开始，先访问其所有邻居节点，再依次访问这些邻居节点的邻居，逐层扩展。</li>
+<li><strong>应用</strong>：最短路径问题、图的连通性检测等。</li>
+</ul>
+<h3 id="6-图的拓扑排序">6. 图的拓扑排序</h3>
+<ul>
+<li><strong>定义</strong>：对于一个有向无环图
+(DAG)，将图中的所有顶点排成一个线性序列，使得图中任意一对顶点 u 和
+v，若边 (u, v) 存在，则 u 在线性序列中出现在 v 的前面。</li>
+<li><strong>算法</strong>：Kahn 算法和基于 DFS 的算法。</li>
+</ul>
+<h3 id="7-最小生成树">7. 最小生成树</h3>
+<ul>
+<li><strong>定义</strong>：对于一个带权的无向图，生成树是指包含图中所有顶点的一个无环子图。最小生成树是指生成树中所有边的权重之和最小的生成树。</li>
+<li><strong>算法</strong>：Prim 算法和 Kruskal 算法。</li>
+</ul>
+<h3 id="8-最短路径问题">8. 最短路径问题</h3>
+<ul>
+<li><strong>单源最短路径</strong>：从某个起点出发，找到到其他所有顶点的最短路径。常用算法有
+Dijkstra 算法和 Bellman-Ford 算法。</li>
+<li><strong>所有顶点对的最短路径</strong>：求解图中任意两个顶点之间的最短路径。常用算法有
+Floyd-Warshall 算法。</li>
+</ul>
+<h3 id="9-欧拉回路">9. 欧拉回路</h3>
+<ul>
+<li><strong>定义</strong>：欧拉回路是指通过图中每条边恰好一次且仅一次，并能回到出发点的路径。</li>
+<li><strong>条件</strong>：对于无向图，每个顶点的度数必须为偶数；对于有向图，每个顶点的入度和出度必须相等。</li>
+</ul>
+<p>希望这些扩写内容对您有所帮助！如果您有更多具体问题或需要进一步的解释，请随时提问。</p>
+</article><div class="post-copyright"><div class="copyright-cc-box"><i class="anzhiyufont anzhiyu-icon-copyright"></i></div><div class="post-copyright__author_box"><a class="post-copyright__author_img" href="/" title="头像"><img class="post-copyright__author_img_back" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/avatar.jpg" title="头像" alt="头像"><img class="post-copyright__author_img_front" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/avatar.jpg" title="头像" alt="头像"></a><div class="post-copyright__author_name">小鹤</div><div class="post-copyright__author_desc">小鹤博客</div></div><div class="post-copyright__post__info"><a class="post-copyright__original" title="该文章为原创文章，注意版权协议" href="http://example.com/2024/11/19/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%EF%BC%887%EF%BC%89/">原创</a><a class="post-copyright-title"><span onclick="rm.copyPageUrl('http://example.com/2024/11/19/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%EF%BC%887%EF%BC%89/')">数据结构与算法（7）</span></a></div><div class="post-tools" id="post-tools"><div class="post-tools-left"><div class="rewardLeftButton"><div class="post-reward" onclick="anzhiyu.addRewardMask()"><div class="reward-button button--animated" title="赞赏作者"><i class="anzhiyufont anzhiyu-icon-hand-heart-fill"></i>打赏作者</div><div class="reward-main"><div class="reward-all"><span class="reward-title">感谢你赐予我前进的力量</span><ul class="reward-group"><li class="reward-item"><a href="/img/weixing_money.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/weixing_money.jpg" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="/img/Alipay_money.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/Alipay_money.jpg" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul><a class="reward-main-btn" href="/about/#about-reward" target="_blank"><div class="reward-text">赞赏者名单</div><div class="reward-dec">因为你们的支持让我意识到写文章的价值🙏</div></a></div></div></div><div id="quit-box" onclick="anzhiyu.removeRewardMask()" style="display: none"></div></div><div class="shareRight"><div class="share-link mobile"><div class="share-qrcode"><div class="share-button" title="使用手机访问这篇文章"><i class="anzhiyufont anzhiyu-icon-qrcode"></i></div><div class="share-main"><div class="share-main-all"><div id="qrcode" title="http://example.com/2024/11/19/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%EF%BC%887%EF%BC%89/"></div><div class="reward-dec">使用手机访问这篇文章</div></div></div></div></div><div class="share-link weibo"><a class="share-button" target="_blank" href="https://service.weibo.com/share/share.php?title=数据结构与算法（7）&amp;url=http://example.com/2024/11/19/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%EF%BC%887%EF%BC%89/&amp;pic=https://pic4.zhimg.com/v2-2d666d57cb8f9959e367bc94eeaa46c0_1440w.jpg?source=172ae18b" rel="external nofollow noreferrer noopener"><i class="anzhiyufont anzhiyu-icon-weibo"></i></a></div><script>function copyCurrentPageUrl() {
+  var currentPageUrl = window.location.href;
+  var input = document.createElement("input");
+  input.setAttribute("value", currentPageUrl);
+  document.body.appendChild(input);
+  input.select();
+  input.setSelectionRange(0, 99999);
+  document.execCommand("copy");
+  document.body.removeChild(input);
+}</script><div class="share-link copyurl"><div class="share-button" id="post-share-url" title="复制链接" onclick="copyCurrentPageUrl()"><i class="anzhiyufont anzhiyu-icon-link"></i></div></div></div></div></div><div class="post-copyright__notice"><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">小鹤实验室</a>！</span></div></div><div class="post-tools-right"><div class="tag_share"><div class="post-meta__box"><div class="post-meta__box__tag-list"></div></div></div><div class="post_share"><div class="social-share" data-image="https://pic4.zhimg.com/v2-2d666d57cb8f9959e367bc94eeaa46c0_1440w.jpg?source=172ae18b" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.cbd.int/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"/><script src="https://cdn.cbd.int/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer="defer"></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/2024/11/19/CTF/CTF%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/default_cover.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">从源码到可执行文件</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-content"><div class="author-info-avatar"><img class="avatar-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__description">小鹤博客——专注机器学习，深度学习，计算机视觉，自然语言处理，图像识别</div></div></div><div class="card-widget anzhiyu-right-widget" id="card-wechat" onclick="null"><div id="flip-wrapper"><div id="flip-content"><div class="face" style="background: url(https://bu.dusays.com/2023/01/13/63c02edf44033.png) center center / 100% no-repeat"></div><div class="back face" style="background: url(/img/weixing_PublicAccount.png) center center / 100% no-repeat"></div></div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-bars"></i><span>文章目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%BE%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-number">1.</span> <span class="toc-text">图的定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%BE%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-number">2.</span> <span class="toc-text">图的基本概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%9C%89%E5%90%91%E5%9B%BE"><span class="toc-number">2.1.</span> <span class="toc-text">1. 有向图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%89%E5%90%91%E5%9B%BE%E7%9A%84%E8%A1%A8%E7%A4%BA"><span class="toc-number">2.2.</span> <span class="toc-text">有向图的表示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A0%E5%90%91%E5%9B%BE%E7%9A%84%E8%A1%A8%E7%A4%BA"><span class="toc-number">2.3.</span> <span class="toc-text">无向图的表示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E5%9B%BE"><span class="toc-number">2.4.</span> <span class="toc-text">简单图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E9%87%8D%E5%9B%BE"><span class="toc-number">2.5.</span> <span class="toc-text">多重图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%8C%E5%85%A8%E5%9B%BE%E4%B9%9F%E7%A7%B0%E7%AE%80%E5%8D%95%E5%AE%8C%E5%85%A8%E5%9B%BE"><span class="toc-number">2.6.</span> <span class="toc-text">完全图（也称简单完全图）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%90%E5%9B%BE"><span class="toc-number">2.7.</span> <span class="toc-text">子图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9E%E9%80%9A%E8%BF%9E%E9%80%9A%E5%9B%BE%E5%92%8C%E8%BF%9E%E9%80%9A%E5%88%86%E9%87%8F"><span class="toc-number">2.8.</span> <span class="toc-text">连通、连通图和连通分量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%BA%E8%BF%9E%E9%80%9A%E5%9B%BE%E5%BC%BA%E8%BF%9E%E9%80%9A%E5%88%86%E9%87%8F"><span class="toc-number">2.9.</span> <span class="toc-text">强连通图、强连通分量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%9F%E6%88%90%E6%A0%91%E7%94%9F%E6%88%90%E6%A3%AE%E6%9E%97"><span class="toc-number">2.10.</span> <span class="toc-text">生成树、生成森林</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A1%B6%E7%82%B9%E7%9A%84%E5%BA%A6%E5%85%A5%E5%BA%A6%E5%92%8C%E5%87%BA%E5%BA%A6"><span class="toc-number">2.11.</span> <span class="toc-text">顶点的度、入度和出度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BE%B9%E7%9A%84%E6%9D%83%E5%92%8C%E7%BD%91"><span class="toc-number">2.12.</span> <span class="toc-text">边的权和网</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A8%A0%E5%AF%86%E5%9B%BE%E7%A8%80%E7%96%8F%E5%9B%BE"><span class="toc-number">2.13.</span> <span class="toc-text">稠密图、稀疏图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B7%AF%E5%BE%84%E8%B7%AF%E5%BE%84%E9%95%BF%E5%BA%A6%E5%92%8C%E5%9B%9E%E8%B7%AF"><span class="toc-number">2.14.</span> <span class="toc-text">路径、路径长度和回路</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E8%B7%AF%E5%BE%84%E7%AE%80%E5%8D%95%E5%9B%9E%E8%B7%AF"><span class="toc-number">2.15.</span> <span class="toc-text">简单路径、简单回路</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B7%9D%E7%A6%BB"><span class="toc-number">2.16.</span> <span class="toc-text">距离</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%89%E5%90%91%E6%A0%91"><span class="toc-number">2.17.</span> <span class="toc-text">有向树</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%9B%BE%E7%9A%84%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84"><span class="toc-number">2.18.</span> <span class="toc-text">1. 图的存储结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%BE%E7%9A%84%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84"><span class="toc-number">2.19.</span> <span class="toc-text">图的存储结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">2.20.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86%E7%AE%97%E6%B3%95"><span class="toc-number">2.21.</span> <span class="toc-text">图的遍历算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2-dfs"><span class="toc-number">2.21.1.</span> <span class="toc-text">1. 深度优先搜索 (DFS)</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#c-%E8%AF%AD%E8%A8%80%E5%AE%9E%E7%8E%B0"><span class="toc-number">2.21.1.1.</span> <span class="toc-text">C 语言实现</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2-bfs"><span class="toc-number">2.21.2.</span> <span class="toc-text">2. 广度优先搜索 (BFS)</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#c-%E8%AF%AD%E8%A8%80%E5%AE%9E%E7%8E%B0-1"><span class="toc-number">2.21.2.1.</span> <span class="toc-text">C 语言实现</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-1"><span class="toc-number">2.22.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%9B%BE%E7%9A%84%E8%BF%9E%E9%80%9A%E5%88%86%E9%87%8F"><span class="toc-number">2.23.</span> <span class="toc-text">3. 图的连通分量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%9B%BE%E7%9A%84%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2"><span class="toc-number">2.24.</span> <span class="toc-text">4. 图的深度优先搜索</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E5%9B%BE%E7%9A%84%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2"><span class="toc-number">2.25.</span> <span class="toc-text">5. 图的广度优先搜索</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E5%9B%BE%E7%9A%84%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8F"><span class="toc-number">2.26.</span> <span class="toc-text">6. 图的拓扑排序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91"><span class="toc-number">2.27.</span> <span class="toc-text">7. 最小生成树</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84%E9%97%AE%E9%A2%98"><span class="toc-number">2.28.</span> <span class="toc-text">8. 最短路径问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-%E6%AC%A7%E6%8B%89%E5%9B%9E%E8%B7%AF"><span class="toc-number">2.29.</span> <span class="toc-text">9. 欧拉回路</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-history"></i><span>最近发布</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/11/19/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%EF%BC%887%EF%BC%89/" title="数据结构与算法（7）"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://pic4.zhimg.com/v2-2d666d57cb8f9959e367bc94eeaa46c0_1440w.jpg?source=172ae18b" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数据结构与算法（7）"/></a><div class="content"><a class="title" href="/2024/11/19/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%EF%BC%887%EF%BC%89/" title="数据结构与算法（7）">数据结构与算法（7）</a><time datetime="2024-11-19T07:36:29.000Z" title="发表于 2024-11-19 15:36:29">2024-11-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/11/19/CTF/CTF%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/" title="从源码到可执行文件"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/default_cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="从源码到可执行文件"/></a><div class="content"><a class="title" href="/2024/11/19/CTF/CTF%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/" title="从源码到可执行文件">从源码到可执行文件</a><time datetime="2024-11-19T04:36:29.000Z" title="发表于 2024-11-19 12:36:29">2024-11-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/11/18/CTF/1.3_linux_basic/" title="操作系统(2)--Linux 基础"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/default_cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="操作系统(2)--Linux 基础"/></a><div class="content"><a class="title" href="/2024/11/18/CTF/1.3_linux_basic/" title="操作系统(2)--Linux 基础">操作系统(2)--Linux 基础</a><time datetime="2024-11-18T04:36:29.000Z" title="发表于 2024-11-18 12:36:29">2024-11-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/11/18/CTF/1.5.2_assembly/" title="汇编语言"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/default_cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="汇编语言"/></a><div class="content"><a class="title" href="/2024/11/18/CTF/1.5.2_assembly/" title="汇编语言">汇编语言</a><time datetime="2024-11-18T04:36:29.000Z" title="发表于 2024-11-18 12:36:29">2024-11-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/11/18/html+css+js%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/" title="无题"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/default_cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="无题"/></a><div class="content"><a class="title" href="/2024/11/18/html+css+js%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/" title="无题">无题</a><time datetime="2024-11-18T04:14:25.609Z" title="发表于 2024-11-18 12:14:25">2024-11-18</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div id="workboard"><img class="workSituationImg boardsign" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://npm.elemecdn.com/anzhiyu-blog@2.0.4/img/badge/安知鱼-上班摸鱼中.svg" alt="距离月入25k也就还差一个大佬带我~" title="距离月入25k也就还差一个大佬带我~"/><div id="runtimeTextTip"></div></div></div><div id="footer-bar"><div class="footer-bar-links"><div class="footer-bar-left"><div id="footer-bar-tips"><div class="copyright">&copy;2023 - 2024 By <a class="footer-bar-link" href="/" title="小鹤" target="_blank">小鹤</a></div></div><div id="footer-type-tips"></div></div><div class="footer-bar-right"><a class="footer-bar-link" target="_blank" rel="noopener" href="https://github.com/TianHe2005" title="主题">主题</a></div></div></div></footer></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="sidebar-site-data site-data is-center"><a href="/archives/" title="archive"><div class="headline">文章</div><div class="length-num">24</div></a><a href="/tags/" title="tag"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/" title="category"><div class="headline">分类</div><div class="length-num">4</div></a></div><span class="sidebar-menu-item-title">功能</span><div class="sidebar-menu-item"><a class="darkmode_switchbutton menu-child" href="javascript:void(0);" title="显示模式"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span>显示模式</span></a></div><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://blog.anheyu.com/" title="博客"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/favicon.ico" alt="博客"/><span class="back-menu-item-text">博客</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">项目</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://image.anheyu.com/" title="安知鱼图床"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.anheyu.com/favicon.ico" alt="安知鱼图床"/><span class="back-menu-item-text">安知鱼图床</span></a></div></div></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/categories/"><i class="anzhiyufont anzhiyu-icon-shapes faa-tada" style="font-size: 0.9em;"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags faa-tada" style="font-size: 0.9em;"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 友链</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/link/"><i class="anzhiyufont anzhiyu-icon-link faa-tada" style="font-size: 0.9em;"></i><span> 友人帐</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/fcircle/"><i class="anzhiyufont anzhiyu-icon-artstation faa-tada" style="font-size: 0.9em;"></i><span> 朋友圈</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/comments/"><i class="anzhiyufont anzhiyu-icon-envelope faa-tada" style="font-size: 0.9em;"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 我的</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/music/"><i class="anzhiyufont anzhiyu-icon-music faa-tada" style="font-size: 0.9em;"></i><span> 音乐馆</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/album/"><i class="anzhiyufont anzhiyu-icon-images faa-tada" style="font-size: 0.9em;"></i><span> 相册集</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/air-conditioner/"><i class="anzhiyufont anzhiyu-icon-fan faa-tada" style="font-size: 0.9em;"></i><span> 小空调</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/about/"><i class="anzhiyufont anzhiyu-icon-paper-plane faa-tada" style="font-size: 0.9em;"></i><span> 关于本人</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/essay/"><i class="anzhiyufont anzhiyu-icon-lightbulb faa-tada" style="font-size: 0.9em;"></i><span> 闲言碎语</span></a></li><li><a class="site-page child faa-parent animated-hover" href="javascript:toRandomPost()"><i class="anzhiyufont anzhiyu-icon-shoe-prints1 faa-tada" style="font-size: 0.9em;"></i><span> 随便逛逛</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/equipment/"><i class="anzhiyufont anzhiyu-icon-dice-d20 faa-tada" style="font-size: 0.9em;"></i><span> 我的装备</span></a></li></ul></div></div><span class="sidebar-menu-item-title">标签</span></div></div><div id="keyboard-tips"><div class="keyboardTitle">博客快捷键</div><div class="keybordList"><div class="keybordItem"><div class="keyGroup"><div class="key">shift K</div></div><div class="keyContent"><div class="content">关闭快捷键功能</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift A</div></div><div class="keyContent"><div class="content">打开/关闭中控台</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift M</div></div><div class="keyContent"><div class="content">播放/暂停音乐</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift D</div></div><div class="keyContent"><div class="content">深色/浅色显示模式</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift S</div></div><div class="keyContent"><div class="content">站内搜索</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift R</div></div><div class="keyContent"><div class="content">随机访问</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift H</div></div><div class="keyContent"><div class="content">返回首页</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift F</div></div><div class="keyContent"><div class="content">友链鱼塘</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift L</div></div><div class="keyContent"><div class="content">友链页面</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift P</div></div><div class="keyContent"><div class="content">关于本站</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift I</div></div><div class="keyContent"><div class="content">原版/本站右键菜单</div></div></div></div></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="anzhiyufont anzhiyu-icon-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="anzhiyufont anzhiyu-icon-gear"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="anzhiyufont anzhiyu-icon-list-ul"></i></button><button id="chat-btn" type="button" title="聊天"><i class="anzhiyufont anzhiyu-icon-comment-sms"></i></button><a id="switch-commentBarrage" href="javascript:anzhiyu.switchCommentBarrage();" title="开关弹幕"><i class="anzhiyufont anzhiyu-icon-danmu"></i></a><button id="go-up" type="button" title="回到顶部"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></button></div></div><div id="nav-music"><a id="nav-music-hoverTips" onclick="anzhiyu.musicToggle()" accesskey="m">播放音乐</a><div id="console-music-bg"></div><meting-js id="8152976493" server="netease" type="playlist" mutex="true" preload="none" theme="var(--anzhiyu-main)" data-lrctype="0" order="random" volume="0.7"></meting-js></div><div id="rightMenu"><div class="rightMenu-group rightMenu-small"><div class="rightMenu-item" id="menu-backward"><i class="anzhiyufont anzhiyu-icon-arrow-left"></i></div><div class="rightMenu-item" id="menu-forward"><i class="anzhiyufont anzhiyu-icon-arrow-right"></i></div><div class="rightMenu-item" id="menu-refresh"><i class="anzhiyufont anzhiyu-icon-arrow-rotate-right" style="font-size: 1rem;"></i></div><div class="rightMenu-item" id="menu-top"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></div></div><div class="rightMenu-group rightMenu-line rightMenuPlugin"><div class="rightMenu-item" id="menu-copytext"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制选中文本</span></div><div class="rightMenu-item" id="menu-pastetext"><i class="anzhiyufont anzhiyu-icon-paste"></i><span>粘贴文本</span></div><a class="rightMenu-item" id="menu-commenttext"><i class="anzhiyufont anzhiyu-icon-comment-medical"></i><span>引用到评论</span></a><div class="rightMenu-item" id="menu-newwindow"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开</span></div><div class="rightMenu-item" id="menu-copylink"><i class="anzhiyufont anzhiyu-icon-link"></i><span>复制链接地址</span></div><div class="rightMenu-item" id="menu-copyimg"><i class="anzhiyufont anzhiyu-icon-images"></i><span>复制此图片</span></div><div class="rightMenu-item" id="menu-downloadimg"><i class="anzhiyufont anzhiyu-icon-download"></i><span>下载此图片</span></div><div class="rightMenu-item" id="menu-newwindowimg"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开图片</span></div><div class="rightMenu-item" id="menu-search"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>站内搜索</span></div><div class="rightMenu-item" id="menu-searchBaidu"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>百度搜索</span></div><div class="rightMenu-item" id="menu-music-toggle"><i class="anzhiyufont anzhiyu-icon-play"></i><span>播放音乐</span></div><div class="rightMenu-item" id="menu-music-back"><i class="anzhiyufont anzhiyu-icon-backward"></i><span>切换到上一首</span></div><div class="rightMenu-item" id="menu-music-forward"><i class="anzhiyufont anzhiyu-icon-forward"></i><span>切换到下一首</span></div><div class="rightMenu-item" id="menu-music-playlist" onclick="window.open(&quot;https://y.qq.com/n/ryqq/playlist/8802438608&quot;, &quot;_blank&quot;);" style="display: none;"><i class="anzhiyufont anzhiyu-icon-radio"></i><span>查看所有歌曲</span></div><div class="rightMenu-item" id="menu-music-copyMusicName"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制歌名</span></div></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item menu-link" id="menu-randomPost"><i class="anzhiyufont anzhiyu-icon-shuffle"></i><span>随便逛逛</span></a><a class="rightMenu-item menu-link" href="/categories/"><i class="anzhiyufont anzhiyu-icon-cube"></i><span>博客分类</span></a><a class="rightMenu-item menu-link" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags"></i><span>文章标签</span></a></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item" id="menu-copy" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制地址</span></a><a class="rightMenu-item" id="menu-commentBarrage" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-message"></i><span class="menu-commentBarrage-text">关闭热评</span></a><a class="rightMenu-item" id="menu-darkmode" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span class="menu-darkmode-text">深色模式</span></a><a class="rightMenu-item" id="menu-translate" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-language"></i><span>轉為繁體</span></a></div></div><div id="rightmenu-mask"></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.cbd.int/@fancyapps/ui@5.0.28/dist/fancybox/fancybox.umd.js"></script><script src="https://cdn.cbd.int/instant.page@5.2.0/instantpage.js" type="module"></script><script src="https://cdn.cbd.int/vanilla-lazyload@17.8.5/dist/lazyload.iife.min.js"></script><script src="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.js"></script><canvas id="universe"></canvas><script async src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/dark/dark.js"></script><script>// 消除控制台打印
+var HoldLog = console.log;
+console.log = function () {};
+let now1 = new Date();
+queueMicrotask(() => {
+  const Log = function () {
+    HoldLog.apply(console, arguments);
+  }; //在恢复前输出日志
+  const grt = new Date("06/01/2023 00:00:00"); //此处修改你的建站时间或者网站上线时间
+  now1.setTime(now1.getTime() + 250);
+  const days = (now1 - grt) / 1000 / 60 / 60 / 24;
+  const dnum = Math.floor(days);
+  const ascll = [
+    `欢迎使用安知鱼!`,
+    `生活明朗, 万物可爱`,
+    `
+        
+       █████╗ ███╗   ██╗███████╗██╗  ██╗██╗██╗   ██╗██╗   ██╗
+      ██╔══██╗████╗  ██║╚══███╔╝██║  ██║██║╚██╗ ██╔╝██║   ██║
+      ███████║██╔██╗ ██║  ███╔╝ ███████║██║ ╚████╔╝ ██║   ██║
+      ██╔══██║██║╚██╗██║ ███╔╝  ██╔══██║██║  ╚██╔╝  ██║   ██║
+      ██║  ██║██║ ╚████║███████╗██║  ██║██║   ██║   ╚██████╔╝
+      ╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝╚═╝   ╚═╝    ╚═════╝
+        
+        `,
+    "已上线",
+    dnum,
+    "天",
+    "©2023 By 安知鱼 V1.6.14",
+  ];
+  const ascll2 = [`NCC2-036`, `调用前置摄像头拍照成功，识别为【小笨蛋】.`, `Photo captured: `, `🤪`];
+
+  setTimeout(
+    Log.bind(
+      console,
+      `\n%c${ascll[0]} %c ${ascll[1]} %c ${ascll[2]} %c${ascll[3]}%c ${ascll[4]}%c ${ascll[5]}\n\n%c ${ascll[6]}\n`,
+      "color:#425AEF",
+      "",
+      "color:#425AEF",
+      "color:#425AEF",
+      "",
+      "color:#425AEF",
+      ""
+    )
+  );
+  setTimeout(
+    Log.bind(
+      console,
+      `%c ${ascll2[0]} %c ${ascll2[1]} %c \n${ascll2[2]} %c\n${ascll2[3]}\n`,
+      "color:white; background-color:#4fd953",
+      "",
+      "",
+      'background:url("https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/tinggge.gif") no-repeat;font-size:450%'
+    )
+  );
+
+  setTimeout(Log.bind(console, "%c WELCOME %c 你好，小笨蛋.", "color:white; background-color:#4f90d9", ""));
+
+  setTimeout(
+    console.warn.bind(
+      console,
+      "%c ⚡ Powered by 安知鱼 %c 你正在访问 小鹤 的博客.",
+      "color:white; background-color:#f0ad4e",
+      ""
+    )
+  );
+
+  setTimeout(Log.bind(console, "%c W23-12 %c 你已打开控制台.", "color:white; background-color:#4f90d9", ""));
+
+  setTimeout(
+    console.warn.bind(console, "%c S013-782 %c 你现在正处于监控中.", "color:white; background-color:#d9534f", "")
+  );
+});</script><script async src="/anzhiyu/random.js"></script><script async="async">(function () {
+  var grt = new Date("06/01/2023 00:00:00"); //设置网站上线时间
+  var now = new Date();
+  var dnum;
+  var hnum;
+  var mnum;
+  var snum;
+  var nowHour;
+
+  // 计算并更新天数、小时数、分钟数和秒数
+  function updateTime() {
+    now = new Date(); // 更新 now 的值
+    nowHour = now.getHours(); // 更新 nowHour 的值
+    var days = (now - grt) / 1000 / 60 / 60 / 24;
+    dnum = Math.floor(days);
+    var hours = (now - grt) / 1000 / 60 / 60 - 24 * dnum;
+    hnum = Math.floor(hours);
+    if (String(hnum).length == 1) {
+      hnum = "0" + hnum;
+    }
+    var minutes = (now - grt) / 1000 / 60 - 24 * 60 * dnum - 60 * hnum;
+    mnum = Math.floor(minutes);
+    if (String(mnum).length == 1) {
+      mnum = "0" + mnum;
+    }
+    var seconds = (now - grt) / 1000 - 24 * 60 * 60 * dnum - 60 * 60 * hnum - 60 * mnum;
+    snum = Math.round(seconds);
+    if (String(snum).length == 1) {
+      snum = "0" + snum;
+    }
+  }
+
+  // 更新网页中显示的网站运行时间
+  function updateHtml() {
+    const footer = document.getElementById("footer");
+    if (!footer) return
+    let currentTimeHtml = "";
+    if (nowHour < 18 && nowHour >= 9) {
+      // 如果是上班时间，默认就是"安知鱼-上班摸鱼中.svg"图片，不需要更改
+      currentTimeHtml = `本站居然运行了 ${dnum} 天<span id='runtime'> ${hnum} 小时 ${mnum} 分 ${snum} 秒 </span><i class='anzhiyufont anzhiyu-icon-heartbeat' style='color:red'></i>`;
+    } else {
+      // 如果是下班时间，插入"安知鱼-下班啦.svg"图片
+      let img = document.querySelector("#workboard .workSituationImg");
+      if (img != null) {
+        img.src = "https://npm.elemecdn.com/anzhiyu-blog@2.0.4/img/badge/安知鱼-下班啦.svg";
+        img.title = "下班了就该开开心心的玩耍，嘿嘿~";
+        img.alt = "下班了就该开开心心的玩耍，嘿嘿~";
+      }
+
+      currentTimeHtml = `本站居然运行了 ${dnum} 天<span id='runtime'> ${hnum} 小时 ${mnum} 分 ${snum} 秒 </span><i class='anzhiyufont anzhiyu-icon-heartbeat' style='color:red'></i>`;
+    }
+
+    if (document.getElementById("runtimeTextTip")) {
+      document.getElementById("runtimeTextTip").innerHTML = currentTimeHtml;
+    }
+  }
+
+  setInterval(() => {
+    updateTime();
+    updateHtml();
+  }, 1000);
+})();</script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, '']
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.cbd.int/mathjax@3.2.2/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script><input type="hidden" name="page-type" id="page-type" value="post"></div><script>var visitorMail = "";
+</script><script async data-pjax src="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/waterfall/waterfall.js"></script><script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/qrcodejs/1.0.0/qrcode.min.js"></script><script src="/js/anzhiyu/right_click_menu.js"></script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.9/icon/ali_iconfont_css.css"><script>(() => {
+  const isChatBtn = true
+  const isChatHideShow = true
+
+  if (isChatBtn) {
+    const close = () => {
+      Chatra('minimizeWidget')
+      Chatra('hide')
+    }
+
+    const open = () => {
+      Chatra('openChat', true)
+      Chatra('show')
+    }
+
+    window.ChatraSetup = {
+      startHidden: true
+    }
+  
+    window.chatBtnFn = () => {
+      const isShow = document.getElementById('chatra').classList.contains('chatra--expanded')
+      isShow ? close() : open()
+    }
+  } else if (isChatHideShow) {
+    window.chatBtn = {
+      hide: () => {
+        Chatra('hide')
+      },
+      show: () => {
+        Chatra('show')
+      }
+    }
+  }
+
+  (function(d, w, c) {
+    w.ChatraID = ''
+    var s = d.createElement('script')
+    w[c] = w[c] || function() {
+        (w[c].q = w[c].q || []).push(arguments)
+    }
+    s.async = true
+    s.src = 'https://call.chatra.io/chatra.js'
+    if (d.head) d.head.appendChild(s)
+  })(document, window, 'Chatra')
+
+})()</script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/aplayer/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.cbd.int/anzhiyu-blog-static@1.0.1/js/APlayer.min.js"></script><script src="https://cdn.cbd.int/hexo-anzhiyu-music@1.0.1/assets/js/Meting2.min.js"></script><script src="https://cdn.cbd.int/pjax@0.2.8/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+  // removeEventListener scroll 
+  anzhiyu.removeGlobalFnEvent('pjax')
+  anzhiyu.removeGlobalFnEvent('themeChange')
+
+  document.getElementById('rightside').classList.remove('rightside-show')
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', e => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script charset="UTF-8" src="https://cdn.cbd.int/anzhiyu-theme-static@1.1.5/accesskey/accesskey.js"></script></div><div id="popup-window"><div class="popup-window-title">通知</div><div class="popup-window-divider"></div><div class="popup-window-content"><div class="popup-tip">你好呀</div><div class="popup-link"><i class="anzhiyufont anzhiyu-icon-arrow-circle-right"></i></div></div></div></body></html>
